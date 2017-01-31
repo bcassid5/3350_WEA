@@ -10,7 +10,7 @@ export default Ember.Component.extend({
   studentsModel: null,
   INDEX: null,
   notDONE: null,
-
+  
   actions: {
     loadNext: function () {
       Ember.$('.ui.modal').modal('hide');
@@ -35,6 +35,7 @@ export default Ember.Component.extend({
     exit: function () {
       this.set('notDONE', false);
       Ember.$('.ui.modal').modal('hide');
+      Ember.$('.ui.modal').remove();
     }
   },
 
@@ -43,7 +44,9 @@ export default Ember.Component.extend({
     Ember.$('.ui.modal')
       .modal({
         closable: false,
+        dimmer: false
       })
-      .modal('show');
+      .modal('hide dimmer').modal('hide').modal('show');
+      //Ember.$('.ui.modal').modal('show');
   }
 });
