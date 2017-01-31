@@ -10,12 +10,15 @@ export default Ember.Component.extend({
   studentsModel: null,
   INDEX: null,
   notDONE: null,
-  
+
+
   actions: {
     loadNext: function () {
-      Ember.$('.ui.modal').modal('hide');
-      this.set('offset', this.get('offset') + this.get('pageSize'));
-      Ember.$('.ui.modal').modal('show');
+      if(this.get('offset')<=80){
+        Ember.$('.ui.modal').modal('hide');
+        this.set('offset', this.get('offset') + this.get('pageSize'));
+        Ember.$('.ui.modal').modal('show');
+      }
     },
 
     loadPrevious: function () {
@@ -36,17 +39,18 @@ export default Ember.Component.extend({
       this.set('notDONE', false);
       Ember.$('.ui.modal').modal('hide');
       Ember.$('.ui.modal').remove();
+      firstTime = 0;
     }
   },
 
-
   didRender() {
-    Ember.$('.ui.modal')
-      .modal({
-        closable: false,
-        dimmer: false
-      })
-      .modal('hide dimmer').modal('hide').modal('show');
+      Ember.$('.ui.modal')
+        .modal({
+         closable: false
+        })
+        .modal('hide').modal('show');
+    }
       //Ember.$('.ui.modal').modal('show');
-  }
+  
+   
 });

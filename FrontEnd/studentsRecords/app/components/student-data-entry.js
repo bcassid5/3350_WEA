@@ -12,6 +12,8 @@ export default Ember.Component.extend({
   currentIndex: null,
   firstIndex: 0,
   lastIndex: 0,
+  //indexFirstDb: 0,
+  //indexLastDb: 11,
   studentPhoto: null,
   limit: null,
   offset: null,
@@ -66,7 +68,13 @@ export default Ember.Component.extend({
 
   showStudentData: function (index) {
     this.set('currentStudent', this.get('studentsRecords').objectAt(index));
-    this.set('studentPhoto', this.get('currentStudent').get('photo'));
+    //this.set('studentPhoto', this.get('currentStudent').get('photo'));
+    if(this.get('currentStudent').get('gender')==1){
+      this.set('studentPhoto', "/assets/studentsPhotos/male.png");
+    }
+    else{
+      this.set('studentPhoto', "/assets/studentsPhotos/female.png");
+    }
     var date = this.get('currentStudent').get('DOB');
     var datestring = date.toISOString().substring(0, 10);
     this.set('selectedDate', datestring);
@@ -87,10 +95,17 @@ export default Ember.Component.extend({
       updatedStudent.save().then(() => {
         //     this.set('isStudentFormEditing', false);
       });
+      if(this.get('currentStudent').get('gender')==1){
+        this.set('studentPhoto', "/assets/studentsPhotos/male.png");
+      }
+      else{
+        this.set('studentPhoto', "/assets/studentsPhotos/female.png");
+      }
     },
 
     firstStudent() {
       this.set('currentIndex', this.get('firstIndex'));
+      //this.set('currentIndex', this.get('indexFirstDb'));
     },
 
     nextStudent() {
@@ -116,6 +131,7 @@ export default Ember.Component.extend({
 
     lastStudent() {
       this.set('currentIndex', this.get('lastIndex'));
+      //this.set('currentIndex', this.get('indexLastDb'));
     },
 
     allStudents() {
