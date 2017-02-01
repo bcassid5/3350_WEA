@@ -36,7 +36,7 @@
     <i class="search icon"></i>
     Find Record
   </a>
-  <a class="item">
+  <a class="item" {{action 'help'}}>
     <i class="help icon"></i>
     Help
   </a>
@@ -45,6 +45,8 @@
 {{#if showAllStudents}}
   <!-- Note that offset is an "in" and "out" parameter !-->
  {{all-students INDEX = currentIndex notDONE = showAllStudents offset = offset studentsModel = studentsRecords}}
+{{else if showHelpPage}}
+  {{help-page notDONE = showHelpPage}}
 {{else}}
   <!-- Show data entry form -->
 
@@ -111,9 +113,5 @@
     <!-- Others !-->
     <h2>Other data</h2>
   </div>
-
-
-
-
 
 {{/if}}

@@ -12,13 +12,13 @@ export default Ember.Component.extend({
   currentIndex: null,
   firstIndex: 0,
   lastIndex: 0,
-  //indexFirstDb: 0,
-  //indexLastDb: 11,
   studentPhoto: null,
   limit: null,
   offset: null,
   pageSize: null,
   movingBackword: false,
+
+  showHelpPage: false,
 
   studentModel: Ember.observer('offset', function () {
     var self = this;
@@ -148,6 +148,10 @@ export default Ember.Component.extend({
 
     assignDate (date){
       this.set('selectedDate', date);
+    },
+
+    help(){
+      this.set('showHelpPage', true);
     },
   }
 });
