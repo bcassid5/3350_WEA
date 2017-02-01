@@ -1,9 +1,15 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+
+  store: Ember.inject.service(),
+  notDONE: null,
+
     actions: {
    
-  notDONE: null,
+   search: function(){
+
+   },
 
     exit: function () {
       this.set('notDONE', false);

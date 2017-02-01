@@ -20,6 +20,7 @@ export default Ember.Component.extend({
   movingBackword: false,
   showHelpPage: false,
   showFindRecordPage: false,
+    
   studentModel: Ember.observer('offset', function () {
     var self = this;
     this.get('store').query('student', {

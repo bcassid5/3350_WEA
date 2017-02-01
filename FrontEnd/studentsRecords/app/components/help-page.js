@@ -1,9 +1,10 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  actions: {
-   
+
   notDONE: null,
+
+  actions: {
 
     exit: function () {
       this.set('notDONE', false);
