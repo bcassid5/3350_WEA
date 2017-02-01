@@ -12,13 +12,12 @@ export default Ember.Component.extend({
   currentIndex: null,
   firstIndex: 0,
   lastIndex: 0,
+  finalIndex: 99,
   studentPhoto: null,
   limit: null,
   offset: null,
   pageSize: null,
   movingBackword: false,
-
-  showHelpPage: false,
 
   studentModel: Ember.observer('offset', function () {
     var self = this;
@@ -52,6 +51,7 @@ export default Ember.Component.extend({
     this.set('limit', 10);
     this.set('offset', 0);
     this.set('pageSize', 10);
+    this.set('finalIndex', 99);
     var self = this;
     this.get('store').query('student', {
       limit: self.get('limit'),
@@ -110,13 +110,16 @@ export default Ember.Component.extend({
 
     nextStudent() {
       this.set('movingBackword' , false);
-      if (this.get('currentIndex') < this.get('lastIndex')) {
-        this.set('currentIndex', this.get('currentIndex') + 1);
-        //     console.log(JSON.stringify(this.get('currentStudent')));
-      }
-      else {
-        this.set('offset', this.get('offset') + this.get('pageSize'));
-      }
+      console.log(this.get('finalIndex') + " " + this.get('currentIndex'));
+       if (this.get('currentIndex') < this.get('lastIndex')) {
+         this.set('currentIndex', this.get('currentIndex') + 1);
+          //     console.log(JSON.stringify(this.get('currentStudent')));
+       }
+        else {
+          if(this.get('offset') <= 80){
+            this.set('offset', this.get('offset') + this.get('pageSize'));
+          }
+        }
     },
 
     previousStudent() {
@@ -148,10 +151,6 @@ export default Ember.Component.extend({
 
     assignDate (date){
       this.set('selectedDate', date);
-    },
-
-    help(){
-      this.set('showHelpPage', true);
     },
   }
 });

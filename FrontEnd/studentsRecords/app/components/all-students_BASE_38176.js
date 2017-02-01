@@ -39,7 +39,7 @@ export default Ember.Component.extend({
       this.set('notDONE', false);
       Ember.$('.ui.modal').modal('hide');
       Ember.$('.ui.modal').remove();
-      
+      firstTime = 0;
     }
   },
 
