@@ -19,6 +19,7 @@ export default Ember.Component.extend({
   movingBackword: false,
 
   showHelpPage: false,
+  showFindRecordPage: false,
 
   studentModel: Ember.observer('offset', function () {
     var self = this;
@@ -152,6 +153,10 @@ export default Ember.Component.extend({
 
     help(){
       this.set('showHelpPage', true);
+    },
+
+    findStudent(){
+      this.set('showFindRecordPage', true);
     },
   }
 });
