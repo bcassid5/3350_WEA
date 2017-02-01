@@ -18,8 +18,7 @@ export default Ember.Component.extend({
   offset: null,
   pageSize: null,
   movingBackword: false,
-  showHelpPage: false,
-  showFindRecordPage: false,
+
   studentModel: Ember.observer('offset', function () {
     var self = this;
     this.get('store').query('student', {
@@ -152,14 +151,6 @@ export default Ember.Component.extend({
 
     assignDate (date){
       this.set('selectedDate', date);
-    },
-
-    help(){
-      this.set('showHelpPage', true);
-    },
-
-    findStudent(){
-      this.set('showFindRecordPage', true);
     },
   }
 });

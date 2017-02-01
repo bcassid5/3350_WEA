@@ -18,8 +18,13 @@ export default Ember.Component.extend({
   offset: null,
   pageSize: null,
   movingBackword: false,
+
+<<<<<<< HEAD
+=======
   showHelpPage: false,
   showFindRecordPage: false,
+
+>>>>>>> 91f35a260bded1672daae33f438d445c2a24273d
   studentModel: Ember.observer('offset', function () {
     var self = this;
     this.get('store').query('student', {
@@ -153,6 +158,8 @@ export default Ember.Component.extend({
     assignDate (date){
       this.set('selectedDate', date);
     },
+<<<<<<< HEAD
+=======
 
     help(){
       this.set('showHelpPage', true);
@@ -161,5 +168,6 @@ export default Ember.Component.extend({
     findStudent(){
       this.set('showFindRecordPage', true);
     },
+>>>>>>> 91f35a260bded1672daae33f438d445c2a24273d
   }
 });
