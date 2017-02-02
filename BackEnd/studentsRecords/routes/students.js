@@ -61,6 +61,11 @@ router.route('/:student_id')
                 student.photo = request.body.student.photo;
                 student.resInfo = request.body.student.resInfo;
 
+                student.regComments = request.body.student.regComments;
+                student.BOA = request.body.student.BOA;
+                student.admissAvg = request.body.student.admissAvg;
+                student.admissComments = request.body.student.admissComments;
+
                 student.save(function (error) {
                     if (error) {
                         response.send({error: error});

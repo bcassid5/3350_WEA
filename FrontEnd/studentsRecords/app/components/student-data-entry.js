@@ -20,7 +20,7 @@ export default Ember.Component.extend({
   movingBackword: false,
   showHelpPage: false,
   showFindRecordPage: false,
-    
+
   studentModel: Ember.observer('offset', function () {
     var self = this;
     this.get('store').query('student', {
@@ -97,12 +97,13 @@ export default Ember.Component.extend({
       updatedStudent.save().then(() => {
         //     this.set('isStudentFormEditing', false);
       });
+      /*
       if(this.get('currentStudent').get('gender')==1){
         this.set('studentPhoto', "/assets/studentsPhotos/male.png");
       }
       else{
         this.set('studentPhoto', "/assets/studentsPhotos/female.png");
-      }
+      }*/
     },
 
     firstStudent() {
