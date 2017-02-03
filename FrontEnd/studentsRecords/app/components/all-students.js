@@ -45,18 +45,7 @@ export default Ember.Component.extend({
 
     },
 
-    delete: function() {
-      var index = this.get('studentsModel').indexOf(student);
-      var id = this.get("studentsModel").objectAt(index).get('id');
-      console.log(id);
-      if (confirm("Press OK to Confirm Delete") === true) {
 
-        var myStore = this.get('store');
-        myStore.findRecord('student', id).then(function (student) {
-          student.destroyRecord();
-        });
-      }
-    }
   },
 
   didRender() {

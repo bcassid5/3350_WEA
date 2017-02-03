@@ -97,13 +97,13 @@ export default Ember.Component.extend({
       updatedStudent.save().then(() => {
         //     this.set('isStudentFormEditing', false);
       });
-      /*
+
       if(this.get('currentStudent').get('gender')==1){
         this.set('studentPhoto', "/assets/studentsPhotos/male.png");
       }
       else{
         this.set('studentPhoto', "/assets/studentsPhotos/female.png");
-      }*/
+      }
     },
 
     firstStudent() {
@@ -145,7 +145,9 @@ export default Ember.Component.extend({
     },
 
     selectGender (gender){
+      console.log(gender);
       this.set('selectedGender', gender);
+
     },
 
     selectResidency (residency){
@@ -162,6 +164,25 @@ export default Ember.Component.extend({
 
     findStudent(){
       this.set('showFindRecordPage', true);
+    },
+
+    delete(id) {
+      var nextIndex = 0;
+      if (this.get('currentIndex') < this.get('lastIndex')) {
+        nextIndex = this.get('currentIndex') + 1;
+      }
+      else {
+        nextIndex = this.get('currentIndex') - 1;
+      }
+
+      if (confirm("Press OK to Confirm Delete") === true) {
+        var myStore = this.get('store');
+        myStore.findRecord('student', id).then(function (student) {
+          student.destroyRecord();
+        });
+        this.set('currentIndex', nextIndex);
+      }
+
     },
   }
 });
