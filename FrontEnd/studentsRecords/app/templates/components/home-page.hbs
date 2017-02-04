@@ -9,8 +9,12 @@
         <i class="large leanpub icon"></i>
         Students Records
       </a>
+      <a class="item" {{action "new"}} >
+          <i class="large add user icon"></i>
+          Create New Record
+      </a>
       <div class="item">
-        <i class="large edit icon"></i>
+        <i class="large code icon"></i>
         Manage Code
       </div>
       <a class="item " {{action "about"}}>
@@ -29,6 +33,9 @@
       {{/if}}
       {{#if isAboutShowing}}
         {{about-us}}
+      {{/if}}
+      {{#if isAddShowing}}
+        {{add-record}}
       {{/if}}
     </div>
   </div>
