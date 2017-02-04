@@ -23,6 +23,8 @@ export default Ember.Component.extend({
   INDEX: null,
   FOUND: null,
   OFFSET: null,
+  indexCancel: null,
+  offsetCancel: null,
 
 init() {
     this._super(...arguments);
@@ -45,6 +47,11 @@ init() {
       self.set('lastIndex', records.indexOf(records.get("lastObject")));
     });
 
+    this.set('indexCancel', this.get('INDEX'));
+    this.set('offsetCancel', this.get('OFFSET'));
+
+    console.log(this.get('offsetCancel'));
+    console.log(this.get('indexCancel'));
   },
 
   actions: {
@@ -209,6 +216,18 @@ init() {
 
     exit: function () {
       this.set('showResults', false);
+      this.set('notDONE', false);
+      Ember.$('.ui.modal').modal('hide');
+      Ember.$('.ui.modal').remove();
+    },
+
+    remove: function () {
+      this.set('showResults', false);
+      console.log(this.get('offsetCancel'));
+      console.log(this.get('indexCancel'));
+      this.set('FOUND', true);
+      this.set('OFFSET', this.get('offsetCancel'));
+      this.set('INDEX', this.get('indexCancel'));
       this.set('notDONE', false);
       Ember.$('.ui.modal').modal('hide');
       Ember.$('.ui.modal').remove();
