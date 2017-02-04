@@ -48,7 +48,7 @@
 {{else if showHelpPage}}
   {{help-page notDONE = showHelpPage}}
 {{else if showFindRecordPage}}
-  {{find-record notDONE = showFindRecordPage}}
+  {{find-record notDONE = showFindRecordPage OFFSET = offset INDEX = currentIndex FOUND = found}}
 {{else}}
   <!-- Show data entry form -->
 

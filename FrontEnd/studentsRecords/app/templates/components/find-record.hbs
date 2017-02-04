@@ -34,7 +34,7 @@
                 <div class="grouped fields">
                     <div class="field">
                     <div class="ui radio checkbox">
-                        <input type="radio" name="searchradiolist">
+                        <input type="radio" name="searchradiolist" onchange={{action 'select' oneStudent}}>
                         <label>
                             {{oneStudent.number}} {{oneStudent.firstName}} {{oneStudent.lastName}}
                         </label>
@@ -51,7 +51,7 @@
         {{/each}}
         <br/><br/>
         <div class="actions">
-            <div class="ui button" {{action "select"}}>Select</div>
+            <div class="ui button" {{action "exit"}}>Select</div>
         </div>
     {{/if}}
   </div>

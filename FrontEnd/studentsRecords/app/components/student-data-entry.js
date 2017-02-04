@@ -26,6 +26,7 @@ export default Ember.Component.extend({
   undoGender: null,
   undoRes: null,
   undoDOB: null,
+  found: null,
     
   studentModel: Ember.observer('offset', function () {
     var self = this;
@@ -38,7 +39,10 @@ export default Ember.Component.extend({
       self.set('lastIndex', records.indexOf(records.get("lastObject")));
       if (self.get('movingBackword')) {
         self.set('currentIndex', records.indexOf(records.get("lastObject")));
-      } else {
+      } else if(self.get('found')){
+          self.showStudentData(self.get('currentIndex'));
+          self.set('found', false);
+      }else {
         self.set('currentIndex', records.indexOf(records.get("firstObject")));
       }
     });

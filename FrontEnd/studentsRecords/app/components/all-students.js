@@ -15,17 +15,17 @@ export default Ember.Component.extend({
   actions: {
     loadNext: function () {
       if(this.get('offset')<=80){
-        Ember.$('.ui.modal').modal('hide');
+        //Ember.$('.ui.modal').modal('hide');
         this.set('offset', this.get('offset') + this.get('pageSize'));
-        Ember.$('.ui.modal').modal('show');
+        //Ember.$('.ui.modal').modal('show');
       }
     },
 
     loadPrevious: function () {
       if (this.get('offset') >= this.get('pageSize')) {
-        Ember.$('.ui.modal').modal('hide');
+        //Ember.$('.ui.modal').modal('hide');
         this.set('offset', this.get('offset') - this.get('pageSize'));
-        Ember.$('.ui.modal').modal('show');
+        //Ember.$('.ui.modal').modal('show');
       }
     },
 
