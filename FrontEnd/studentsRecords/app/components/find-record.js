@@ -49,22 +49,13 @@ init() {
 
     this.set('indexCancel', this.get('INDEX'));
     this.set('offsetCancel', this.get('OFFSET'));
-
-    console.log(this.get('offsetCancel'));
-    console.log(this.get('indexCancel'));
   },
 
   actions: {
    
    search: function(){
 
-     console.log(this.get('studentsRecords').content.length);
-     console.log(this.get('studentsRecords'));
-
      this.get('searchResults').clear();
-
-     console.log(this.get('studentNumber')+"; "+this.get('firstName')+"; "+this.get('lastName'));
-
 
       if((this.get('studentNumber')!="")&&(this.get('firstName')!="")&&(this.get('lastName')!="")){
         for(var i=0;i<(this.get('studentsRecords').content.length);i++){
@@ -110,7 +101,6 @@ init() {
           }
         }
       } else if((this.get('firstName')!="")&&(this.get('lastName')!="")){
-        console.log('firstName + lastName search');
         for(var i=0;i<(this.get('studentsRecords').content.length);i++){
           if((this.get('studentsRecords').content[i].record.data.firstName.toLowerCase().search(this.get('firstName').toLowerCase())>-1)
           &&(this.get('studentsRecords').content[i].record.data.lastName.toLowerCase().search(this.get('lastName').toLowerCase())>-1)){
@@ -164,8 +154,6 @@ init() {
           }
         }
       }
-      console.log(this.get('searchResults'));
-
 
       if(this.get('searchResults').length!=0){
         this.set('showResults', true);
@@ -209,7 +197,6 @@ init() {
        }else{
          this.set('OFFSET', offset);
       }
-       console.log(this.get('INDEX')+"; "+this.get('OFFSET'));
      }
       
    },
@@ -223,8 +210,6 @@ init() {
 
     remove: function () {
       this.set('showResults', false);
-      console.log(this.get('offsetCancel'));
-      console.log(this.get('indexCancel'));
       this.set('FOUND', true);
       this.set('OFFSET', this.get('offsetCancel'));
       this.set('INDEX', this.get('indexCancel'));
