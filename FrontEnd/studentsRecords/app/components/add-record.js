@@ -3,8 +3,9 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   store: Ember.inject.service(),
   gen: 1,
-  date: null,
+  selectedDate: null,
   res: 1,
+
 
   actions: {
     genderChange (newGen){
@@ -14,7 +15,7 @@ export default Ember.Component.extend({
     },
 
     dateChange (newDate){
-      this.set('date', newDate);
+      this.set('selectedDate', newDate);
     },
 
     resChange (newRes){
@@ -24,10 +25,12 @@ export default Ember.Component.extend({
     addNewRecord() {
       var myStore = this.get('store');
       var setGen = null;
-
+      var setDate = new Date(this.get('selectedDate'));
       //logs
       console.log(this.get('gen'));
       console.log(this.get('res'));
+      console.log(this.get('selectedDate'));
+      console.log(setDate);
 
       if(this.get('gen')==1){
         setGen = "/assets/studentsPhotos/male.png";
@@ -41,7 +44,7 @@ export default Ember.Component.extend({
         firstName: this.get('firstName'),
         lastName: this.get('lastName'),
         gender: this.get('gen'),
-        //DOB: this.get(''),
+        DOB: setDate,
         photo: setGen,
         //resInfo: ,
         regComments: this.get('regComments'),
