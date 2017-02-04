@@ -27,10 +27,10 @@ export default Ember.Component.extend({
       var setGen = null;
       var setDate = new Date(this.get('selectedDate'));
       //logs
-      console.log(this.get('gen'));
-      console.log(this.get('res'));
-      console.log(this.get('selectedDate'));
-      console.log(setDate);
+      //console.log(this.get('gen'));
+      //console.log(this.get('res'));
+      //console.log(this.get('selectedDate'));
+      //console.log(setDate);
 
       if(this.get('gen')==1){
         setGen = "/assets/studentsPhotos/male.png";
@@ -38,7 +38,7 @@ export default Ember.Component.extend({
       else{
         setGen = "/assets/studentsPhotos/female.png";
       }
-      console.log(setGen);
+      //console.log(setGen);
       var newRecord = myStore.createRecord('student',{
         number: this.get('number'),
         firstName: this.get('firstName'),
@@ -53,7 +53,7 @@ export default Ember.Component.extend({
         admissComments: this.get('admissComments'),
 
       });
-      console.log(setGen);
+      //console.log(setGen);
       newRecord.save();
     }
   }
