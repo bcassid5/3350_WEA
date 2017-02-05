@@ -166,23 +166,120 @@ export default Ember.Component.extend({
       this.set('showFindRecordPage', true);
     },
 
-    delete(id) {
-      var nextIndex = 0;
-      if (this.get('currentIndex') < this.get('lastIndex')) {
-        nextIndex = this.get('currentIndex') + 1;
-      }
-      else {
-        nextIndex = this.get('currentIndex') - 1;
-      }
+    undo(){
+      if(this.get('undoRecords').length > 4){
+        switch(this.get('undoRecords').pop()){
+          case 'reset': if(this.get('undoFirst').length > 0){
+                          this.get('currentStudent').set('firstName', this.get('undoFirst').pop());
+                          this.get('currentStudent').set('firstName', this.get('undoFirst').pop());
+                        }
+                        if(this.get('undoLast').length > 0){
+                          this.get('currentStudent').set('lastName', this.get('undoLast').pop());
+                          this.get('currentStudent').set('lastName', this.get('undoLast').pop());
+                        }
+                        if(this.get('undoNumber').length > 0){
+                          this.get('currentStudent').set('number', this.get('undoNumber').pop());
+                          this.get('currentStudent').set('number', this.get('undoNumber').pop());
+                        }
+                        if(this.get('undoDOB').length > 0 ){
+                          this.set('selectedDate',this.get('undoDOB').pop());
+                          this.set('selectedDate',this.get('undoDOB').pop());
+                        }
+                        if(this.get('undoGender').length > 0){
+                          this.set('selectedGender', this.get('undoGender').pop());
+                          this.get('currentStudent').set('gender', this.get('undoGender').pop());
+                          this.set('selectedGender', this.get('undoGender').pop());
+                          this.get('currentStudent').set('gender', this.get('undoGender').pop());
+                        }
+                        if(this.get('undoRes').length > 0){
+                          this.set('selectedResidency', this.get('undoRes').pop());
+                          this.get('currentStudent').set('resInfo', this.get('undoRes').pop());
+                          this.set('selectedResidency', this.get('undoRes').pop());
+                          this.get('currentStudent').set('resInfo', this.get('undoRes').pop());
+                        }
+                        break;
+          case 'first': if(this.get('undoFirst').length > 0){
+                          this.get('currentStudent').set('firstName', this.get('undoFirst').pop());
+                          this.get('currentStudent').set('firstName', this.get('undoFirst').pop());
+                        }
+                        break;
+          case 'last':  if(this.get('undoLast').length > 0){
+                          this.get('currentStudent').set('lastName', this.get('undoLast').pop());
+                          this.get('currentStudent').set('lastName', this.get('undoLast').pop());
+                        }
+                        break;
+          case 'num':   if(this.get('undoNumber').length > 0){
+                          this.get('currentStudent').set('number', this.get('undoNumber').pop());
+                          this.get('currentStudent').set('number', this.get('undoNumber').pop());
+                        }
+                        break;
+          case 'dob':   if(this.get('undoDOB').length > 0){
+                          this.set('selectedDate',this.get('undoDOB').pop());
+                          this.set('selectedDate',this.get('undoDOB').pop());
+                        }
+                        break;
+          case 'gen':   if(this.get('undoGender').length > 0){
+                          this.set('selectedGender', this.get('undoGender').pop());
+                          this.get('currentStudent').set('gender', this.get('undoGender').pop());
+                          this.set('selectedGender', this.get('undoGender').pop());
+                          this.get('currentStudent').set('gender', this.get('undoGender').pop());
+                        }
+                        break;
+          case 'res':   if(this.get('undoRes').length > 0){
+                          this.set('selectedResidency', this.get('undoRes').pop());
+                          this.get('currentStudent').set('resInfo', this.get('undoRes').pop());
+                          this.set('selectedResidency', this.get('undoRes').pop());
+                          this.get('currentStudent').set('resInfo', this.get('undoRes').pop());
+                        }
+                        break;
+          case 'aa':    if(this.get('undoAA').length > 0){
+                          this.get('currentStudent').set('admissAvg', this.get('undoAA').pop());
+                          this.get('currentStudent').set('admissAvg', this.get('undoAA').pop());
+                        }
+                        break;
+          case 'rc':   if(this.get('undoRC').length > 0){
+                          this.get('currentStudent').set('regComments', this.get('undoRC').pop());
+                          this.get('currentStudent').set('regComments', this.get('undoRC').pop());
+                       }
+                       break;
+          case 'boa':  if(this.get('undoBOA').length > 0){
+                          this.get('currentStudent').set('BOA', this.get('undoBOA').pop()); 
+                          this.get('currentStudent').set('BOA', this.get('undoBOA').pop());
+                        }
+                        break;
+          case 'ac':   if(this.get('undoAC').length > 0){
+                          this.get('currentStudent').set('admissComments', this.get('undoAC').pop());
+                          this.get('currentStudent').set('admissComments', this.get('undoAC').pop());
+                       }
+                       break;
+          default:     break;
+          
+          }
+             if(this.get('undoRecords').length >= 4){
+                  this.get('undoRecords').pop();
+              }
+        }
+        this.rerender();
+      },
 
-      if (confirm("Press OK to Confirm Delete") === true) {
-        var myStore = this.get('store');
-        myStore.findRecord('student', id).then(function (student) {
-          student.destroyRecord();
-        });
-        this.set('currentIndex', nextIndex);
-      }
 
-    },
-  }
+      delete(id) {
+        var nextIndex = 0;
+        if (this.get('currentIndex') < this.get('lastIndex')) {
+          nextIndex = this.get('currentIndex') + 1;
+        }
+        else {
+          nextIndex = this.get('currentIndex') - 1;
+        }
+
+        if (confirm("Press OK to Confirm Delete") === true) {
+          var myStore = this.get('store');
+          myStore.findRecord('student', id).then(function (student) {
+            student.destroyRecord();
+          });
+          this.set('currentIndex', nextIndex);
+        }
+
+      },
+    }
 });

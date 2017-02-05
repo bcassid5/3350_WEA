@@ -27,9 +27,11 @@
             </div>
             <div class="inline field">
                 <label>Gender</label>
-                <select class="ui dropdown" onchange={{action 'genderChange' value='target.value'}}>
-                    <option value=1>Male</option>
-                    <option value=2>Female</option>
+                <select onchange={{action 'genderChange' value="target.value"}}>
+                  {{#each genderModel as |genderChoice|}}
+                      <option value={{genderChoice.id}} selected={{eq currentStudent.gender.id
+                                                                         genderChoice.id}}>{{genderChoice.type}} </option>
+                  {{/each}}
                 </select>
             </div>
             <div class="inline field">
