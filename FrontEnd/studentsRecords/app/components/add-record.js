@@ -13,19 +13,22 @@ export default Ember.Component.extend({
     var self = this;
     this.get('store').findAll('residency').then(function (records) {
       self.set('residencyModel', records);
-    });
+      self.set('res', self.get('residencyModel').objectAt('0').get('id'));
+  });
 
     this.get('store').findAll('gender').then(function (records) {
       self.set('genderModel', records);
-    });
+      self.set('gen', self.get('genderModel').objectAt('0').get('id'));
+  });
+    self.set("selectedDate", new Date().toISOString().substring(0, 10));
+    
+    
 
   },
 
   actions: {
     genderChange (newGen){
-      //console.log(newGen);
-      this.set('gen', newGen);
-      //console.log(this.get('gen'));
+      this.set('gen', this.get('genderModel').objectAt(newGen-1).get('id'));
     },
 
     dateChange (newDate){
@@ -45,14 +48,15 @@ export default Ember.Component.extend({
       var gend = this.get('store').peekRecord('gender', this.get('gen'));
 
       //logs
-      //console.log(this.get('gen'));
-      //console.log(this.get('res'));
-      //console.log(this.get('selectedDate'));
-      //console.log(setDate);
+      console.log(this.get('firstName'));
+      console.log(this.get('gen'));
+      console.log(this.get('res'));
+      console.log(this.get('selectedDate'));
+      console.log(setDate);
       console.log(setRes);
 
-      //console.log("Res:" + setRes.id);
-      //console.log("Gen:" + gend.id);
+      console.log("Res:" + setRes.id);
+      console.log("Gen:" + gend.get("type"));
       console.log(gend.get('type'));
       if (gend.get('type') == 'Male') {
         setGen = "assets/studentsPhotos/male.png";
@@ -60,7 +64,6 @@ export default Ember.Component.extend({
         setGen = "assets/studentsPhotos/female.png";
       } else {
         setGen = "assets/studentsPhotos/other.png";
-
       }
 
       //console.log(setGen);
@@ -80,6 +83,7 @@ export default Ember.Component.extend({
       });
       //console.log(setGen);
       newRecord.save();
+      alert('Saved Student!');
     }
   }
 });

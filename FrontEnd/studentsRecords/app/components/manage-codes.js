@@ -98,7 +98,7 @@ export default Ember.Component.extend({
           var self = this;
         if((this.$('.' + index)).val()!== ""){
             this.get('store').find('gender', this.get('genderModel').objectAt(index).get('id')).then(function(record){
-            record.set('name', (self.$('.' + index)).val());
+            record.set('type', (self.$('.' + index)).val());
             record.save();
                 
           });

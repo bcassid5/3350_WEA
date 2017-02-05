@@ -44,7 +44,7 @@
 
 {{#if showAllStudents}}
   <!-- Note that offset is an "in" and "out" parameter !-->
- {{all-students INDEX = currentIndex notDONE = showAllStudents offset = offset studentsModel = studentsRecords}}
+ {{all-students INDEX = currentIndex notDONE = showAllStudents offset = offset studentsModel = studentsRecords total = total}}
 {{else if showHelpPage}}
   {{help-page notDONE = showHelpPage}}
 {{else if showFindRecordPage}}

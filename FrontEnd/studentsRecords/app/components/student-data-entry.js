@@ -121,7 +121,7 @@ export default Ember.Component.extend({
       limit: 1000000,
       offset: 0
     }).then(function (records) {
-      self.set('total', records.get('length'));
+      self.set('total', records.get('length')-1);
     });
 
     this.get('store').query('student', {
@@ -216,7 +216,7 @@ export default Ember.Component.extend({
           //     console.log(JSON.stringify(this.get('currentStudent')));
        }
         else {
-          if(this.get('offset') <= (this.get('total')- this.get('total')%10)-20) {
+          if(this.get('offset') <= (this.get('total')- this.get('total')%10)-10) {
             this.set('offset', this.get('offset') + this.get('pageSize'));
           }
         }
@@ -368,6 +368,7 @@ export default Ember.Component.extend({
 
       delete(id) {
         var nextIndex = 0;
+        this.set('total', this.get('total')-1);
         if (this.get('currentIndex') < this.get('lastIndex')) {
           nextIndex = this.get('currentIndex') + 1;
         }
@@ -377,10 +378,19 @@ export default Ember.Component.extend({
 
         if (confirm("Press OK to Confirm Delete") === true) {
           var myStore = this.get('store');
+          var self = this;
           myStore.findRecord('student', id).then(function (student) {
             student.destroyRecord();
-          });
-          this.set('currentIndex', nextIndex);
+          if(self.get('currentIndex')==0){
+            self.set('offset', self.get('offset')-10);
+            nextIndex = 9;
+          }
+          else if(self.get('currentIndex')> 0){
+            nextIndex = (self.get('currentIndex')-1);
+          }
+          self.set('currentIndex', nextIndex);
+        });
+       
         }
 
       },

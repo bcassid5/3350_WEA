@@ -10,11 +10,15 @@ export default Ember.Component.extend({
   studentsModel: null,
   INDEX: null,
   notDONE: null,
+  total: null,
 
 
   actions: {
     loadNext: function () {
-      if(this.get('offset')<=(this.get('total')- this.get('total')%10)-10){
+      console.log(this.get('offset'));
+      console.log(this.get('total'));
+      console.log((this.get('total')- this.get('total')%10)-10);
+      if(this.get('offset')<=((this.get('total')- this.get('total')%10)-10)){
         //Ember.$('.ui.modal').modal('hide');
         this.set('offset', this.get('offset') + this.get('pageSize'));
         //Ember.$('.ui.modal').modal('show');
