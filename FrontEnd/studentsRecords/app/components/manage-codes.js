@@ -59,6 +59,7 @@ export default Ember.Component.extend({
         if (this.get('newGenderChoice')!==""){
             var record = this.get('store').createRecord('gender', {
                 type: this.get('newGenderChoice'),
+                students: []
             });
             record.save();
         }

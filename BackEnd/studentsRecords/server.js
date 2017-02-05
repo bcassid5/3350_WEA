@@ -19,7 +19,7 @@ app.use(logger);
 
 app.use('/students', students);
 app.use('/residencies', residencies);
-app.use('/genders', residencies);
+app.use('/genders', genders);
 
 
 app.listen(3700, function () {

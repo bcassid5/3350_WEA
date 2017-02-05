@@ -5,11 +5,10 @@ var studentsSchema = mongoose.Schema(
         number: String,
         firstName: String,
         lastName: String,
-        gender: Number,
+        gender: {type: mongoose.Schema.ObjectId, ref: 'Genders'},
         DOB: Date,
         photo: String,
         resInfo: {type: mongoose.Schema.ObjectId, ref: 'Residencies'},
-
         regComments: String,
         BOA: String,
         admissAvg: Number,
@@ -29,6 +28,7 @@ var residencySchema = mongoose.Schema(
 var genderSchema = mongoose.Schema(
     {
         type: String,
+        students: [{type: mongoose.Schema.ObjectId, ref: ('Students')}]
     }
 );
 var Students = mongoose.model('student', studentsSchema);

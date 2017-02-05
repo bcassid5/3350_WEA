@@ -4,6 +4,7 @@ export default Ember.Component.extend({
   store: Ember.inject.service(),
   showAllStudents: false,
   residencyModel: null,
+  genderModel: null,
   selectedResidency: null,
   selectedGender: null,
   selectedDate: null,
@@ -84,6 +85,9 @@ export default Ember.Component.extend({
     this.get('store').findAll('residency').then(function (records) {
       self.set('residencyModel', records);
     });
+    this.get('store').findAll('gender').then(function(records) {
+      self.set('genderModel', records);
+    });
     // load first page of the students records
     this.set('limit', 10);
     this.set('offset', 0);
@@ -136,7 +140,8 @@ export default Ember.Component.extend({
     saveStudent () {
       var updatedStudent = this.get('currentStudent');
       var res = this.get('store').peekRecord('residency', this.get('selectedResidency'));
-      updatedStudent.set('gender', this.get('selectedGender'));
+      var gen = this.get('store').peekRecord('gender', this.get('selectedGender'));
+      updatedStudent.set('gender', gen);
       updatedStudent.set('DOB', new Date(this.get('selectedDate')));
       updatedStudent.set('resInfo', res);
       if(this.get('currentStudent').get('gender')==1){
@@ -226,6 +231,7 @@ export default Ember.Component.extend({
     },
 
     selectResidency (residency){
+      console.log(residency);
       this.set('selectedResidency', residency);
       this.get('currentStudent').set('resInfo', this.get('selectedResidency'));
     },
