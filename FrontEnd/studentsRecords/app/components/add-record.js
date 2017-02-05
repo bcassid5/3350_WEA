@@ -4,14 +4,22 @@ export default Ember.Component.extend({
   store: Ember.inject.service(),
   gen: 1,
   selectedDate: null,
-  res: 1,
+  res: null,
+  residencyModel: null,
 
+  init () {
+    this._super(...arguments);
+    var self = this;
+    this.get('store').findAll('residency').then(function (records) {
+      self.set('residencyModel', records);
+    });
+  },
 
   actions: {
     genderChange (newGen){
-      console.log(newGen);
+      //console.log(newGen);
       this.set('gen', newGen);
-      console.log(this.get('gen'));
+      //console.log(this.get('gen'));
     },
 
     dateChange (newDate){
@@ -26,11 +34,13 @@ export default Ember.Component.extend({
       var myStore = this.get('store');
       var setGen = null;
       var setDate = new Date(this.get('selectedDate'));
+      var setRes = this.get('store').peekRecord('residency', this.get('res'));
       //logs
       //console.log(this.get('gen'));
       //console.log(this.get('res'));
       //console.log(this.get('selectedDate'));
       //console.log(setDate);
+      console.log(setRes);
 
       if(this.get('gen')==1){
         setGen = "/assets/studentsPhotos/male.png";
@@ -46,7 +56,7 @@ export default Ember.Component.extend({
         gender: this.get('gen'),
         DOB: setDate,
         photo: setGen,
-        //resInfo: ,
+        resInfo: setRes,
         regComments: this.get('regComments'),
         BOA: this.get('BOA'),
         admissAvg: this.get('admissAvg'),

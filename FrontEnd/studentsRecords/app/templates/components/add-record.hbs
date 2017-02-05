@@ -39,10 +39,11 @@
 
             <div class="inline field">
                 <label>Residency</label>
-                <select class="ui dropdown" onchange={{action 'resChange' value='target.value'}}>
-                    <option value=1>Canadian/Native</option>
-                    <option value=2>International</option>
-                    <option value=3>Permanent</option>
+                <select onchange={{action 'resChange' value="target.value"}}>
+                  {{#each residencyModel as |residencyChoice|}}
+                      <option value={{residencyChoice.id}} selected={{eq currentStudent.resInfo.id
+                                                                         residencyChoice.id}}>{{residencyChoice.name}} </option>
+                  {{/each}}
                 </select>
             </div>
 
