@@ -2,10 +2,11 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   store: Ember.inject.service(),
-  gen: 1,
+  gen: null,
   selectedDate: null,
   res: null,
   residencyModel: null,
+  genderModel: null,
 
   init () {
     this._super(...arguments);
@@ -13,6 +14,11 @@ export default Ember.Component.extend({
     this.get('store').findAll('residency').then(function (records) {
       self.set('residencyModel', records);
     });
+
+    this.get('store').findAll('gender').then(function (records) {
+      self.set('genderModel', records);
+    });
+
   },
 
   actions: {
@@ -27,6 +33,7 @@ export default Ember.Component.extend({
     },
 
     resChange (newRes){
+      console.log(newRes);
       this.set('res', newRes);
     },
 
@@ -35,6 +42,8 @@ export default Ember.Component.extend({
       var setGen = null;
       var setDate = new Date(this.get('selectedDate'));
       var setRes = this.get('store').peekRecord('residency', this.get('res'));
+      var gend = this.get('store').peekRecord('gender', this.get('gen'));
+
       //logs
       //console.log(this.get('gen'));
       //console.log(this.get('res'));
@@ -42,18 +51,24 @@ export default Ember.Component.extend({
       //console.log(setDate);
       console.log(setRes);
 
-      if(this.get('gen')==1){
-        setGen = "/assets/studentsPhotos/male.png";
+      //console.log("Res:" + setRes.id);
+      //console.log("Gen:" + gend.id);
+      console.log(gend.get('type'));
+      if (gend.get('type') == 'Male') {
+        setGen = "assets/studentsPhotos/male.png";
+      } else if (gend.get('type') == 'Female') {
+        setGen = "assets/studentsPhotos/female.png";
+      } else {
+        setGen = "assets/studentsPhotos/other.png";
+
       }
-      else{
-        setGen = "/assets/studentsPhotos/female.png";
-      }
+
       //console.log(setGen);
       var newRecord = myStore.createRecord('student',{
         number: this.get('number'),
         firstName: this.get('firstName'),
         lastName: this.get('lastName'),
-        gender: this.get('gen'),
+        gender: gend,
         DOB: setDate,
         photo: setGen,
         resInfo: setRes,

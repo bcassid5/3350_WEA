@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9b18dce8-2017-4c06-89ba-c96c35ef1631" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FrontEnd/studentsRecords/app/components/add-record.js" afterPath="$PROJECT_DIR$/FrontEnd/studentsRecords/app/components/add-record.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FrontEnd/studentsRecords/app/templates/components/add-record.hbs" afterPath="$PROJECT_DIR$/FrontEnd/studentsRecords/app/templates/components/add-record.hbs" />
-    </list>
+    <list default="true" id="9b18dce8-2017-4c06-89ba-c96c35ef1631" name="Default" comment="" />
     <ignored path="3350_WEA.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -558,6 +554,7 @@
       <workItem from="1486223493652" duration="6919000" />
       <workItem from="1486244225712" duration="455000" />
       <workItem from="1486321638126" duration="1717000" />
+      <workItem from="1486244225712" duration="504000" />
     </task>
     <servers />
   </component>
