@@ -66,7 +66,14 @@ export default Ember.Component.extend({
    checkGenStudent: Ember.observer('selectedGender', function(){
     this.get('undoRecords').push("gen");
     this.get('undoGender').push(this.get('selectedGender'));
+    this.get('undoGender').push(this.get('selectedGender'));
   }),
+   checkResStudent: Ember.observer('selectedResidency', function(){
+     this.get('undoRecords').push("res");
+     this.get('undoRes').push(this.get('selectedResidency'));
+     this.get('undoRecords').push("res");
+     this.get('undoRes').push(this.get('selectedResidency'));
+   }),
   fetchStudent: Ember.observer('currentIndex', function () {
     this.showStudentData(this.get('currentIndex'));
   }),
@@ -77,7 +84,6 @@ export default Ember.Component.extend({
     this.get('store').findAll('residency').then(function (records) {
       self.set('residencyModel', records);
     });
-
     // load first page of the students records
     this.set('limit', 10);
     this.set('offset', 0);
@@ -105,23 +111,20 @@ export default Ember.Component.extend({
 
   showStudentData: function (index) {
     this.set('currentStudent', this.get('studentsRecords').objectAt(index));
+    this.set('selectedGender', this.get('currentStudent').get('gender'));
+    this.set('selectedResidency', this.get('currentStudent').get('resInfo'));
+    this.set('studentPhoto', this.get('currentStudent').get('photo'));
+    var date = this.get('currentStudent').get('DOB');
+    var datestring = date.toISOString().substring(0, 10);
+    this.set('selectedDate', datestring);
+
     this.get('undoRecords').push("reset");
     this.get('undoFirst').push(this.get('currentStudent').get('firstName'));
     this.get('undoLast').push(this.get('currentStudent').get('lastName'));
     this.get('undoGender').push(this.get('currentStudent').get('gender'));
     this.get('undoNumber').push(this.get('currentStudent').get('number'));
     this.get('undoRes').push(this.get('currentStudent').get('resInfo'));
-    this.get('undoDOB').push(this.get('currentStudent').get('DOB'));
-    this.set('studentPhoto', this.get('currentStudent').get('photo'));
-    // if(this.get('currentStudent').get('gender')==1){
-    //   this.set('studentPhoto', "/assets/studentsPhotos/male.png");
-    // }
-    // else{
-    //   this.set('studentPhoto', "/assets/studentsPhotos/female.png");
-    // }
-    var date = this.get('currentStudent').get('DOB');
-    var datestring = date.toISOString().substring(0, 10);
-    this.set('selectedDate', datestring);
+    this.get('undoDOB').push(this.get("selectedDate"));
   },
 
   didRender() {
@@ -136,7 +139,6 @@ export default Ember.Component.extend({
       updatedStudent.set('gender', this.get('selectedGender'));
       updatedStudent.set('DOB', new Date(this.get('selectedDate')));
       updatedStudent.set('resInfo', res);
-      console.log(this.get('currentStudent').get('gender'));
       if(this.get('currentStudent').get('gender')==1){
         updatedStudent.set('photo', "/assets/studentsPhotos/male.png");
         this.set('studentPhoto', "/assets/studentsPhotos/male.png");
@@ -146,17 +148,31 @@ export default Ember.Component.extend({
         this.set('studentPhoto', "/assets/studentsPhotos/female.png");
       }
       updatedStudent.save().then(() => {
-        //     this.set('isStudentFormEditing', false);
+        
       });
       
     },
 
     firstStudent() {
+      this.set('undoRecords', []);
+      this.set('undoFirst', []);
+      this.set('undoLast', []);
+      this.set('undoGender', []);
+      this.set('undoNumber', []);
+      this.set('undoRes', []);
+      this.set('undoDOB', []);
       this.set('currentIndex', this.get('firstIndex'));
-      //this.set('currentIndex', this.get('indexFirstDb'));
+      
     },
 
     nextStudent() {
+      this.set('undoRecords', []);
+      this.set('undoFirst', []);
+      this.set('undoLast', []);
+      this.set('undoGender', []);
+      this.set('undoNumber', []);
+      this.set('undoRes', []);
+      this.set('undoDOB', []);
       this.set('movingBackword' , false);
        if (this.get('currentIndex') < this.get('lastIndex')) {
          this.set('currentIndex', this.get('currentIndex') + 1);
@@ -167,11 +183,18 @@ export default Ember.Component.extend({
             this.set('offset', this.get('offset') + this.get('pageSize'));
           }
         }
-        this.set('undoRecords', []);
+
         
     },
 
     previousStudent() {
+      this.set('undoRecords', []);
+      this.set('undoFirst', []);
+      this.set('undoLast', []);
+      this.set('undoGender', []);
+      this.set('undoNumber', []);
+      this.set('undoRes', []);
+      this.set('undoDOB', []);
       this.set('movingBackword' , true);
       if (this.get('currentIndex') > 0) {
         this.set('currentIndex', this.get('currentIndex') - 1);
@@ -179,12 +202,17 @@ export default Ember.Component.extend({
       else if (this.get('offset') > 0) {
         this.set('offset', this.get('offset') - this.get('pageSize'));
       }
-      this.set('undoRecords', []);
     },
 
     lastStudent() {
+      this.set('undoRecords', []);
+      this.set('undoFirst', []);
+      this.set('undoLast', []);
+      this.set('undoGender', []);
+      this.set('undoNumber', []);
+      this.set('undoRes', []);
+      this.set('undoDOB', []);
       this.set('currentIndex', this.get('lastIndex'));
-      //this.set('currentIndex', this.get('indexLastDb'));
     },
 
     allStudents() {
@@ -193,10 +221,12 @@ export default Ember.Component.extend({
 
     selectGender (gender){
       this.set('selectedGender', gender);
+      this.get('currentStudent').set('gender', gender);
     },
 
     selectResidency (residency){
       this.set('selectedResidency', residency);
+      this.get('currentStudent').set('resInfo', this.get('selectedResidency'));
     },
 
     assignDate (date){
@@ -211,31 +241,78 @@ export default Ember.Component.extend({
       this.set('showFindRecordPage', true);
     },
     undo(){
-      console.log(this.get('undoRecords').length);
-      this.rerender();
-      if(this.get('undoRecords').length > 0){
+      if(this.get('undoRecords').length > 4){
         switch(this.get('undoRecords').pop()){
-          case 'reset': this.get('currentStudent').set('firstName', "test");
+          case 'reset': if(this.get('undoFirst').length > 0){
+                          this.get('currentStudent').set('firstName', this.get('undoFirst').pop());
+                          this.get('currentStudent').set('firstName', this.get('undoFirst').pop());
+                        }
+                        if(this.get('undoLast').length > 0){
+                          this.get('currentStudent').set('lastName', this.get('undoLast').pop());
+                          this.get('currentStudent').set('lastName', this.get('undoLast').pop());
+                        }
+                        if(this.get('undoNumber').length > 0){
+                          this.get('currentStudent').set('number', this.get('undoNumber').pop());
+                          this.get('currentStudent').set('number', this.get('undoNumber').pop());
+                        }
+                        if(this.get('undoDOB').length > 0 ){
+                          this.set('selectedDate',this.get('undoDOB').pop());
+                          this.set('selectedDate',this.get('undoDOB').pop());
+                        }
+                        if(this.get('undoGender').length > 0){
+                          this.set('selectedGender', this.get('undoGender').pop());
+                          this.get('currentStudent').set('gender', this.get('undoGender').pop());
+                          this.set('selectedGender', this.get('undoGender').pop());
+                          this.get('currentStudent').set('gender', this.get('undoGender').pop());
+                        }
+                        if(this.get('undoRes').length > 0){
+                          this.set('selectedResidency', this.get('undoRes').pop());
+                          this.get('currentStudent').set('resInfo', this.get('undoRes').pop());
+                          this.set('selectedResidency', this.get('undoRes').pop());
+                          this.get('currentStudent').set('resInfo', this.get('undoRes').pop());
+                        }
                         break;
-          case 'first': this.get('currentStudent').set('firstName', this.get('undoFirst').pop());
-                        this.get('currentStudent').set('firstName', this.get('undoFirst').pop());
+          case 'first': if(this.get('undoFirst').length > 0){
+                          this.get('currentStudent').set('firstName', this.get('undoFirst').pop());
+                          this.get('currentStudent').set('firstName', this.get('undoFirst').pop());
+                        }
                         break;
-          case 'last':  this.get('currentStudent').set('lastName', this.get('undoLast').pop());
-                        this.get('currentStudent').set('lastName', this.get('undoLast').pop());
+          case 'last':  if(this.get('undoLast').length > 0){
+                          this.get('currentStudent').set('lastName', this.get('undoLast').pop());
+                          this.get('currentStudent').set('lastName', this.get('undoLast').pop());
+                        }
                         break;
-          case 'num':   this.get('currentStudent').set('number', this.get('undoNumber').pop());
-                        this.get('currentStudent').set('number', this.get('undoNumber').pop());
+          case 'num':   if(this.get('undoNumber').length > 0){
+                          this.get('currentStudent').set('number', this.get('undoNumber').pop());
+                          this.get('currentStudent').set('number', this.get('undoNumber').pop());
+                        }
                         break;
-          case 'dob':   this.set('selectedDate',this.get('undoDOB').pop());
-                        this.set('selectedDate',this.get('undoDOB').pop());
+          case 'dob':   if(this.get('undoDOB').length > 0){
+                          this.set('selectedDate',this.get('undoDOB').pop());
+                          this.set('selectedDate',this.get('undoDOB').pop());
+                        }
                         break;
-          case 'gen':   this.set('selectedGender', this.get('undoGender').pop());
-                        this.set('selectedGender', this.get('undoGender').pop());
+          case 'gen':   if(this.get('undoGender').length > 0){
+                          this.set('selectedGender', this.get('undoGender').pop());
+                          this.get('currentStudent').set('gender', this.get('undoGender').pop());
+                          this.set('selectedGender', this.get('undoGender').pop());
+                          this.get('currentStudent').set('gender', this.get('undoGender').pop());
+                        }
                         break;
+          case 'res':   if(this.get('undoRes').length > 0){
+                          this.set('selectedResidency', this.get('undoRes').pop());
+                          this.get('currentStudent').set('resInfo', this.get('undoRes').pop());
+                          this.set('selectedResidency', this.get('undoRes').pop());
+                          this.get('currentStudent').set('resInfo', this.get('undoRes').pop());
+                        }
+                        break;
+             if(this.get('undoRecords').length >= 4){
+                  this.get('undoRecords').pop();
+              }
         }
-        this.get('undoRecords').pop();
+        this.rerender();
       }
-      //this.get('currentStudent').set('firstName', "Test");
+      
   }
   }
 });
