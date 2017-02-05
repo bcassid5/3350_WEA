@@ -14,7 +14,7 @@ export default Ember.Component.extend({
 
   actions: {
     loadNext: function () {
-      if(this.get('offset')<=80){
+      if(this.get('offset')<=(this.get('total')- this.get('total')%10)-10){
         //Ember.$('.ui.modal').modal('hide');
         this.set('offset', this.get('offset') + this.get('pageSize'));
         //Ember.$('.ui.modal').modal('show');

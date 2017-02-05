@@ -32,6 +32,7 @@ export default Ember.Component.extend({
   undoAA: null,
   undoAC: null, 
   found: null,
+  total: null,
     
   studentModel: Ember.observer('offset', function () {
     var self = this;
@@ -115,6 +116,14 @@ export default Ember.Component.extend({
     this.resetUndo();
     
     var self = this;
+    var self = this;
+    this.get('store').query('student', {
+      limit: 1000000,
+      offset: 0
+    }).then(function (records) {
+      self.set('total', records.get('length'));
+    });
+
     this.get('store').query('student', {
       limit: self.get('limit'),
       offset: self.get('offset')
@@ -171,18 +180,21 @@ export default Ember.Component.extend({
     saveStudent () {
       console.log(this.get('selectedResidency'));
       var updatedStudent = this.get('currentStudent');
-      var res = this.get('store').peekRecord('residency', this.get('selectedResidency'));
-      var gen = this.get('store').peekRecord('gender', this.get('selectedGender'));
-      updatedStudent.set('gender', gen);
+      
+      updatedStudent.set('gender', this.get('selectedGender'));
       updatedStudent.set('DOB', new Date(this.get('selectedDate')));
-      updatedStudent.set('resInfo', res);
-      if(this.get('currentStudent').get('gender')==1){
+      updatedStudent.set('resInfo', this.get('selectedResidency'));
+      if(this.get('currentStudent').get('gender').get('type')=="Male"){
         updatedStudent.set('photo', "/assets/studentsPhotos/male.png");
         this.set('studentPhoto', "/assets/studentsPhotos/male.png");
       }
-      else if(this.get('currentStudent').get('gender')==2){
+      else if(this.get('currentStudent').get('gender').get('type')=="Female"){
         updatedStudent.set('photo', "/assets/studentsPhotos/female.png");
         this.set('studentPhoto', "/assets/studentsPhotos/female.png");
+      }
+      else {
+        updatedStudent.set('photo', "/assets/studentsPhotos/other.png");
+        this.set('studentPhoto', "/assets/studentsPhotos/other.png");
       }
       updatedStudent.save().then(() => {
         
@@ -204,7 +216,7 @@ export default Ember.Component.extend({
           //     console.log(JSON.stringify(this.get('currentStudent')));
        }
         else {
-          if(this.get('offset') <= 80){
+          if(this.get('offset') <= (this.get('total')- this.get('total')%10)-20) {
             this.set('offset', this.get('offset') + this.get('pageSize'));
           }
         }
@@ -234,14 +246,16 @@ export default Ember.Component.extend({
 
     selectGender (gender){
       //console.log(gender);
-      this.set('selectedGender', gender);
-      this.get('currentStudent').set('gender', gender);
+      
+      var gen = this.get('store').peekRecord('gender', gender);
+      this.set('selectedGender', gen);
+      this.get('currentStudent').set('gender', gen);
     },
 
     selectResidency (residency){
-      console.log(residency);
-      this.set('selectedResidency', residency);
-      this.get('currentStudent').set('resInfo', this.get('selectedResidency'));
+      var res = this.get('store').peekRecord('residency', residency);
+      this.set('selectedResidency', res);
+      this.get('currentStudent').set('resInfo', res);
     },
 
     assignDate (date){
@@ -353,6 +367,7 @@ export default Ember.Component.extend({
       
   },
     delete(id) {
+      this.set('total',this.get('total')-1);
       var nextIndex = 0;
       if (this.get('currentIndex') < this.get('lastIndex')) {
         nextIndex = this.get('currentIndex') + 1;
