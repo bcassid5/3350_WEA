@@ -52,7 +52,16 @@ export default Ember.Component.extend({
         }
       },
       removeGenderOption(index){
-       
+       this.get('store').find('gender',this.get('genderModel').objectAt(index).get('id')).then(function(record){
+                record.deleteRecord();
+                if(record.get('isDeleted'))
+                {
+                    record.save();
+                }
+                
+          }, function (error){
+              console.log(error);
+          });
           console.log(index);
       },
       addGenderOption(){

@@ -58,7 +58,7 @@
                     <br>
                      {{#each genderModel as |genderChoice index|}}
                     <div class="inline field">
-                    <label>Option {{index}}:</label> <input value={{genderChoice.type}} type="text"  onchange = {{action 'changeGenderName' index}} class = {{index}} >>
+                    <label>Option {{index}}:</label> <input value={{genderChoice.type}} type="text"  onchange = {{action 'changeGenderName' index}} class = {{index}} >
                     <a {{action 'removeGenderOption' index}}> 
                         <i class="large red minus circle icon"></i> <br>
                     </a>
