@@ -15,8 +15,10 @@
       </a>
       <div class="item">
         <i class="large code icon"></i>
+      <a class="item" {{action "manageCode"}}>
+        <i class="large edit icon"></i>
         Manage Code
-      </div>
+      </a>
       <a class="item " {{action "about"}}>
         <i class="large user icon"></i>
         About
@@ -36,6 +38,8 @@
       {{/if}}
       {{#if isAddShowing}}
         {{add-record}}
+      {{#if isManageCodeShowing}}
+        {{manage-codes}}
       {{/if}}
     </div>
   </div>
