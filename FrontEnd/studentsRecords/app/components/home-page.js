@@ -43,6 +43,7 @@ export default Ember.Component.extend({
       this.set('isStudentsRecordsDataEntry', false);
       this.set('isAboutShowing', true);
       this.set('isAddShowing', false);
+      this.set('isManageCodeShowing', false);
     },
 
     new (){
@@ -57,6 +58,7 @@ export default Ember.Component.extend({
       this.set('isStudentsRecordsDataEntry', false);
       this.set('isAboutShowing', false);
       this.set('isManageCodeShowing', true);
+      this.set('isAddShowing', false);
     }
   }
 });
