@@ -20,8 +20,14 @@ var residencySchema = mongoose.Schema(
     }
 );
 
+var genderSchema = mongoose.Schema(
+    {
+        type: String,
+    }
+);
 var Students = mongoose.model('student', studentsSchema);
 var Residencies = mongoose.model('residency', residencySchema);
+var Genders = mongoose.model('gender', genderSchema);
 
 
 mongoose.connect('mongodb://localhost/studentsRecords');
@@ -31,6 +37,7 @@ db.once('open', function() {
 
     exports.Students = Students;
     exports.Residencies = Residencies;
+    exports.Genders=Genders;
 
 });
 

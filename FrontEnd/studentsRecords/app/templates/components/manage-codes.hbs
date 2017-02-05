@@ -1,0 +1,97 @@
+<div class="ui center aligned header">
+  <h2>Manage Code</h2>
+</div>
+
+<div class="ui top attached tabular menu">
+    <div class="active item" data-tab="residencies">Residencies</div>
+    <div class="item" data-tab="genders">Gender</div>
+    
+  </div>
+
+   <div class="ui bottom attached active tab segment"data-tab="residencies">
+    
+
+        <div class="ui grid">
+            <div class="ui lef aligned five wide column"></div>
+            <div class="ui lef aligned seven wide column">
+                <div class="ui form">
+                    
+                     {{#each residencyModel as |residencyChoice index|}}
+                    <div class="inline field">
+                    <label>Option {{index}}:</label> <input value={{residencyChoice.name}} type="text"  onchange = {{action 'changeResName' index}} id = {{index}} >
+                    <a {{action 'removeStudentOption' index}}> 
+                        <i class="large red minus circle icon"></i> <br>
+                    </a>
+                    </div>
+                    {{/each}}
+                    <div class="inline field">
+                        <label>Add New</label>
+                        <input value="" type="text" onchange={{action 'updateResChoice' value="target.value"}}>
+                        <a {{action 'addStudentOption'}}> 
+                        <i class="large green add square icon"></i> <br>
+                    </a>
+                    </div>
+                    
+                    
+                </div>
+                
+            </div>
+
+            <!-- <div class="ui center aligned five wide column"></div> 
+            <div class="ui center aligned five wide column">
+                    <button class="ui violet button">
+                        Save 
+                    </button>
+                    <button class="ui button">
+                        Undo All <i class="undo icon"></i>
+                    </button>
+                </div> -->
+
+            
+        </div>
+   </div>
+   <div class="ui tab" data-tab="genders">
+       <div class="ui grid">
+            <div class="ui lef aligned five wide column"></div>
+            <div class="ui lef aligned seven wide column">
+                <div class="ui form">
+                    <br>
+                     {{#each genderModel as |genderChoice index|}}
+                    <div class="inline field">
+                    <label>Option {{index}}:</label> <input value={{genderChoice.type}} type="text"  onchange = {{action 'changeGenderName' index}} class = {{index}} >>
+                    <a {{action 'removeGenderOption' index}}> 
+                        <i class="large red minus circle icon"></i> <br>
+                    </a>
+                    </div>
+                    {{/each}}
+                    
+                    <div class="inline field">
+                        <label>Add New</label>
+                        <input value="" type="text" onchange={{action 'updateGenderChoice' value="target.value"}}>
+                        <a {{action 'addGenderOption'}}> 
+                        <i class="large green add square icon"></i> <br>
+                    </a>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            <!-- <div class="ui center aligned five wide column"></div> 
+            <div class="ui center aligned five wide column">
+                    <button class="ui violet button">
+                        Save 
+                    </button>
+                    <button class="ui button">
+                        Undo All <i class="undo icon"></i>
+                    </button>
+                </div> -->
+
+            
+        </div>
+       
+   </div>
+   
+  
+
+
+
