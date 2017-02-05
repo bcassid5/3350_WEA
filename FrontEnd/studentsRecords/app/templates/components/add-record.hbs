@@ -1,0 +1,72 @@
+<div class="ui center aligned header">
+    <h2>Create New Student Record</h2>
+</div>
+
+<hr>
+<p>
+    Please fill out ALL required fields below to add a new student:
+</p>
+
+<br>
+
+<div class="ui grid">
+    <div class="ui right aligned eleven wide column">
+        <div class="ui form">
+
+            <div class="inline field">
+                <label>Student Number</label>
+              {{input size="10" type="text"  value = number}}
+            </div>
+            <div class="inline field">
+                <label>First Name</label>
+              {{input type="text"  value = firstName}}
+            </div>
+            <div class="inline field">
+                <label>Last Name</label>
+              {{input type="text" value = lastName }}
+            </div>
+            <div class="inline field">
+                <label>Gender</label>
+                <select class="ui dropdown" onchange={{action 'genderChange' value='target.value'}}>
+                    <option value=1>Male</option>
+                    <option value=2>Female</option>
+                </select>
+            </div>
+            <div class="inline field">
+                <label>Date of Birth</label>
+                <input type="date" value={{date}} onchange={{action 'dateChange' value="target.value"}}>
+            </div>
+
+            <div class="inline field">
+                <label>Residency</label>
+                <select class="ui dropdown" onchange={{action 'resChange' value='target.value'}}>
+                    <option value=1>Canadian/Native</option>
+                    <option value=2>International</option>
+                    <option value=3>Permanent</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Registration Comments</label>
+              {{textarea type="text" rows="4" value = regComments}}
+            </div>
+            <div class="inline field">
+                <label>Basis of Admission</label>
+              {{input type="text" value = BOA}}
+            </div>
+            <div class="inline field">
+                <label>Admission Average</label>
+              {{input size="5" type="number" value = admissAvg}}
+            </div>
+            <div class="field">
+                <label>Admission Comments</label>
+              {{textarea type="text" rows="4" value = admissComments}}
+            </div>
+        </div>
+    </div>
+
+    <div class="ui fluid button" {{action 'addNewRecord'}} style="background-color: #4F2683; color: #ffffff">Create Student Record</div>
+
+</div>
+
+

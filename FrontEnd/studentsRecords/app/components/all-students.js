@@ -31,6 +31,9 @@ export default Ember.Component.extend({
 
     getStudent: function (student) {
       var index = this.get('studentsModel').indexOf(student);
+      console.log(index);
+      var id = this.get("studentsModel").objectAt(index).get('id');
+      console.log(id);
       this.set('INDEX', index);
 
     },
@@ -39,8 +42,10 @@ export default Ember.Component.extend({
       this.set('notDONE', false);
       Ember.$('.ui.modal').modal('hide');
       Ember.$('.ui.modal').remove();
-      
-    }
+
+    },
+
+
   },
 
   didRender() {
@@ -49,8 +54,10 @@ export default Ember.Component.extend({
          closable: false
         })
         .modal('hide').modal('show');
-    }
+    },
       //Ember.$('.ui.modal').modal('show');
-  
-   
+
+
+
+
 });

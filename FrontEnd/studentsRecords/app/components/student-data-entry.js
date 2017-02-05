@@ -220,6 +220,7 @@ export default Ember.Component.extend({
     },
 
     selectGender (gender){
+      console.log(gender);
       this.set('selectedGender', gender);
       this.get('currentStudent').set('gender', gender);
     },
@@ -313,6 +314,24 @@ export default Ember.Component.extend({
         this.rerender();
       }
       
-  }
+  },
+    delete(id) {
+      var nextIndex = 0;
+      if (this.get('currentIndex') < this.get('lastIndex')) {
+        nextIndex = this.get('currentIndex') + 1;
+      }
+      else {
+        nextIndex = this.get('currentIndex') - 1;
+      }
+
+      if (confirm("Press OK to Confirm Delete") === true) {
+        var myStore = this.get('store');
+        myStore.findRecord('student', id).then(function (student) {
+          student.destroyRecord();
+        });
+        this.set('currentIndex', nextIndex);
+      }
+
+    },
   }
 });

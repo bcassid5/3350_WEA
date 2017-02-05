@@ -54,14 +54,17 @@
 
   <div class="ui top attached tabular menu">
     <div class="active item" data-tab="basics">Basic Info</div>
+    <div class="item" data-tab="admiss">Admission & Registration</div>
     <div class="item" data-tab="program">Program Record</div>
+    <div class="item" data-tab="danger">Danger Zone</div>
     <div class="item" data-tab="others">Other tabs</div>
+
   </div>
   <div class="ui bottom attached active tab segment"data-tab="basics">
     <!-- student basic information !-->
 
     <div class="ui grid">
-      <div class="ui right aligned  seven wide column">
+      <div class="ui right aligned seven wide column">
         <div class="ui form">
           <div class="inline field">
             <label>Student Number</label>
@@ -100,10 +103,42 @@
       </div>
       <!-- Show student photo -->
       <div class="ui center aligned  seven wide column segment">
-        <img  src={{studentPhoto}}>
+          <h3> {{currentStudent.firstName}} {{currentStudent.lastName}}</h3>
+          <br>
+          <img  src={{studentPhoto}}>
       </div>
     </div>
 
+  </div>
+  <div class="ui tab" data-tab="admiss">
+<br>
+      <div class="ui grid">
+          <div class="ui left aligned  seven wide column">
+              <div class="ui form">
+                <div class="field">
+                    <label>Registration Comments</label>
+                  {{textarea type="text" rows="4" value = currentStudent.regComments}}
+                </div>
+                <div class="field">
+                    <label>Basis of Admission</label>
+                  {{input type="text" value = currentStudent.BOA}}
+                </div>
+                <div class="inline field">
+                    <label>Admission Average</label>
+                  {{input size="5" type="number" value = currentStudent.admissAvg}}
+                </div>
+                <div class="field">
+                    <label>Admission Comments</label>
+                  {{textarea type="text" rows="4" value = currentStudent.admissComments}}
+                </div>
+              </div>
+          </div>
+          <div class="ui center aligned  seven wide column segment">
+              <h3> {{currentStudent.firstName}} {{currentStudent.lastName}}</h3>
+              <br>
+              <img  src={{studentPhoto}}>
+          </div>
+      </div>
   </div>
   <div class="ui tab" data-tab="program">
     <!-- Program records, courses and grades !-->
@@ -112,9 +147,24 @@
       <h3> {{currentStudent.firstName}} {{currentStudent.lastName}}</h3>
     <br><br><br>
   </div>
+  <div class="ui tab" data-tab="danger">
+      <!-- Danger Zone (Deletion) !-->
+      <br><br>
+      <h3 align="center"> {{currentStudent.firstName}} {{currentStudent.lastName}}</h3>
+      <br>
+      <img class="ui centered image" src={{studentPhoto}}>
+      <br><br>
+      <button class="massive red fluid ui button" {{action 'delete' currentStudent.id}}>
+          Delete Student Record
+      </button>
+      <br><br>
+
+  </div>
   <div class="ui tab" data-tab="others">
     <!-- Others !-->
     <h2>Other data</h2>
   </div>
+
+
 
 {{/if}}
