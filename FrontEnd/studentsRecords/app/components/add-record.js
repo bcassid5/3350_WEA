@@ -67,23 +67,35 @@ export default Ember.Component.extend({
       }
 
       //console.log(setGen);
-      var newRecord = myStore.createRecord('student',{
-        number: this.get('number'),
-        firstName: this.get('firstName'),
-        lastName: this.get('lastName'),
-        gender: gend,
-        DOB: setDate,
-        photo: setGen,
-        resInfo: setRes,
-        regComments: this.get('regComments'),
-        BOA: this.get('BOA'),
-        admissAvg: this.get('admissAvg'),
-        admissComments: this.get('admissComments'),
+      if(this.get('number')==null){
+        alert('No Student Number!');
+      }
+      else if(this.get('firstname')==null){
+        alert('No First Name!');
+      }
+      else if(this.get('lastName')==null){
+        alert('No Last Name!');
+      }
+     
+      else{
+        var newRecord = myStore.createRecord('student',{
+          number: this.get('number'),
+          firstName: this.get('firstName'),
+          lastName: this.get('lastName'),
+          gender: gend,
+          DOB: setDate,
+          photo: setGen,
+          resInfo: setRes,
+          regComments: this.get('regComments'),
+          BOA: this.get('BOA'),
+          admissAvg: this.get('admissAvg'),
+          admissComments: this.get('admissComments'),
 
-      });
-      //console.log(setGen);
-      newRecord.save();
-      alert('Saved Student!');
+        });
+        //console.log(setGen);
+        newRecord.save();
+        alert('Saved Student!');
+      }
     }
   }
 });
