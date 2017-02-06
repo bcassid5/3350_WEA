@@ -53,18 +53,18 @@ export default Ember.Component.extend({
       }
     });
   }),
-  checkFirstStudent: Ember.observer('currentStudent.firstName', function(){
-    this.get('undoRecords').push("first");
-    this.get('undoFirst').push(this.get('currentStudent').get('firstName'));
-  }),
-  checkLastStudent: Ember.observer('currentStudent.lastName', function(){
-    this.get('undoRecords').push("last");
-    this.get('undoLast').push(this.get('currentStudent').get('lastName'));
-  }),
-   checkNumStudent: Ember.observer('currentStudent.number', function(){
-    this.get('undoRecords').push("num");
-    this.get('undoNumber').push(this.get('currentStudent').get('number'));
-  }),
+  // checkFirstStudent: Ember.observer('currentStudent.firstName', function(){
+  //   this.get('undoRecords').push("first");
+  //   this.get('undoFirst').push(this.get('currentStudent').get('firstName'));
+  // }),
+  // checkLastStudent: Ember.observer('currentStudent.lastName', function(){
+  //   this.get('undoRecords').push("last");
+  //   this.get('undoLast').push(this.get('currentStudent').get('lastName'));
+  // }),
+  //  checkNumStudent: Ember.observer('currentStudent.number', function(){
+  //   this.get('undoRecords').push("num");
+  //   this.get('undoNumber').push(this.get('currentStudent').get('number'));
+  // }),
   checkDOBStudent: Ember.observer('selectedDate', function(){
     this.get('undoRecords').push("dob");
     this.get('undoDOB').push(this.get('selectedDate'));
@@ -92,7 +92,7 @@ export default Ember.Component.extend({
      this.get('undoRecords').push('ac');
      this.get('undoAC').push(this.get('currentStudent').get('admissComments'));
    }),
-   checkRCStudent: Ember.observer('currentStudent.admissComments', function(){
+   checkRCStudent: Ember.observer('currentStudent.regComments', function(){
      this.get('undoRecords').push('rc');
      this.get('undoRC').push(this.get('currentStudent').get('regComments'));
    }),
@@ -161,6 +161,7 @@ export default Ember.Component.extend({
 
   didRender() {
     Ember.$('.menu .item').tab();
+    console.log(this.get('undoRecords').length);
   },
   resetUndo(){
     this.set('undoRecords', []);
@@ -269,21 +270,44 @@ export default Ember.Component.extend({
     findStudent(){
       this.set('showFindRecordPage', true);
     },
-
+    editNumber(num){
+        this.get('undoRecords').push("num");
+        this.get('undoNumber').push(this.get('currentStudent').get('number'));
+        
+        //this.get('undoNumber').push(this.get('currentStudent').get('number'));
+        console.log("Pushed: " + this.get('currentStudent').get('number'));
+        this.get('currentStudent').set('number', num);
+      },
+      editFirst(first){
+       
+        this.get('undoRecords').push('first');
+        this.get('undoFirst').push(this.get('currentStudent').get('firstName'));
+        this.get('currentStudent').set('firstName', first); 
+      },
+       editLast(last){
+        this.get('undoRecords').push('last');
+        this.get('undoLast').push(this.get('currentStudent').get('lastName'));
+        this.get('currentStudent').set('lastName', last); 
+      },
+      editRC(rc){
+        this.get('undoRecords').push('rc');
+        this.get('undoRC').push(this.get('currentStudent').get('regComments'));
+        this.get('currentStudent').set('regComments', rc);
+      },
     undo(){
-      if(this.get('undoRecords').length > 4){
+      if(this.get('undoRecords').length > 1){
         switch(this.get('undoRecords').pop()){
           case 'reset': if(this.get('undoFirst').length > 0){
                           this.get('currentStudent').set('firstName', this.get('undoFirst').pop());
-                          this.get('currentStudent').set('firstName', this.get('undoFirst').pop());
+                          //this.get('currentStudent').set('firstName', this.get('undoFirst').pop());
                         }
                         if(this.get('undoLast').length > 0){
                           this.get('currentStudent').set('lastName', this.get('undoLast').pop());
-                          this.get('currentStudent').set('lastName', this.get('undoLast').pop());
+                         // this.get('currentStudent').set('lastName', this.get('undoLast').pop());
                         }
                         if(this.get('undoNumber').length > 0){
                           this.get('currentStudent').set('number', this.get('undoNumber').pop());
-                          this.get('currentStudent').set('number', this.get('undoNumber').pop());
+                          //console.log(this.get('undoNumber').pop());
                         }
                         if(this.get('undoDOB').length > 0 ){
                           this.set('selectedDate',this.get('undoDOB').pop());
@@ -304,22 +328,25 @@ export default Ember.Component.extend({
                         break;
           case 'first': if(this.get('undoFirst').length > 0){
                           this.get('currentStudent').set('firstName', this.get('undoFirst').pop());
-                          this.get('currentStudent').set('firstName', this.get('undoFirst').pop());
+                          //this.get('currentStudent').set('firstName', this.get('undoFirst').pop());
                         }
                         break;
           case 'last':  if(this.get('undoLast').length > 0){
                           this.get('currentStudent').set('lastName', this.get('undoLast').pop());
-                          this.get('currentStudent').set('lastName', this.get('undoLast').pop());
+                          //this.get('currentStudent').set('lastName', this.get('undoLast').pop());
                         }
                         break;
           case 'num':   if(this.get('undoNumber').length > 0){
                           this.get('currentStudent').set('number', this.get('undoNumber').pop());
-                          this.get('currentStudent').set('number', this.get('undoNumber').pop());
+                         // this.get('currentStudent').set('number', this.get('undoNumber').pop());
                         }
                         break;
           case 'dob':   if(this.get('undoDOB').length > 0){
                           this.set('selectedDate',this.get('undoDOB').pop());
                           this.set('selectedDate',this.get('undoDOB').pop());
+                           if(this.get('undoRecords').length >= 2){
+                              this.get('undoRecords').pop();
+                          }
                         }
                         break;
           case 'gen':   if(this.get('undoGender').length > 0){
@@ -327,6 +354,9 @@ export default Ember.Component.extend({
                           this.get('currentStudent').set('gender', this.get('undoGender').pop());
                           this.set('selectedGender', this.get('undoGender').pop());
                           this.get('currentStudent').set('gender', this.get('undoGender').pop());
+                           if(this.get('undoRecords').length >= 2){
+                                this.get('undoRecords').pop();
+                            }
                         }
                         break;
           case 'res':   if(this.get('undoRes').length > 0){
@@ -334,38 +364,50 @@ export default Ember.Component.extend({
                           this.get('currentStudent').set('resInfo', this.get('undoRes').pop());
                           this.set('selectedResidency', this.get('undoRes').pop());
                           this.get('currentStudent').set('resInfo', this.get('undoRes').pop());
+                           if(this.get('undoRecords').length >= 2){
+                              this.get('undoRecords').pop();
+                          }
                         }
                         break;
           case 'aa':    if(this.get('undoAA').length > 0){
                           this.get('currentStudent').set('admissAvg', this.get('undoAA').pop());
                           this.get('currentStudent').set('admissAvg', this.get('undoAA').pop());
+                           if(this.get('undoRecords').length >= 2){
+                              this.get('undoRecords').pop();
+                          }
                         }
                         break;
           case 'rc':   if(this.get('undoRC').length > 0){
                           this.get('currentStudent').set('regComments', this.get('undoRC').pop());
                           this.get('currentStudent').set('regComments', this.get('undoRC').pop());
+                           if(this.get('undoRecords').length >= 2){
+                              this.get('undoRecords').pop();
+                          }
                        }
                        break;
           case 'boa':  if(this.get('undoBOA').length > 0){
                           this.get('currentStudent').set('BOA', this.get('undoBOA').pop()); 
                           this.get('currentStudent').set('BOA', this.get('undoBOA').pop());
+                           if(this.get('undoRecords').length >= 2){
+                              this.get('undoRecords').pop();
+                          }
                         }
                         break;
           case 'ac':   if(this.get('undoAC').length > 0){
                           this.get('currentStudent').set('admissComments', this.get('undoAC').pop());
                           this.get('currentStudent').set('admissComments', this.get('undoAC').pop());
+                          if(this.get('undoRecords').length >= 2){
+                               this.get('undoRecords').pop();
+                        }
                        }
                        break;
           default:     break;
           
           }
-             if(this.get('undoRecords').length >= 4){
-                  this.get('undoRecords').pop();
-              }
         }
         this.rerender();
       },
-
+      
       delete(id) {
         var nextIndex = 0;
         this.set('total', this.get('total')-1);
