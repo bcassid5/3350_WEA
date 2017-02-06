@@ -55,7 +55,7 @@
   <div class="ui top attached tabular menu">
     <div class="active item" data-tab="basics">Basic Info</div>
     <div class="item" data-tab="admiss">Admission & Registration</div>
-    <div class="item" data-tab="program">Program Record</div>
+    <div class="item" data-tab="advanced">Advanced Standing</div>
     <div class="item" data-tab="danger">Danger Zone</div>
     <div class="item" data-tab="others">Other tabs</div>
 
@@ -142,13 +142,62 @@
           </div>
       </div>
   </div>
-  <div class="ui tab" data-tab="program">
-    <!-- Program records, courses and grades !-->
-    <br>
-    <h2>{{currentStudent.number}}</h2>
-      <h3> {{currentStudent.firstName}} {{currentStudent.lastName}}</h3>
-    <br><br><br>
-  </div>
+  <div class="ui tab" data-tab="advanced">
+       <div class="ui grid">
+            <div class="ui left aligned one wide column"></div>
+            
+            <div class="ui right aligned seven wide column">
+                <div class="ui form">
+                    <br>
+                    {{#each advStandingModel as |advStandingChoice index|}}
+                    <p>
+                      <label>Course: </label>{{advStandingChoice.course}}
+                      <br>
+                      <label>Description:</label> {{advStandingChoice.description}}
+                      <br>
+                      <label>Grade: </label>{{advStandingChoice.grade}}
+                      <br>
+                      <label>Unit: </label>{{advStandingChoice.unit}}
+                      <br>
+                      <label>From: </label> {{advStandingChoice.from}}
+                      <br>
+                      
+                    </p>
+                    <hr><hr>
+                    {{/each}}
+                    <div class="inline field">
+                    <label>Course:</label> <input name="course" type="text" onchange={{action 'updateCourse' value="target.value"}}>
+                    </div>
+                    <div class="inline field">
+                    <label>Description:</label> <input name="description" type="text" onchange={{action 'updateDescription' value="target.value"}}>
+                    </div>
+                    <div class="inline field">
+                    <label>Grade:</label> <input name="grade" type="text" onchange={{action 'updateGrade' value="target.value"}}>
+                    </div>
+                    <div class="inline field">
+                    <label>Unit:</label> <input name="unit" type="text" onchange={{action 'updateUnit' value="target.value"}}>
+                    </div>
+                    <div class="inline field">
+                    <label>From:</label> <input name="from" type="text" onchange={{action 'updateFrom' value="target.value"}}>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            <div class="ui center aligned five wide column"></div> 
+            <div class="ui right aligned eight wide column">
+                    <button class="ui violet button" {{action 'addcredit'}} >
+                        Add 
+                    </button>
+                    <button class="ui button">
+                        Delete
+                    </button>
+                </div>
+
+            
+        </div>
+       
+   </div>
   <div class="ui tab" data-tab="danger">
       <!-- Danger Zone (Deletion) !-->
       <br><br>

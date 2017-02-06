@@ -5,6 +5,7 @@ export default Ember.Component.extend({
   showAllStudents: false,
   residencyModel: null,
   genderModel: null,
+  advStandingModel: null,
   selectedResidency: null,
   selectedGender: null,
   selectedDate: null,
@@ -33,6 +34,11 @@ export default Ember.Component.extend({
   undoAC: null, 
   found: null,
   total: null,
+  course: null,
+  description: null,
+  grade: null,
+  unit: null,
+  from: null,
     
   studentModel: Ember.observer('offset', function () {
     var self = this;
@@ -139,6 +145,8 @@ export default Ember.Component.extend({
 
   showStudentData: function (index) {
     this.set('currentStudent', this.get('studentsRecords').objectAt(index));
+    this.get('currentStudent').set('advStanding', []);
+    this.set('advStandingModel',this.get('currentStudent').get('advStanding'));
     this.set('selectedGender', this.get('currentStudent').get('gender'));
     this.set('selectedResidency', this.get('currentStudent').get('resInfo'));
     this.set('studentPhoto', this.get('currentStudent').get('photo'));
@@ -270,6 +278,7 @@ export default Ember.Component.extend({
     findStudent(){
       this.set('showFindRecordPage', true);
     },
+
     editNumber(num){
         this.get('undoRecords').push("num");
         this.get('undoNumber').push(this.get('currentStudent').get('number'));
@@ -294,6 +303,55 @@ export default Ember.Component.extend({
         this.get('undoRC').push(this.get('currentStudent').get('regComments'));
         this.get('currentStudent').set('regComments', rc);
       },
+
+    addcredit(){
+      let student=this.get('currentStudent');
+      let standing =this.get('store').createRecord('advStanding', {
+        course: this.get('course'),
+        description: this.get('description'),
+        unit: this.get('unit'),
+        grade: this.get('grade'),
+        from: this.get('from'),
+        student: student
+      });
+      //console.log(student.get('advStanding'));
+      
+      //standing.save();
+      
+      //student.get('advStanding').pushObject(standing);
+      console.log()
+      
+      student.get('advStanding').pushObject(standing);
+      this.set('advStandingModel',this.get('currentStudent').get('advStanding'));
+      //standing.save();
+      //student.save();
+      console.log(student.get('advStanding'));
+      //student.save();
+    },
+
+    updateCourse(courseName){
+      this.set('course',courseName);
+      console.log(this.get('course'));
+    },
+    updateDescription(descText){
+      this.set('description',descText);
+      console.log(this.get('description'));
+    },
+    updateGrade(gradeValue){
+      this.set('grade',gradeValue);
+      console.log(this.get('grade'));
+    },
+    updateUnit(unitValue){
+      this.set('unit',unitValue);
+      console.log(this.get('unit'));
+    },
+    updateFrom(fromText){
+      this.set('from',fromText);
+      console.log(this.get('from'));
+    },
+
+
+
     undo(){
       if(this.get('undoRecords').length > 1){
         switch(this.get('undoRecords').pop()){
