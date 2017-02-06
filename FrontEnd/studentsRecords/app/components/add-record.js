@@ -22,7 +22,9 @@ export default Ember.Component.extend({
   });
     self.set("selectedDate", new Date().toISOString().substring(0, 10));
     
-    
+
+    this.set('firstName', "");
+    this.set('lastName', "");   
 
   },
 
@@ -70,10 +72,10 @@ export default Ember.Component.extend({
       if(this.get('number')==null){
         alert('No Student Number!');
       }
-      else if(this.get('firstname')==null){
+      else if(this.get('firstName')==""){
         alert('No First Name!');
       }
-      else if(this.get('lastName')==null){
+      else if(this.get('lastName')==""){
         alert('No Last Name!');
       }
      
