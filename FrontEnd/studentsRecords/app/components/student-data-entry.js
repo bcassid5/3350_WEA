@@ -59,18 +59,7 @@ export default Ember.Component.extend({
       }
     });
   }),
-  // checkFirstStudent: Ember.observer('currentStudent.firstName', function(){
-  //   this.get('undoRecords').push("first");
-  //   this.get('undoFirst').push(this.get('currentStudent').get('firstName'));
-  // }),
-  // checkLastStudent: Ember.observer('currentStudent.lastName', function(){
-  //   this.get('undoRecords').push("last");
-  //   this.get('undoLast').push(this.get('currentStudent').get('lastName'));
-  // }),
-  //  checkNumStudent: Ember.observer('currentStudent.number', function(){
-  //   this.get('undoRecords').push("num");
-  //   this.get('undoNumber').push(this.get('currentStudent').get('number'));
-  // }),
+ 
   checkDOBStudent: Ember.observer('selectedDate', function(){
     this.get('undoRecords').push("dob");
     this.get('undoDOB').push(this.get('selectedDate'));
