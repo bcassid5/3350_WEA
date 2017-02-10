@@ -70,6 +70,7 @@ export default Ember.Component.extend({
 
   showStudentData: function (index) {
     this.set('currentStudent', this.get('studentsRecords').objectAt(index));
+<<<<<<< Updated upstream
     //this.set('studentPhoto', this.get('currentStudent').get('photo'));
     if(this.get('currentStudent').get('gender')==1){
       this.set('studentPhoto', "/assets/studentsPhotos/male.png");
@@ -77,6 +78,16 @@ export default Ember.Component.extend({
     else{
       this.set('studentPhoto', "/assets/studentsPhotos/female.png");
     }
+=======
+    console.log(this.get('currentStudent').get('advStanding'));
+    this.get('currentStudent').set('advStanding', []);
+    console.log(this.get('currentStudent').get('advStanding'));
+    this.set('advStandingModel',this.get('currentStudent').get('advStanding'));
+ 
+    this.set('selectedGender', this.get('currentStudent').get('gender'));
+    this.set('selectedResidency', this.get('currentStudent').get('resInfo'));
+    this.set('studentPhoto', this.get('currentStudent').get('photo'));
+>>>>>>> Stashed changes
     var date = this.get('currentStudent').get('DOB');
     var datestring = date.toISOString().substring(0, 10);
     this.set('selectedDate', datestring);
@@ -84,11 +95,32 @@ export default Ember.Component.extend({
 
   didRender() {
     Ember.$('.menu .item').tab();
+<<<<<<< Updated upstream
+=======
+    
+  },
+  resetUndo(){
+    this.set('undoRecords', []);
+      this.set('undoFirst', []);
+      this.set('undoLast', []);
+      this.set('undoGender', []);
+      this.set('undoNumber', []);
+      this.set('undoRes', []);
+      this.set('undoDOB', []);
+      this.set('undoAA',[]);
+      this.set('undoAC', []);
+      this.set('undoRC', []);
+      this.set('undoBOA', []);
+>>>>>>> Stashed changes
   },
 
 
   actions: {
     saveStudent () {
+<<<<<<< Updated upstream
+=======
+      
+>>>>>>> Stashed changes
       var updatedStudent = this.get('currentStudent');
       var res = this.get('store').peekRecord('residency', this.get('selectedResidency'));
       updatedStudent.set('gender', this.get('selectedGender'));
@@ -115,7 +147,7 @@ export default Ember.Component.extend({
       console.log(this.get('finalIndex') + " " + this.get('currentIndex'));
        if (this.get('currentIndex') < this.get('lastIndex')) {
          this.set('currentIndex', this.get('currentIndex') + 1);
-          //     console.log(JSON.stringify(this.get('currentStudent')));
+          
        }
         else {
           if(this.get('offset') <= 80){
@@ -144,7 +176,15 @@ export default Ember.Component.extend({
     },
 
     selectGender (gender){
+<<<<<<< Updated upstream
       this.set('selectedGender', gender);
+=======
+      
+      
+      var gen = this.get('store').peekRecord('gender', gender);
+      this.set('selectedGender', gen);
+      this.get('currentStudent').set('gender', gen);
+>>>>>>> Stashed changes
     },
 
     selectResidency (residency){
@@ -162,5 +202,221 @@ export default Ember.Component.extend({
     findStudent(){
       this.set('showFindRecordPage', true);
     },
+<<<<<<< Updated upstream
   }
+=======
+
+    editNumber(num){
+        this.get('undoRecords').push("num");
+        this.get('undoNumber').push(this.get('currentStudent').get('number'));
+        
+       
+       
+        this.get('currentStudent').set('number', num);
+      },
+      editFirst(first){
+       
+        this.get('undoRecords').push('first');
+        this.get('undoFirst').push(this.get('currentStudent').get('firstName'));
+        this.get('currentStudent').set('firstName', first); 
+      },
+       editLast(last){
+        this.get('undoRecords').push('last');
+        this.get('undoLast').push(this.get('currentStudent').get('lastName'));
+        this.get('currentStudent').set('lastName', last); 
+      },
+      editRC(rc){
+        this.get('undoRecords').push('rc');
+        this.get('undoRC').push(this.get('currentStudent').get('regComments'));
+        this.get('currentStudent').set('regComments', rc);
+      },
+
+    addcredit(){
+      var student = this.get('currentStudent');
+      var standing =this.get('store').createRecord('advStanding', {
+        course: this.get('course'),
+        description: this.get('description'),
+        unit: this.get('unit'),
+        grade: this.get('grade'),
+        from: this.get('from'),
+        student:student
+      });
+      
+      console.log(this.get('currentStudent').get('advStanding'));
+      
+      //student.get('advStanding').pushObject(standing);
+      var self = this;
+      standing.save();//.then(() => {
+        student.save()
+        //console.log(self.get('currentStudent').get('advStanding'));
+        //self.set('advStandingModel',student.get('advStanding'));
+        
+      //});
+      
+      
+      
+    },
+
+    updateCourse(courseName){
+      this.set('course',courseName);
+    },
+    updateDescription(descText){
+      this.set('description',descText);
+    },
+    updateGrade(gradeValue){
+      this.set('grade',gradeValue);
+    },
+    updateUnit(unitValue){
+      this.set('unit',unitValue);
+    },
+    updateFrom(fromText){
+      this.set('from',fromText);
+    },
+
+
+
+    undo(){
+      if(this.get('undoRecords').length > 1){
+        switch(this.get('undoRecords').pop()){
+          case 'reset': if(this.get('undoFirst').length > 0){
+                          this.get('currentStudent').set('firstName', this.get('undoFirst').pop());
+                          //this.get('currentStudent').set('firstName', this.get('undoFirst').pop());
+                        }
+                        if(this.get('undoLast').length > 0){
+                          this.get('currentStudent').set('lastName', this.get('undoLast').pop());
+                         // this.get('currentStudent').set('lastName', this.get('undoLast').pop());
+                        }
+                        if(this.get('undoNumber').length > 0){
+                          this.get('currentStudent').set('number', this.get('undoNumber').pop());
+                          
+                        }
+                        if(this.get('undoDOB').length > 0 ){
+                          this.set('selectedDate',this.get('undoDOB').pop());
+                          this.set('selectedDate',this.get('undoDOB').pop());
+                        }
+                        if(this.get('undoGender').length > 0){
+                          this.set('selectedGender', this.get('undoGender').pop());
+                          this.get('currentStudent').set('gender', this.get('undoGender').pop());
+                          this.set('selectedGender', this.get('undoGender').pop());
+                          this.get('currentStudent').set('gender', this.get('undoGender').pop());
+                        }
+                        if(this.get('undoRes').length > 0){
+                          this.set('selectedResidency', this.get('undoRes').pop());
+                          this.get('currentStudent').set('resInfo', this.get('undoRes').pop());
+                          this.set('selectedResidency', this.get('undoRes').pop());
+                          this.get('currentStudent').set('resInfo', this.get('undoRes').pop());
+                        }
+                        break;
+          case 'first': if(this.get('undoFirst').length > 0){
+                          this.get('currentStudent').set('firstName', this.get('undoFirst').pop());
+                          //this.get('currentStudent').set('firstName', this.get('undoFirst').pop());
+                        }
+                        break;
+          case 'last':  if(this.get('undoLast').length > 0){
+                          this.get('currentStudent').set('lastName', this.get('undoLast').pop());
+                          //this.get('currentStudent').set('lastName', this.get('undoLast').pop());
+                        }
+                        break;
+          case 'num':   if(this.get('undoNumber').length > 0){
+                          this.get('currentStudent').set('number', this.get('undoNumber').pop());
+                         // this.get('currentStudent').set('number', this.get('undoNumber').pop());
+                        }
+                        break;
+          case 'dob':   if(this.get('undoDOB').length > 0){
+                          this.set('selectedDate',this.get('undoDOB').pop());
+                          this.set('selectedDate',this.get('undoDOB').pop());
+                           if(this.get('undoRecords').length >= 2){
+                              this.get('undoRecords').pop();
+                          }
+                        }
+                        break;
+          case 'gen':   if(this.get('undoGender').length > 0){
+                          this.set('selectedGender', this.get('undoGender').pop());
+                          this.get('currentStudent').set('gender', this.get('undoGender').pop());
+                          this.set('selectedGender', this.get('undoGender').pop());
+                          this.get('currentStudent').set('gender', this.get('undoGender').pop());
+                           if(this.get('undoRecords').length >= 2){
+                                this.get('undoRecords').pop();
+                            }
+                        }
+                        break;
+          case 'res':   if(this.get('undoRes').length > 0){
+                          this.set('selectedResidency', this.get('undoRes').pop());
+                          this.get('currentStudent').set('resInfo', this.get('undoRes').pop());
+                          this.set('selectedResidency', this.get('undoRes').pop());
+                          this.get('currentStudent').set('resInfo', this.get('undoRes').pop());
+                           if(this.get('undoRecords').length >= 2){
+                              this.get('undoRecords').pop();
+                          }
+                        }
+                        break;
+          case 'aa':    if(this.get('undoAA').length > 0){
+                          this.get('currentStudent').set('admissAvg', this.get('undoAA').pop());
+                          this.get('currentStudent').set('admissAvg', this.get('undoAA').pop());
+                           if(this.get('undoRecords').length >= 2){
+                              this.get('undoRecords').pop();
+                          }
+                        }
+                        break;
+          case 'rc':   if(this.get('undoRC').length > 0){
+                          this.get('currentStudent').set('regComments', this.get('undoRC').pop());
+                          this.get('currentStudent').set('regComments', this.get('undoRC').pop());
+                           if(this.get('undoRecords').length >= 2){
+                              this.get('undoRecords').pop();
+                          }
+                       }
+                       break;
+          case 'boa':  if(this.get('undoBOA').length > 0){
+                          this.get('currentStudent').set('BOA', this.get('undoBOA').pop()); 
+                          this.get('currentStudent').set('BOA', this.get('undoBOA').pop());
+                           if(this.get('undoRecords').length >= 2){
+                              this.get('undoRecords').pop();
+                          }
+                        }
+                        break;
+          case 'ac':   if(this.get('undoAC').length > 0){
+                          this.get('currentStudent').set('admissComments', this.get('undoAC').pop());
+                          this.get('currentStudent').set('admissComments', this.get('undoAC').pop());
+                          if(this.get('undoRecords').length >= 2){
+                               this.get('undoRecords').pop();
+                        }
+                       }
+                       break;
+          default:     break;
+          
+          }
+        }
+        this.rerender();
+      },
+      
+      delete(id) {
+        var nextIndex = 0;
+        this.set('total', this.get('total')-1);
+        if (this.get('currentIndex') < this.get('lastIndex')) {
+          nextIndex = this.get('currentIndex') + 1;
+        }
+        else {
+          nextIndex = this.get('currentIndex') - 1;
+        }
+
+        if (confirm("Press OK to Confirm Delete") === true) {
+          var myStore = this.get('store');
+          var self = this;
+          myStore.findRecord('student', id).then(function (student) {
+            student.destroyRecord();
+          if(self.get('currentIndex')==0){
+            self.set('offset', self.get('offset')-10);
+            nextIndex = 9;
+          }
+          else if(self.get('currentIndex')> 0){
+            nextIndex = (self.get('currentIndex')-1);
+          }
+          self.set('currentIndex', nextIndex);
+        });
+       
+        }
+
+      },
+    }
+>>>>>>> Stashed changes
 });
