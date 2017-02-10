@@ -7,15 +7,13 @@ export default DS.Model.extend({
   gender: DS.attr('number'),
   DOB: DS.attr('date'),
   photo: DS.attr(),
-<<<<<<< Updated upstream
-  resInfo: DS.belongsTo('residency')
-=======
+
   resInfo: DS.belongsTo('residency'),
   regComments: DS.attr(),
   BOA: DS.attr(),
   admissAvg: DS.attr('number'),
   admissComments: DS.attr(),
   advStanding: DS.hasMany('adv-standing'),
->>>>>>> Stashed changes
+
 
 });

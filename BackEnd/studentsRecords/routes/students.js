@@ -61,8 +61,7 @@ router.route('/:student_id')
                 student.photo = request.body.student.photo;
                 student.resInfo = request.body.student.resInfo;
 
-<<<<<<< Updated upstream
-=======
+
                 student.regComments = request.body.student.regComments;
                 student.BOA = request.body.student.BOA;
                 student.admissAvg = request.body.student.admissAvg;
@@ -71,7 +70,7 @@ router.route('/:student_id')
                 console.log(student.advStanding);
                 console.log(request.body.student.advStanding);
 
->>>>>>> Stashed changes
+
                 student.save(function (error) {
                     if (error) {
                         response.send({error: error});

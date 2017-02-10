@@ -70,15 +70,7 @@ export default Ember.Component.extend({
 
   showStudentData: function (index) {
     this.set('currentStudent', this.get('studentsRecords').objectAt(index));
-<<<<<<< Updated upstream
-    //this.set('studentPhoto', this.get('currentStudent').get('photo'));
-    if(this.get('currentStudent').get('gender')==1){
-      this.set('studentPhoto', "/assets/studentsPhotos/male.png");
-    }
-    else{
-      this.set('studentPhoto', "/assets/studentsPhotos/female.png");
-    }
-=======
+
     console.log(this.get('currentStudent').get('advStanding'));
     this.get('currentStudent').set('advStanding', []);
     console.log(this.get('currentStudent').get('advStanding'));
@@ -87,7 +79,7 @@ export default Ember.Component.extend({
     this.set('selectedGender', this.get('currentStudent').get('gender'));
     this.set('selectedResidency', this.get('currentStudent').get('resInfo'));
     this.set('studentPhoto', this.get('currentStudent').get('photo'));
->>>>>>> Stashed changes
+
     var date = this.get('currentStudent').get('DOB');
     var datestring = date.toISOString().substring(0, 10);
     this.set('selectedDate', datestring);
@@ -95,8 +87,7 @@ export default Ember.Component.extend({
 
   didRender() {
     Ember.$('.menu .item').tab();
-<<<<<<< Updated upstream
-=======
+
     
   },
   resetUndo(){
@@ -111,16 +102,13 @@ export default Ember.Component.extend({
       this.set('undoAC', []);
       this.set('undoRC', []);
       this.set('undoBOA', []);
->>>>>>> Stashed changes
+
   },
 
 
   actions: {
     saveStudent () {
-<<<<<<< Updated upstream
-=======
-      
->>>>>>> Stashed changes
+
       var updatedStudent = this.get('currentStudent');
       var res = this.get('store').peekRecord('residency', this.get('selectedResidency'));
       updatedStudent.set('gender', this.get('selectedGender'));
@@ -176,15 +164,13 @@ export default Ember.Component.extend({
     },
 
     selectGender (gender){
-<<<<<<< Updated upstream
-      this.set('selectedGender', gender);
-=======
+
       
       
       var gen = this.get('store').peekRecord('gender', gender);
       this.set('selectedGender', gen);
       this.get('currentStudent').set('gender', gen);
->>>>>>> Stashed changes
+
     },
 
     selectResidency (residency){
@@ -202,9 +188,7 @@ export default Ember.Component.extend({
     findStudent(){
       this.set('showFindRecordPage', true);
     },
-<<<<<<< Updated upstream
-  }
-=======
+
 
     editNumber(num){
         this.get('undoRecords').push("num");
@@ -418,5 +402,5 @@ export default Ember.Component.extend({
 
       },
     }
->>>>>>> Stashed changes
+
 });
