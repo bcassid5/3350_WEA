@@ -60,22 +60,13 @@ router.route('/:student_id')
                 student.DOB = request.body.student.DOB;
                 student.photo = request.body.student.photo;
                 student.resInfo = request.body.student.resInfo;
-
-<<<<<<< HEAD
-
-=======
->>>>>>> master
                 student.regComments = request.body.student.regComments;
                 student.BOA = request.body.student.BOA;
                 student.admissAvg = request.body.student.admissAvg;
                 student.admissComments = request.body.student.admissComments;
-<<<<<<< HEAD
                 student.advStanding= request.body.student.advStanding;
                 console.log(student.advStanding);
                 console.log(request.body.student.advStanding);
-
-=======
->>>>>>> master
 
                 student.save(function (error) {
                     if (error) {

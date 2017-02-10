@@ -145,7 +145,6 @@ export default Ember.Component.extend({
 
   showStudentData: function (index) {
     this.set('currentStudent', this.get('studentsRecords').objectAt(index));
-<<<<<<< HEAD
 
     console.log(this.get('currentStudent').get('advStanding'));
     this.get('currentStudent').set('advStanding', []);
@@ -155,14 +154,6 @@ export default Ember.Component.extend({
     this.set('selectedGender', this.get('currentStudent').get('gender'));
     this.set('selectedResidency', this.get('currentStudent').get('resInfo'));
     this.set('studentPhoto', this.get('currentStudent').get('photo'));
-
-=======
-    this.get('currentStudent').set('advStanding', []);
-    this.set('advStandingModel',this.get('currentStudent').get('advStanding'));
-    this.set('selectedGender', this.get('currentStudent').get('gender'));
-    this.set('selectedResidency', this.get('currentStudent').get('resInfo'));
-    this.set('studentPhoto', this.get('currentStudent').get('photo'));
->>>>>>> master
     var date = this.get('currentStudent').get('DOB');
     var datestring = date.toISOString().substring(0, 10);
     this.set('selectedDate', datestring);
@@ -182,12 +173,6 @@ export default Ember.Component.extend({
 
   didRender() {
     Ember.$('.menu .item').tab();
-<<<<<<< HEAD
-
-    
-=======
-    console.log(this.get('undoRecords').length);
->>>>>>> master
   },
   resetUndo(){
     this.set('undoRecords', []);
@@ -201,19 +186,11 @@ export default Ember.Component.extend({
       this.set('undoAC', []);
       this.set('undoRC', []);
       this.set('undoBOA', []);
-<<<<<<< HEAD
-
-=======
->>>>>>> master
   },
 
   actions: {
     saveStudent () {
-<<<<<<< HEAD
 
-=======
-      console.log(this.get('selectedResidency'));
->>>>>>> master
       var updatedStudent = this.get('currentStudent');
       
       updatedStudent.set('gender', this.get('selectedGender'));
@@ -280,20 +257,11 @@ export default Ember.Component.extend({
     },
 
     selectGender (gender){
-<<<<<<< HEAD
 
-      
-=======
-      //console.log(gender);
->>>>>>> master
-      
       var gen = this.get('store').peekRecord('gender', gender);
       this.set('selectedGender', gen);
       this.get('currentStudent').set('gender', gen);
-<<<<<<< HEAD
 
-=======
->>>>>>> master
     },
 
     selectResidency (residency){
@@ -314,21 +282,9 @@ export default Ember.Component.extend({
       this.set('showFindRecordPage', true);
     },
 
-<<<<<<< HEAD
-
-=======
->>>>>>> master
     editNumber(num){
         this.get('undoRecords').push("num");
         this.get('undoNumber').push(this.get('currentStudent').get('number'));
-        
-<<<<<<< HEAD
-       
-       
-=======
-        //this.get('undoNumber').push(this.get('currentStudent').get('number'));
-        console.log("Pushed: " + this.get('currentStudent').get('number'));
->>>>>>> master
         this.get('currentStudent').set('number', num);
       },
       editFirst(first){
@@ -349,19 +305,15 @@ export default Ember.Component.extend({
       },
 
     addcredit(){
-<<<<<<< HEAD
+
       var student = this.get('currentStudent');
       var standing =this.get('store').createRecord('advStanding', {
-=======
-      let student=this.get('currentStudent');
-      let standing =this.get('store').createRecord('advStanding', {
->>>>>>> master
+
         course: this.get('course'),
         description: this.get('description'),
         unit: this.get('unit'),
         grade: this.get('grade'),
         from: this.get('from'),
-<<<<<<< HEAD
         student:student
       });
       
@@ -376,30 +328,10 @@ export default Ember.Component.extend({
         
       //});
       
-      
-      
-=======
-        student: student
-      });
-      //console.log(student.get('advStanding'));
-      
-      //standing.save();
-      
-      //student.get('advStanding').pushObject(standing);
-      console.log()
-      
-      student.get('advStanding').pushObject(standing);
-      this.set('advStandingModel',this.get('currentStudent').get('advStanding'));
-      //standing.save();
-      //student.save();
-      console.log(student.get('advStanding'));
-      //student.save();
->>>>>>> master
     },
 
     updateCourse(courseName){
       this.set('course',courseName);
-<<<<<<< HEAD
     },
     updateDescription(descText){
       this.set('description',descText);
@@ -412,25 +344,6 @@ export default Ember.Component.extend({
     },
     updateFrom(fromText){
       this.set('from',fromText);
-=======
-      console.log(this.get('course'));
-    },
-    updateDescription(descText){
-      this.set('description',descText);
-      console.log(this.get('description'));
-    },
-    updateGrade(gradeValue){
-      this.set('grade',gradeValue);
-      console.log(this.get('grade'));
-    },
-    updateUnit(unitValue){
-      this.set('unit',unitValue);
-      console.log(this.get('unit'));
-    },
-    updateFrom(fromText){
-      this.set('from',fromText);
-      console.log(this.get('from'));
->>>>>>> master
     },
 
 
@@ -448,11 +361,6 @@ export default Ember.Component.extend({
                         }
                         if(this.get('undoNumber').length > 0){
                           this.get('currentStudent').set('number', this.get('undoNumber').pop());
-<<<<<<< HEAD
-                          
-=======
-                          //console.log(this.get('undoNumber').pop());
->>>>>>> master
                         }
                         if(this.get('undoDOB').length > 0 ){
                           this.set('selectedDate',this.get('undoDOB').pop());
@@ -582,8 +490,4 @@ export default Ember.Component.extend({
 
       },
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
 });
