@@ -1,5 +1,5 @@
 <div class="ui center aligned header">
-  <h2>Students Records Data Entry</h2>
+  <h2>Student Records Data Entry</h2>
 </div>
 
 <!-- Show the menu bar-->
@@ -8,7 +8,7 @@
     <i class="save icon"></i>
     Save
   </a>
-  <a class="item" {{action 'undoSave'}}>
+  <a class="item" {{action 'undo'}}>
     <i class="undo icon"></i>
     Undo
   </a>
@@ -44,42 +44,48 @@
 
 {{#if showAllStudents}}
   <!-- Note that offset is an "in" and "out" parameter !-->
- {{all-students INDEX = currentIndex notDONE = showAllStudents offset = offset studentsModel = studentsRecords}}
+ {{all-students INDEX = currentIndex notDONE = showAllStudents offset = offset studentsModel = studentsRecords total = total}}
 {{else if showHelpPage}}
   {{help-page notDONE = showHelpPage}}
 {{else if showFindRecordPage}}
-  {{find-record notDONE = showFindRecordPage}}
+  {{find-record notDONE = showFindRecordPage OFFSET = offset INDEX = currentIndex FOUND = found}}
 {{else}}
   <!-- Show data entry form -->
 
   <div class="ui top attached tabular menu">
     <div class="active item" data-tab="basics">Basic Info</div>
-    <div class="item" data-tab="program">Program Record</div>
+    <div class="item" data-tab="admiss">Admission & Registration</div>
+    <div class="item" data-tab="advanced">Advanced Standing</div>
+    <div class="item" data-tab="danger">Danger Zone</div>
     <div class="item" data-tab="others">Other tabs</div>
+
   </div>
   <div class="ui bottom attached active tab segment"data-tab="basics">
     <!-- student basic information !-->
 
     <div class="ui grid">
-      <div class="ui right aligned  seven wide column">
+      <div class="ui right aligned seven wide column">
         <div class="ui form">
           <div class="inline field">
             <label>Student Number</label>
-            {{input size="10" type="text"  value = currentStudent.number}}
+            <input size="10" type="number"  value = {{currentStudent.number}} onchange={{action 'editNumber' value='target.value'}}>
           </div>
           <div class="inline field">
             <label>First Name</label>
-            {{input type="text"  value = currentStudent.firstName}}
+            <input type="text"  value = {{currentStudent.firstName}} onchange={{action 'editFirst' value='target.value'}}>
+            
           </div>
           <div class="inline field">
             <label>Last Name</label>
-            {{input type="text" value = currentStudent.lastName }}
+            <input type="text" value = {{currentStudent.lastName}} onchange={{action 'editLast' value='target.value'}}>
           </div>
           <div class="inline field">
             <label>Gender</label>
             <select onchange={{action 'selectGender' value="target.value"}}>
-              <option value=1 selected={{eq 1 currentStudent.gender}}>Male</option>
-              <option value=2 selected={{eq 2 currentStudent.gender}}>Female</option>
+              {{#each genderModel as |genderChoice|}}
+                <option value={{genderChoice.id}} selected={{eq currentStudent.gender.id
+                                                                   genderChoice.id}}>{{genderChoice.type}} </option>
+              {{/each}}
             </select>
           </div>
           <div class="inline field">
@@ -99,21 +105,117 @@
       </div>
       <!-- Show student photo -->
       <div class="ui center aligned  seven wide column segment">
-        <img  src={{studentPhoto}}>
+          <h3> {{currentStudent.firstName}} {{currentStudent.lastName}}</h3>
+          <br>
+          <img  src={{studentPhoto}}>
       </div>
     </div>
 
   </div>
-  <div class="ui tab" data-tab="program">
-    <!-- Program records, courses and grades !-->
-    <br>
-    <h2>{{currentStudent.number}}</h2>
-      <h3> {{currentStudent.firstName}} {{currentStudent.lastName}}</h3>
-    <br><br><br>
+  <div class="ui tab" data-tab="admiss">
+<br>
+      <div class="ui grid">
+          <div class="ui left aligned  seven wide column">
+              <div class="ui form">
+                <div class="field">
+                    <label>Registration Comments</label>
+                  {{textarea type="text" rows="4" value = currentStudent.regComments}}
+                </div>
+                <div class="field">
+                    <label>Basis of Admission</label>
+                  {{input type="text" value = currentStudent.BOA}}
+                </div>
+                <div class="inline field">
+                    <label>Admission Average</label>
+                  {{input size="5" type="number" value = currentStudent.admissAvg}}
+                </div>
+                <div class="field">
+                    <label>Admission Comments</label>
+                  {{textarea type="text" rows="4" value = currentStudent.admissComments}}
+                </div>
+              </div>
+          </div>
+          <div class="ui center aligned  seven wide column segment">
+              <h3> {{currentStudent.firstName}} {{currentStudent.lastName}}</h3>
+              <br>
+              <img  src={{studentPhoto}}>
+          </div>
+      </div>
+  </div>
+  <div class="ui tab" data-tab="advanced">
+       <div class="ui grid">
+            <div class="ui left aligned one wide column"></div>
+            
+            <div class="ui right aligned seven wide column">
+                <div class="ui form">
+                    <br>
+                    {{#each advStandingModel as |advStandingChoice index|}}
+                    <p>
+                      <label>Course: </label>{{advStandingChoice.course}}
+                      <br>
+                      <label>Description:</label> {{advStandingChoice.description}}
+                      <br>
+                      <label>Grade: </label>{{advStandingChoice.grade}}
+                      <br>
+                      <label>Unit: </label>{{advStandingChoice.unit}}
+                      <br>
+                      <label>From: </label> {{advStandingChoice.from}}
+                      <br>
+                      
+                    </p>
+                    <hr><hr>
+                    {{/each}}
+                    <div class="inline field">
+                    <label>Course:</label> <input name="course" type="text" onchange={{action 'updateCourse' value="target.value"}}>
+                    </div>
+                    <div class="inline field">
+                    <label>Description:</label> <input name="description" type="text" onchange={{action 'updateDescription' value="target.value"}}>
+                    </div>
+                    <div class="inline field">
+                    <label>Grade:</label> <input name="grade" type="text" onchange={{action 'updateGrade' value="target.value"}}>
+                    </div>
+                    <div class="inline field">
+                    <label>Unit:</label> <input name="unit" type="text" onchange={{action 'updateUnit' value="target.value"}}>
+                    </div>
+                    <div class="inline field">
+                    <label>From:</label> <input name="from" type="text" onchange={{action 'updateFrom' value="target.value"}}>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            <div class="ui center aligned five wide column"></div> 
+            <div class="ui right aligned eight wide column">
+                    <button class="ui violet button" {{action 'addcredit'}} >
+                        Add 
+                    </button>
+                    <button class="ui button">
+                        Delete
+                    </button>
+                </div>
+
+            
+        </div>
+       
+   </div>
+  <div class="ui tab" data-tab="danger">
+      <!-- Danger Zone (Deletion) !-->
+      <br><br>
+      <h3 align="center"> {{currentStudent.firstName}} {{currentStudent.lastName}}</h3>
+      <br>
+      <img class="ui centered image" src={{studentPhoto}}>
+      <br><br>
+      <button class="massive red fluid ui button" {{action 'delete' currentStudent.id}}>
+          Delete Student Record
+      </button>
+      <br><br>
+
   </div>
   <div class="ui tab" data-tab="others">
     <!-- Others !-->
     <h2>Other data</h2>
   </div>
+
+
 
 {{/if}}

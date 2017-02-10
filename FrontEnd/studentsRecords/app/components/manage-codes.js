@@ -52,13 +52,23 @@ export default Ember.Component.extend({
         }
       },
       removeGenderOption(index){
-       
+       this.get('store').find('gender',this.get('genderModel').objectAt(index).get('id')).then(function(record){
+                record.deleteRecord();
+                if(record.get('isDeleted'))
+                {
+                    record.save();
+                }
+                
+          }, function (error){
+              console.log(error);
+          });
           console.log(index);
       },
       addGenderOption(){
         if (this.get('newGenderChoice')!==""){
             var record = this.get('store').createRecord('gender', {
                 type: this.get('newGenderChoice'),
+                students: []
             });
             record.save();
         }
@@ -88,7 +98,7 @@ export default Ember.Component.extend({
           var self = this;
         if((this.$('.' + index)).val()!== ""){
             this.get('store').find('gender', this.get('genderModel').objectAt(index).get('id')).then(function(record){
-            record.set('name', (self.$('.' + index)).val());
+            record.set('type', (self.$('.' + index)).val());
             record.save();
                 
           });

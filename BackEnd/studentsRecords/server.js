@@ -6,6 +6,8 @@ var app = express();
 var students = require('./routes/students');
 var residencies = require('./routes/residencies');
 var genders= require('./routes/genders');
+var advStandings = require('./routes/advStandings');
+
 
 
 app.use(function (request, response, next) {
@@ -19,7 +21,9 @@ app.use(logger);
 
 app.use('/students', students);
 app.use('/residencies', residencies);
-app.use('/genders', residencies);
+app.use('/genders', genders);
+app.use('/advStandings', advStandings);
+
 
 
 app.listen(3700, function () {

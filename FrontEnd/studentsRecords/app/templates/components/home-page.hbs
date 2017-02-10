@@ -9,11 +9,15 @@
         <i class="large leanpub icon"></i>
         Students Records
       </a>
-      <a class="item" {{action "manageCode"}}>
-        <i class="large edit icon"></i>
+      <a class="item" {{action "new"}} >
+          <i class="large add user icon"></i>
+        Create New Record
+      </a>
+      <a class="item" {{action "manageCode"}} >
+        <i class="large code icon"></i>
         Manage Code
       </a>
-      <a class="item " {{action "about"}}>
+      <a class="item " {{action "about"}} >
         <i class="large user icon"></i>
         About
       </a>
@@ -24,12 +28,19 @@
       {{#if isHomeShowing}}
         {{welcome-page}}
       {{/if}}
+
       {{#if isStudentsRecordsDataEntry}}
         {{student-data-entry}}
       {{/if}}
+
       {{#if isAboutShowing}}
         {{about-us}}
       {{/if}}
+
+      {{#if isAddShowing}}
+        {{add-record}}
+      {{/if}}
+      
       {{#if isManageCodeShowing}}
         {{manage-codes}}
       {{/if}}

@@ -6,15 +6,15 @@
               <div class="ui form">
                  <div class="inline field">
                     <label>Student Number</label>
-                     {{input size="10" type="text"}}
+                     {{input size="10" type="number" value=studentNumber}}
                  </div>
                  <div class="inline field">
                     <label>First Name</label>
-                     {{input size="10" type="text"}}
+                     {{input size="20" type="text" value=firstName}}
                  </div>
                  <div class="inline field">
                     <label>Last Name</label>
-                     {{input size="10" type="text"}}
+                     {{input size="20" type="text" value=lastName}}
                  </div>
               </div>
           </div>
@@ -22,8 +22,38 @@
       <br/><br/>
     <div class="actions">
         <div class="ui button" {{action "search"}}>Search</div>
-      <div class="ui button" {{action "exit"}}>OK</div>
+      <div class="ui button" {{action "remove"}}>Cancel</div>
     </div>
+    {{#if showResults}}
+        <br/><hr/><br/>
+        {{#each searchResults as |oneStudent|}}
+        <div class="ui grid">
+            <div class="ten wide column">
+            <div class="actions">
+                <div class="ui form">
+                <div class="grouped fields">
+                    <div class="field">
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="searchradiolist" onchange={{action 'select' oneStudent}}>
+                        <label>
+                            {{oneStudent.number}} {{oneStudent.firstName}} {{oneStudent.lastName}}
+                        </label>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+            <div class="six wide column">
+            </div>
+        </div>
+        
+        {{/each}}
+        <br/><br/>
+        <div class="actions">
+            <div class="ui button" {{action "exit"}}>Select</div>
+        </div>
+    {{/if}}
   </div>
 </div>
 

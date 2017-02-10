@@ -18,6 +18,7 @@ export default Ember.Component.extend({
   isHomeShowing: true,
   isStudentsRecordsDataEntry: false,
   isAboutShowing: false,
+  isAddShowing: false,
   isManageCodeShowing: false,
 
   actions: {
@@ -25,6 +26,7 @@ export default Ember.Component.extend({
       this.set('isHomeShowing', true);
       this.set('isStudentsRecordsDataEntry', false);
       this.set('isAboutShowing', false);
+      this.set('isAddShowing', false);
       this.set('isManageCodeShowing', false);
     },
 
@@ -32,6 +34,7 @@ export default Ember.Component.extend({
       this.set('isHomeShowing', false);
       this.set('isStudentsRecordsDataEntry', true);
       this.set('isAboutShowing', false);
+      this.set('isAddShowing', false);
       this.set('isManageCodeShowing', false);
     },
 
@@ -39,6 +42,15 @@ export default Ember.Component.extend({
       this.set('isHomeShowing', false);
       this.set('isStudentsRecordsDataEntry', false);
       this.set('isAboutShowing', true);
+      this.set('isAddShowing', false);
+      this.set('isManageCodeShowing', false);
+    },
+
+    new (){
+      this.set('isHomeShowing', false);
+      this.set('isStudentsRecordsDataEntry', false);
+      this.set('isAboutShowing', false);
+      this.set('isAddShowing', true);
       this.set('isManageCodeShowing', false);
     },
     manageCode (){
@@ -46,6 +58,7 @@ export default Ember.Component.extend({
       this.set('isStudentsRecordsDataEntry', false);
       this.set('isAboutShowing', false);
       this.set('isManageCodeShowing', true);
+      this.set('isAddShowing', false);
     }
   }
 });
