@@ -39,6 +39,7 @@ export default Ember.Component.extend({
   grade: null,
   unit: null,
   from: null,
+  showAddCoursePage: false,
     
   studentModel: Ember.observer('offset', function () {
     var self = this;
@@ -266,6 +267,10 @@ export default Ember.Component.extend({
 
     findStudent(){
       this.set('showFindRecordPage', true);
+    },
+
+    showAddCourse(){
+      this.set('showAddCoursePage', true);
     },
 
     editNumber(num){

@@ -49,6 +49,8 @@
   {{help-page notDONE = showHelpPage}}
 {{else if showFindRecordPage}}
   {{find-record notDONE = showFindRecordPage OFFSET = offset INDEX = currentIndex FOUND = found}}
+{{else if showAddCoursePage}}
+  {{adding-courses notDONE = showAddCoursePage}}
 {{else}}
   <!-- Show data entry form -->
 
@@ -56,8 +58,8 @@
     <div class="active item" data-tab="basics">Basic Info</div>
     <div class="item" data-tab="admiss">Admission & Registration</div>
     <div class="item" data-tab="advanced">Advanced Standing</div>
-    <div class="item" data-tab="danger">Danger Zone</div>
     <div class="item" data-tab="highschool">High School</div>
+    <div class="item" data-tab="danger">Danger Zone</div>
     <div class="item" data-tab="others">Other tabs</div>
   </div>
   
@@ -199,27 +201,27 @@
         </div>
        
    </div>
-  <div class="ui tab" data-tab="danger">
-      <!-- Danger Zone (Deletion) !-->
-      <br><br>
-      <h3 align="center"> {{currentStudent.firstName}} {{currentStudent.lastName}}</h3>
-      <br>
-      <img class="ui centered image" src={{studentPhoto}}>
-      <br><br>
-      <button class="massive red fluid ui button" {{action 'delete' currentStudent.id}}>
-          Delete Student Record
-      </button>
-      <br><br>
-
-  </div>
 
   <div class="ui tab"data-tab="highschool">
     <!-- student high school information !-->
     <br/>
     <h2>High School Courses and Grades</h2>
-    <button class="medium green fluid ui button">Add</button>
+    <button class="medium green fluid ui button" {{action 'showAddCourse'}}>Add</button>
   </div>
-  
+
+  <div class="ui tab" data-tab="danger">
+      <!-- Danger Zone (Deletion) !-->
+      <br/><br/>
+      <h3 align="center"> {{currentStudent.firstName}} {{currentStudent.lastName}}</h3>
+      <br/>
+      <img class="ui centered image" src={{studentPhoto}}>
+      <br/><br/>
+      <button class="massive red fluid ui button" {{action 'delete' currentStudent.id}}>
+          Delete Student Record
+      </button>
+      <br/><br/>
+
+  </div>
 
   <div class="ui tab" data-tab="others">
     <!-- Others !-->
