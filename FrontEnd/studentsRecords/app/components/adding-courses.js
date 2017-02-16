@@ -4,6 +4,7 @@ export default Ember.Component.extend({
 
     store: Ember.inject.service(),
     notDONE: true,
+    currentStudent: null,
 
     init() {
         this._super(...arguments);
@@ -11,10 +12,15 @@ export default Ember.Component.extend({
 
 actions:{
     exit: function () {
-      this.set('notDONE', false);
-      Ember.$('.ui.modal').modal('hide');
-      Ember.$('.ui.modal').remove();
+        this.set('notDONE', false);
+        Ember.$('.ui.modal').modal('hide');
+        Ember.$('.ui.modal').remove();
+    },
+    add: function(){
+        
+
     }
+
 },
     
 

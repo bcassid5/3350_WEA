@@ -50,7 +50,7 @@
 {{else if showFindRecordPage}}
   {{find-record notDONE = showFindRecordPage OFFSET = offset INDEX = currentIndex FOUND = found}}
 {{else if showAddCoursePage}}
-  {{adding-courses notDONE = showAddCoursePage}}
+  {{adding-courses notDONE = showAddCoursePage currentStudent = currentStudent}}
 {{else}}
   <!-- Show data entry form -->
 

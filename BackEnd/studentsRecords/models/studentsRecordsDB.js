@@ -60,8 +60,8 @@ var highSchoolCourseSchema = mongoose.Schema(
         description: String,
         unit: String,
         source: String,
-        highschool: [{type:mongoose.Schema.ObjectId, ref: ('HighSchools')}],
-        subject: [{type:mongoose.Schema.ObjectId, ref: ('HighSchoolSubjects')}],
+        highschool: {type:mongoose.Schema.ObjectId, ref: ('HighSchools')},
+        subject: {type:mongoose.Schema.ObjectId, ref: ('HighSchoolSubjects')},
         grade: [{type:mongoose.Schema.ObjectId, ref: ('HighSchoolGrades')}]
     }
 );
@@ -88,7 +88,7 @@ var AdvancedStandings = mongoose.model('advStanding', advStandingSchema);
 var HighSchoolSubjects = mongoose.model('highSchoolSubject', highSchoolSubjectSchema); 
 var HighSchoolCourses = mongoose.model('highSchoolCourse', highSchoolCourseSchema);
 var HighSchools = mongoose.model('highSchool', highSchoolSchema);
-var HighschoolGrades = mongoose.model('highSchoolGrade', highSchoolGradeSchema);
+var HighSchoolGrades = mongoose.model('highSchoolGrade', highSchoolGradeSchema);
 
 mongoose.connect('mongodb://localhost/studentsRecords');
 var db = mongoose.connection;
