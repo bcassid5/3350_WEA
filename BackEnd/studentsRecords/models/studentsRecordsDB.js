@@ -9,11 +9,12 @@ var studentsSchema = mongoose.Schema(
         DOB: Date,
         photo: String,
         resInfo: {type: mongoose.Schema.ObjectId, ref: 'Residencies'},
-        advStanding: [{type: mongoose.Schema.ObjectId, ref: 'AdvancedStandings'}],
+        advStanding: {type: mongoose.Schema.ObjectId, ref: 'AdvancedStandings'},
         regComments: String,
         BOA: String,
         admissAvg: Number,
         admissComments: String,
+        highSchoolGrade: {type: mongoose.Schema.ObjectId, ref: 'HighSchoolGrades'}
 
     }
 );
@@ -42,13 +43,52 @@ var advStandingSchema=mongoose.Schema(
         from: String,
         students: {type: mongoose.Schema.ObjectId, ref: ('Students')}
     }
-)
+);
+
+var highSchoolSubjectSchema = mongoose.Schema(
+    {
+        name: String,
+        description: String,
+        course: [{type:mongoose.Schema.ObjectId, ref: ('HighSchoolCourses')}]
+    }
+);
+
+var highSchoolCourseSchema = mongoose.Schema(
+    {
+        level: Number,
+        subject: String,
+        description: String,
+        unit: String,
+        source: String,
+        highschool: [{type:mongoose.Schema.ObjectId, ref: ('HighSchools')}],
+        subject: [{type:mongoose.Schema.ObjectId, ref: ('HighSchoolSubjects')}],
+        grade: [{type:mongoose.Schema.ObjectId, ref: ('HighSchoolGrades')}]
+    }
+);
+
+var highSchoolSchema= mongoose.Schema(
+    {
+        name: String,
+        course: [{type:mongoose.Schema.ObjectId, ref: ('HighSchoolCourses')}]
+    }
+);
+
+var highSchoolGradeSchema = mongoose.Schema(
+    {
+        grade: String,
+        course: [{type:mongoose.Schema.ObjectId, ref: ('HighSchoolCourses')}],
+        student: [{type:mongoose.Schema.ObjectId, ref: ('Students')}]
+    }
+);
+
 var Students = mongoose.model('student', studentsSchema);
 var Residencies = mongoose.model('residency', residencySchema);
 var Genders = mongoose.model('gender', genderSchema);
 var AdvancedStandings = mongoose.model('advStanding', advStandingSchema);
-
-
+var HighSchoolSubjects = mongoose.model('highSchoolSubject', highSchoolSubjectSchema); 
+var HighSchoolCourses = mongoose.model('highSchoolCourse', highSchoolCourseSchema);
+var HighSchools = mongoose.model('highSchool', highSchoolSchema);
+var HighschoolGrades = mongoose.model('highSchoolGrade', highSchoolGradeSchema);
 
 mongoose.connect('mongodb://localhost/studentsRecords');
 var db = mongoose.connection;
@@ -59,7 +99,10 @@ db.once('open', function() {
     exports.Residencies = Residencies;
     exports.Genders=Genders;
     exports.AdvancedStandings= AdvancedStandings;
-
+    exports.HighSchools = HighSchools;
+    exports.HighSchoolSubjects = HighSchoolSubjects;
+    exports.HighSchoolGrades = HighSchoolGrades;
+    exports.HighSchoolCourses = HighSchoolCourses;
 
 });
 
