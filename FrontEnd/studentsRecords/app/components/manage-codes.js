@@ -6,6 +6,9 @@ export default Ember.Component.extend({
     genderModel: null,
     newResChoice: null,
     newGenderChoice: null,
+
+    highSchoolSubjectModel: null,
+    highSchoolModel: null,
     
 
     init() {
@@ -19,6 +22,10 @@ export default Ember.Component.extend({
         this.get('store').findAll('gender').then(function (records) {
            self.set('genderModel', records);
         });
+
+        //this.get('store').findAll('highSchoolSubject').then(function(records){
+          //  self.set('highSchoolSubjectModel', records);
+        //});
     },
 
     didRender() {

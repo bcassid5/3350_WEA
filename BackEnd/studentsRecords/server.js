@@ -7,7 +7,10 @@ var students = require('./routes/students');
 var residencies = require('./routes/residencies');
 var genders= require('./routes/genders');
 var advStandings = require('./routes/advStandings');
-
+var highSchoolSubjects = require('./routes/highSchoolSubjects');
+var highSchools = require('./routes/highSchools');
+var highSchoolGrades = require('./routes/highSchoolGrades');
+var highSchoolCourses = require('./routes/highSchoolCourses');
 
 
 app.use(function (request, response, next) {
@@ -23,6 +26,10 @@ app.use('/students', students);
 app.use('/residencies', residencies);
 app.use('/genders', genders);
 app.use('/advStandings', advStandings);
+app.use('/highSchools', highSchools);
+app.use('/highSchoolSubjects', highSchoolSubjects);
+app.use('/highSchoolGrades', highSchoolGrades);
+app.use('/highSchoolCourses', highSchoolCourses);
 
 
 
