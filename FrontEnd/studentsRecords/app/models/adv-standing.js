@@ -6,6 +6,6 @@ export default DS.Model.extend({
   unit: DS.attr(),
   grade: DS.attr(),
   from: DS.attr(),
-  student: DS.belongsTo('student')
+  students: DS.belongsTo('student')
 
 });

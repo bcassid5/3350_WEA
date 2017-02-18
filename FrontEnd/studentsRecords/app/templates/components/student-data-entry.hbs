@@ -56,8 +56,9 @@
     <div class="active item" data-tab="basics">Basic Info</div>
     <div class="item" data-tab="admiss">Admission & Registration</div>
     <div class="item" data-tab="advanced">Advanced Standing</div>
+    <div class="item" data-tab="awards">Awards and Scholarships</div>
     <div class="item" data-tab="danger">Danger Zone</div>
-    <div class="item" data-tab="others">Other tabs</div>
+    
 
   </div>
   <div class="ui bottom attached active tab segment"data-tab="basics">
@@ -144,55 +145,111 @@
   </div>
   <div class="ui tab" data-tab="advanced">
        <div class="ui grid">
-            <div class="ui left aligned one wide column"></div>
+            <div class="ui left aligned four wide column"></div>
             
-            <div class="ui right aligned seven wide column">
+            <div class="ui left aligned seven wide column">
                 <div class="ui form">
                     <br>
                     {{#each advStandingModel as |advStandingChoice index|}}
-                    <p>
-                      <label>Course: </label>{{advStandingChoice.course}}
-                      <br>
-                      <label>Description:</label> {{advStandingChoice.description}}
-                      <br>
-                      <label>Grade: </label>{{advStandingChoice.grade}}
-                      <br>
-                      <label>Unit: </label>{{advStandingChoice.unit}}
-                      <br>
-                      <label>From: </label> {{advStandingChoice.from}}
-                      <br>
+                      <div class = "field">
+                      <label>Course: </label>{{input type = "text" value = advStandingChoice.course}}
+                      </div>
+                      <div class = "field">
+                      <label>Description:</label> {{input type = "text" value =advStandingChoice.description}}
+                      </div>
+                      <div class = "field">
+                      <label>Grade: </label>{{input type = "text" value =advStandingChoice.grade}}
+                      </div>
+                      <div class = "field">
+                      <label>Unit: </label>{{input type = "text" value =advStandingChoice.unit}}
+                      </div>
+                      <div class = "field">
+                      <label>From: </label> {{input type = "text" value =advStandingChoice.from}}
+                      </div>
                       
-                    </p>
-                    <hr><hr>
+                      
+                    
+                    <h4 class="ui horizontal divider header">
+                    <i class="angle double left icon"></i><i class="angle double right icon"></i>
+                    
+                    </h4>
                     {{/each}}
-                    <div class="inline field">
+                    
+                    <a {{action 'newAdvClicked'}}> 
+                    <i class="large green add square icon"></i>Add Advanced Standing Record</a>
+                    <br>
+                    {{#if newAdv}}
+                    
+                    <div class=" field">
                     <label>Course:</label> <input name="course" type="text" onchange={{action 'updateCourse' value="target.value"}}>
                     </div>
-                    <div class="inline field">
+                    <div class="field">
                     <label>Description:</label> <input name="description" type="text" onchange={{action 'updateDescription' value="target.value"}}>
                     </div>
-                    <div class="inline field">
+                    <div class="field">
                     <label>Grade:</label> <input name="grade" type="text" onchange={{action 'updateGrade' value="target.value"}}>
                     </div>
-                    <div class="inline field">
+                    <div class="field">
                     <label>Unit:</label> <input name="unit" type="text" onchange={{action 'updateUnit' value="target.value"}}>
                     </div>
-                    <div class="inline field">
+                    <div class="field">
                     <label>From:</label> <input name="from" type="text" onchange={{action 'updateFrom' value="target.value"}}>
                     </div>
+                    <button class="ui violet button" {{action 'addcredit'}} >
+                        Add 
+                    </button>
+                    <button class="ui button" {{action 'newAdvClicked'}}>
+                        Cancel
+                    </button>
+                    {{/if}}
                     
                 </div>
                 
             </div>
-            <div class="ui center aligned five wide column"></div> 
-            <div class="ui right aligned eight wide column">
-                    <button class="ui violet button" {{action 'addcredit'}} >
+            
+
+            
+        </div>
+       
+   </div>
+   <div class="ui tab" data-tab="awards">
+       <div class="ui grid">
+            <div class="ui left aligned four wide column"></div>
+            
+            <div class="ui left aligned seven wide column">
+                <div class="ui form">
+                    <br>
+                    {{#each awards as |award index|}}
+                      <div class = "field">
+                      <label>Award: </label>{{input type = "text" value = award.note}}
+                      </div>
+ 
+                    <h4 class="ui horizontal divider header">
+                    <i class="angle double left icon"></i><i class="angle double right icon"></i>
+                    
+                    </h4>
+                    {{/each}}
+                    
+                    <a {{action 'newAdvClicked'}}> 
+                    <i class="large green add square icon"></i>Add Award or Scholarship</a>
+                    <br>
+                    {{#if newAdv}}
+                    
+                    <div class=" field">
+                    <label>Note:</label> <input name="course" type="text" onchange={{action 'updateNote' value="target.value"}}>
+                    </div>
+                    <button class="ui violet button" {{action 'addAward'}} >
                         Add 
                     </button>
-                    <button class="ui button">
-                        Delete
+                    <button class="ui button" {{action 'newAdvClicked'}}>
+                        Cancel
                     </button>
+                    {{/if}}
+                    
                 </div>
+                
+            </div>
+            
 
             
         </div>

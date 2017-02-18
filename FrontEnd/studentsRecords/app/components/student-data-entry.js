@@ -6,6 +6,7 @@ export default Ember.Component.extend({
   residencyModel: null,
   genderModel: null,
   advStandingModel: null,
+  awards: null,
   selectedResidency: null,
   selectedGender: null,
   selectedDate: null,
@@ -39,6 +40,8 @@ export default Ember.Component.extend({
   grade: null,
   unit: null,
   from: null,
+  newAdv: null,
+  note: null,
     
   studentModel: Ember.observer('offset', function () {
     var self = this;
@@ -122,7 +125,6 @@ export default Ember.Component.extend({
     this.resetUndo();
     
     var self = this;
-    var self = this;
     this.get('store').query('student', {
       limit: 1000000,
       offset: 0
@@ -146,13 +148,23 @@ export default Ember.Component.extend({
   showStudentData: function (index) {
     this.set('currentStudent', this.get('studentsRecords').objectAt(index));
 
-    console.log(this.get('currentStudent').get('advStanding'));
-    this.get('currentStudent').set('advStanding', []);
-    console.log(this.get('currentStudent').get('advStanding'));
-    this.set('advStandingModel',this.get('currentStudent').get('advStanding'));
- 
+    console.log(this.get('currentStudent').get('advStanding').get('length'));
+    //this.get('currentStudent').set('advStanding', []);
+    //console.log(this.get('currentStudent').get('advStanding'));
+    var self = this;
+    this.get('store').query('advStanding',{student: this.get('currentStudent').get('id')}).then(function(adv){
+      self.set('advStandingModel', adv);
+      self.get('store').query('award',{student: self.get('currentStudent').get('id')}).then(function(awd){
+        self.set('awards', awd);
+      
+      });
+    });
+    
+    //console.log(this.get('advStandingModel'));
+    this.set('newAdv', false);
     this.set('selectedGender', this.get('currentStudent').get('gender'));
     this.set('selectedResidency', this.get('currentStudent').get('resInfo'));
+    //console.log(this.get('currentStudent').get('id'));
     this.set('studentPhoto', this.get('currentStudent').get('photo'));
     var date = this.get('currentStudent').get('DOB');
     var datestring = date.toISOString().substring(0, 10);
@@ -219,7 +231,10 @@ export default Ember.Component.extend({
       this.set('currentIndex', this.get('firstIndex'));
       
     },
-
+    newAdvClicked()
+    {
+      this.set('newAdv', !(this.get('newAdv')));
+    },
     nextStudent() {
       this.resetUndo();
       this.set('movingBackword' , false);
@@ -303,31 +318,57 @@ export default Ember.Component.extend({
         this.get('undoRC').push(this.get('currentStudent').get('regComments'));
         this.get('currentStudent').set('regComments', rc);
       },
+    addAward(){
+      var student = this.get('currentStudent');
+      console.log(student.get('id'));
+      var award =this.get('store').createRecord('award', {
 
+        note: this.get('note'),
+        student: this.get('currentStudent'),
+      });
+      var self=this;
+      this.set('newAdv', false);
+      award.save().then(() => {
+        
+        
+        self.get('store').query('award',{student: this.get('currentStudent').get('id')}).then(function(awd){
+          self.set('awards', awd);
+        });
+        //console.log(self.get('currentStudent').get('advStanding'));
+        //self.set('advStandingModel',student.get('advStanding'));
+        
+      });
+      
+    },
     addcredit(){
 
       var student = this.get('currentStudent');
-      var standing =this.get('store').createRecord('advStanding', {
+      console.log(student.get('id'));
+      var standing =this.get('store').createRecord('adv-Standing', {
 
         course: this.get('course'),
         description: this.get('description'),
         unit: this.get('unit'),
         grade: this.get('grade'),
         from: this.get('from'),
-        student:student
+        students: this.get('currentStudent'),
       });
-      
-      console.log(this.get('currentStudent').get('advStanding'));
-      
-      //student.get('advStanding').pushObject(standing);
-      var self = this;
-      standing.save();//.then(() => {
-        student.save()
+      var self=this;
+      this.set('newAdv', false);
+      standing.save().then(() => {
+        console.log(student.get('advStanding').objectAt(0).get('course'));
+        
+        self.get('store').query('advStanding',{student: this.get('currentStudent').get('id')}).then(function(adv){
+          self.set('advStandingModel', adv);
+        });
         //console.log(self.get('currentStudent').get('advStanding'));
         //self.set('advStandingModel',student.get('advStanding'));
         
-      //});
+      });
       
+    },
+    updateNote(noted){
+      this.set('note',noted);
     },
 
     updateCourse(courseName){
