@@ -7,10 +7,9 @@
             <div class="inline field">
                 <label>High School</label><br/>
                 <select style="width: 200px" name = "hsName">
-                    <option value="1">lol</option>
-                    <option value="2">what</option>
-                    <option value="3">i dunno</option>
-                    <option value="4">something</option>
+                   {{#each highSchoolModel as |highSchoolChoice|}}
+                      <option value={{highSchoolChoice.id}}>{{highSchoolChoice.name}} </option>
+                    {{/each}}
                 </select> 
             </div>
             

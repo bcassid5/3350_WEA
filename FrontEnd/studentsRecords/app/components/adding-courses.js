@@ -9,9 +9,19 @@ export default Ember.Component.extend({
 
     init() {
         this._super(...arguments);
-        this.get('store').findAll('highschool').then(function (records) {
+        var self = this;
+        this.get('store').findAll('highSchool').then(function (records) {
             self.set('highSchoolModel', records);
+            console.log(records);
         });
+        // var record = this.get('store').createRecord('highschool', {
+        //     name: "St Clair Secondary School",
+        //     course: [],
+        // });
+        // console.log(record.get('name'));
+        // record.save();
+        
+    
     },
 
 actions:{
