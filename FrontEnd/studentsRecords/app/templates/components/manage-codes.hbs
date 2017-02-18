@@ -5,7 +5,7 @@
 <div class="ui top attached tabular menu">
     <div class="active item" data-tab="residencies">Residencies</div>
     <div class="item" data-tab="genders">Gender</div>
-    
+    <div class="item" data-tab="hsSubject">High School Subject</div>
   </div>
 
    <div class="ui bottom attached active tab segment"data-tab="residencies">
@@ -92,6 +92,35 @@
    </div>
    
   
-
+ <div class="ui tab" data-tab="hsSubject">
+       <div class="ui grid">
+            <div class="ui lef aligned five wide column"></div>
+            <div class="ui lef aligned seven wide column">
+                <div class="ui form">
+                    <br>
+                     {{#each highSchoolSubjectModel as |highSchoolSubjectChoice index|}}
+                    <div class="inline field">
+                    <label>Option {{index}}:</label> <input value={{highSchoolSubjectChoice.name}} type="text"  onchange = {{action 'changeSubjectName' index}} class = {{index}} >
+                    <input value={{highSchoolSubjectChoice.description}} type="text"  onchange = {{action 'changeSubjectDescription' index}} class = {{index}} >
+                    <a {{action 'removeSubjectOption' index}}> 
+                        <i class="large red minus circle icon"></i> <br>
+                    </a>
+                    </div>
+                    {{/each}}
+                    
+                    <div class="inline field">
+                        <label>Add New</label><br/>
+                        <label>Name:</label>
+                        <input value="" type="text" onchange={{action 'updateSubjectName' value="target.value"}}>
+                        <br/><label>Description:</label>
+                        <input value="" type="text" onchange={{action 'updateSubjectDescription' value="target.value"}}>
+                        <a {{action 'addSubjectOption'}}> 
+                        <i class="large green add square icon"></i> <br>
+                    </a>
+                    </div>
+                </div>
+            </div>          
+        </div>
+   </div>
 
 

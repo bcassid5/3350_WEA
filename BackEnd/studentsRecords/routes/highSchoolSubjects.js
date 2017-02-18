@@ -7,10 +7,10 @@ var parseJSON = bodyParser.json();
 
 router.route('/')
     .post(parseUrlencoded, parseJSON, function (request, response) {
-        var highSchoolSubject = new models.HighSchoolSubjects(request.body.highSchoolSubject);
+        var highSchoolSubject = new models.HighSchoolSubjects(request.body.highschoolSubject);
         highSchoolSubject.save(function (error) {
             if (error) response.send(error);
-            response.json({highSchoolSubject: highSchoolSubject});
+            response.json({highschoolSubject: highSchoolSubject});
         });
     })
     .get(parseUrlencoded, parseJSON, function (request, response) {
@@ -20,12 +20,12 @@ router.route('/')
             console.log("1");
             models.HighSchoolSubjects.find(function (error, highSchoolSubjects) {
                 if (error) response.send(error);
-                response.json({highSchoolSubject: highSchoolSubjects});
+                response.json({highschoolSubject: highSchoolSubjects});
             });   
         } else {
             models.HighSchoolSubjects.find({"student": Student.student}, function (error, students) {
                 if (error) response.send(error);
-                response.json({highSchoolSubject: students});
+                response.json({highschoolSubject: students});
             });
         }
     });
