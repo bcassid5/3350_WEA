@@ -7,11 +7,11 @@ var parseJSON = bodyParser.json();
 
 router.route('/')
     .post(parseUrlencoded, parseJSON, function (request, response) {
-        var highSchool = new models.HighSchools(request.body.highschool);
-        console.log(request.body.highschool);
+        var highSchool = new models.HighSchools(request.body.highSchool);
+        console.log(request.body.highSchool);
         highSchool.save(function (error) {
             if (error) response.send(error);
-            response.json({highschool: highSchool});
+            response.json({highSchool: highSchool});
         });
     })
     .get(parseUrlencoded, parseJSON, function (request, response) {

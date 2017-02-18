@@ -12,6 +12,14 @@ export default Ember.Component.extend({
     newSubjectDescription: null,
     
     highSchoolModel: null,
+    newHighSchoolName: null,
+
+    highSchoolCourseModel: null,
+    newCourseLevel: null,
+    newCourseSource: null,
+    newCourseUnit: null,
+    newCourseSubject: null,
+    newCourseHighSchool: null,
     
 
     init() {
@@ -28,6 +36,14 @@ export default Ember.Component.extend({
 
         this.get('store').findAll('highschool-subject').then(function(records){
             self.set('highSchoolSubjectModel', records);
+        });
+
+        this.get('store').findAll('highSchool').then(function(records){
+            self.set('highSchoolModel', records);
+        });
+
+        this.get('store').findAll('highschool-course').then(function(records){
+            self.set('highSchoolCourseModel', records);
         });
     },
 
@@ -176,6 +192,136 @@ export default Ember.Component.extend({
             record.save();
         }
       },
+
+       changeHighSchoolName(index)
+      {
+          var self = this;
+        if((this.$('.' + index)).val()!== ""){
+            this.get('store').find('highSchool', this.get('highSchoolModel').objectAt(index).get('id')).then(function(record){
+            record.set('name', (self.$('.' + index)).val());
+            record.save();
+                
+          });
+        }
+      },
+
+      removeHighSchoolOption(index){
+       this.get('store').find('highSchool',this.get('highSchoolModel').objectAt(index).get('id')).then(function(record){
+                record.deleteRecord();
+                if(record.get('isDeleted'))
+                {
+                    record.save();
+                }
+                
+          }, function (error){
+              console.log(error);
+          });
+          console.log(index);
+      },
+
+      updateHighSchoolName(val)
+      {
+        this.set('newHighSchoolName',val);
+      },
+
+      addHighSchoolOption(){
+        if (this.get('newHighSchoolName')!==""){
+            var record = this.get('store').createRecord('highSchool', {
+                name: this.get('newHighSchoolName'),
+                course: []
+            });
+            record.save();
+        }
+      },
+
+      changeCourseLevel(index)
+      {
+          var self = this;
+        if((this.$('.' + index)).val()!== ""){
+            this.get('store').find('highschool-course', this.get('highSchoolCourseModel').objectAt(index).get('id')).then(function(record){
+            record.set('level', (self.$('.' + index)).val());
+            record.save();
+                
+          });
+        }
+      },
+
+      changeCourseSource(index)
+      {
+          var self = this;
+        if((this.$('.' + index)).val()!== ""){
+            this.get('store').find('highschool-course', this.get('highSchoolCourseModel').objectAt(index).get('id')).then(function(record){
+            record.set('source', (self.$('.' + index)).val());
+            record.save();
+                
+          });
+        }
+      },
+
+      changeCourseUnit(index)
+      {
+          var self = this;
+        if((this.$('.' + index)).val()!== ""){
+            this.get('store').find('highschool-course', this.get('highSchoolCourseModel').objectAt(index).get('id')).then(function(record){
+            record.set('unit', (self.$('.' + index)).val());
+            record.save();
+                
+          });
+        }
+      },
+
+      removeCourseOption(index){
+       this.get('store').find('highschool-course',this.get('highSchoolCourseModel').objectAt(index).get('id')).then(function(record){
+                record.deleteRecord();
+                if(record.get('isDeleted'))
+                {
+                    record.save();
+                }
+                
+          }, function (error){
+              console.log(error);
+          });
+          console.log(index);
+      },
+
+      updateCourseLevel(val)
+      {
+        this.set('newCourseLevel',val);
+      },
+
+      updateCourseSource(val)
+      {
+        this.set('newCourseSource',val);
+      },
+
+      updateCourseUnit(val)
+      {
+        this.set('newCourseUnit',val);
+      },
+
+      updateCourseSubject(val)
+      {
+        this.set('newCourseSubject',val);
+      },
+
+      updateCourseHighSchool(val)
+      {
+        this.set('newCourseHighSchool',val);
+      },
+
+      addCourseOption(){
+        if (this.get('newHighSchoolName')!==""){
+            var record = this.get('store').createRecord('highschool-course', {
+                level: this.get('newCourseLevel'),
+                source: this.get('newCourseSource'),
+                unit: this.get('newCourseUnit'),
+                subject: this.get('newCourseSubject'),
+                highschool: this.get('newCourseHighSchool'),
+                grade: []
+            });
+            record.save();
+        }
+      }
 
   }
 });
