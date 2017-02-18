@@ -5,9 +5,13 @@ export default Ember.Component.extend({
     store: Ember.inject.service(),
     notDONE: true,
     currentStudent: null,
+    highSchoolModel: null,
 
     init() {
         this._super(...arguments);
+        this.get('store').findAll('highschool').then(function (records) {
+            self.set('highSchoolModel', records);
+        });
     },
 
 actions:{

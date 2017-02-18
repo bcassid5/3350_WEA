@@ -6,5 +6,5 @@ export default DS.Model.extend({
   unit: DS.attr(),
   subject: DS.hasMany('highschool-subject'),
   highschool: DS.hasMany('highschool'),
-  grade: DS.belongTo('highschool-grade')
+  grade: DS.belongsTo('highschool-grade')
 });
