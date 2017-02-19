@@ -42,8 +42,9 @@ export default Ember.Component.extend({
             self.set('highSchoolModel', records);
         });
 
-        this.get('store').findAll('highschool-course').then(function(records){
+        this.get('store').findAll('high-school-course').then(function(records){
             self.set('highSchoolCourseModel', records);
+            console.log(records);
         });
     },
 
@@ -238,7 +239,7 @@ export default Ember.Component.extend({
       {
           var self = this;
         if((this.$('.' + index)).val()!== ""){
-            this.get('store').find('highschool-course', this.get('highSchoolCourseModel').objectAt(index).get('id')).then(function(record){
+            this.get('store').find('high-school-course', this.get('highSchoolCourseModel').objectAt(index).get('id')).then(function(record){
             record.set('level', (self.$('.' + index)).val());
             record.save();
                 
@@ -250,7 +251,7 @@ export default Ember.Component.extend({
       {
           var self = this;
         if((this.$('.' + index)).val()!== ""){
-            this.get('store').find('highschool-course', this.get('highSchoolCourseModel').objectAt(index).get('id')).then(function(record){
+            this.get('store').find('high-school-course', this.get('highSchoolCourseModel').objectAt(index).get('id')).then(function(record){
             record.set('source', (self.$('.' + index)).val());
             record.save();
                 
@@ -262,7 +263,7 @@ export default Ember.Component.extend({
       {
           var self = this;
         if((this.$('.' + index)).val()!== ""){
-            this.get('store').find('highschool-course', this.get('highSchoolCourseModel').objectAt(index).get('id')).then(function(record){
+            this.get('store').find('high-school-course', this.get('highSchoolCourseModel').objectAt(index).get('id')).then(function(record){
             record.set('unit', (self.$('.' + index)).val());
             record.save();
                 
@@ -271,7 +272,7 @@ export default Ember.Component.extend({
       },
 
       removeCourseOption(index){
-       this.get('store').find('highschool-course',this.get('highSchoolCourseModel').objectAt(index).get('id')).then(function(record){
+       this.get('store').find('high-school-course',this.get('highSchoolCourseModel').objectAt(index).get('id')).then(function(record){
                 record.deleteRecord();
                 if(record.get('isDeleted'))
                 {
@@ -301,17 +302,23 @@ export default Ember.Component.extend({
 
       updateCourseSubject(val)
       {
-        this.set('newCourseSubject',val);
+        var sub = this.get('store').peekRecord('highschool-subject', val);
+        this.set('newCourseSubject', sub);
+        console.log("Subject" + val);
+        console.log("CourseSubject" +  this.get('newCourseSubject'));
       },
 
       updateCourseHighSchool(val)
       {
-        this.set('newCourseHighSchool',val);
+        var hs = this.get('store').peekRecord('high-school', val);
+        this.set('newCourseHighSchool', hs);
+        console.log("HS" + val);
+        console.log("CourseHS" +  this.get('newCourseHighSchool'));
       },
 
       addCourseOption(){
         if (this.get('newHighSchoolName')!==""){
-            var record = this.get('store').createRecord('highschool-course', {
+            var record = this.get('store').createRecord('high-school-course', {
                 level: this.get('newCourseLevel'),
                 source: this.get('newCourseSource'),
                 unit: this.get('newCourseUnit'),

@@ -2,5 +2,5 @@ import DS from 'ember-data';
 
 export default DS.Model.extend({
   name: DS.attr(),
-  course: DS.hasMany('highschool-course')
+  course: DS.hasMany('high-school-course')
 });
