@@ -196,8 +196,11 @@ export default Ember.Component.extend({
 
        changeHighSchoolName(index)
       {
+         console.log('Change HS Name called');
           var self = this;
         if((this.$('.' + index)).val()!== ""){
+            console.log(this.get('highSchoolModel').objectAt(index).get('id'));
+            console.log((this.$('.'+index)).val());
             this.get('store').find('highSchool', this.get('highSchoolModel').objectAt(index).get('id')).then(function(record){
             record.set('name', (self.$('.' + index)).val());
             record.save();

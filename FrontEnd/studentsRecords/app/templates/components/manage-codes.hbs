@@ -210,8 +210,8 @@
                             <label style="text-align: center">{{index}}</label>
                         </div>
                         <div class="field">
-                            <label style="width: 70px">Level</label>
-                            <input value={{highSchoolCourseChoice.level}} type="text"  onchange = {{action 'changeCourseLevel' index}} class = {{index}}>
+                            <label>Level</label>
+                            <input  style="width: 70px" value={{highSchoolCourseChoice.level}} type="text"  onchange = {{action 'changeCourseLevel' index}} class = {{index}}>
                         </div>
                         <div class="field">
                             <label>Source</label> 
@@ -251,7 +251,7 @@
                     {{/each}}
                     
                     <div class="fields">
-                        <div class="field">
+                        <div style="margin-right: 12px" class="field">
                             <br/>
                             <label style="text-align: center">Add</label>
                             <label style="text-align: center">New</label>
