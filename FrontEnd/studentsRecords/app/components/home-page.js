@@ -20,6 +20,7 @@ export default Ember.Component.extend({
   isAboutShowing: false,
   isAddShowing: false,
   isManageCodeShowing: false,
+  isUploadShowing: false,
 
   actions: {
     home () {
@@ -28,6 +29,7 @@ export default Ember.Component.extend({
       this.set('isAboutShowing', false);
       this.set('isAddShowing', false);
       this.set('isManageCodeShowing', false);
+      this.set('isUploadShowing', false);
     },
 
     studentsDataEntry (){
@@ -36,6 +38,7 @@ export default Ember.Component.extend({
       this.set('isAboutShowing', false);
       this.set('isAddShowing', false);
       this.set('isManageCodeShowing', false);
+      this.set('isUploadShowing', false);
     },
 
     about (){
@@ -44,6 +47,7 @@ export default Ember.Component.extend({
       this.set('isAboutShowing', true);
       this.set('isAddShowing', false);
       this.set('isManageCodeShowing', false);
+      this.set('isUploadShowing', false);
     },
 
     new (){
@@ -52,6 +56,7 @@ export default Ember.Component.extend({
       this.set('isAboutShowing', false);
       this.set('isAddShowing', true);
       this.set('isManageCodeShowing', false);
+      this.set('isUploadShowing', false);
     },
     manageCode (){
       this.set('isHomeShowing', false);
@@ -59,6 +64,15 @@ export default Ember.Component.extend({
       this.set('isAboutShowing', false);
       this.set('isManageCodeShowing', true);
       this.set('isAddShowing', false);
+      this.set('isUploadShowing', false);
+    },
+    uploadFile(){
+      this.set('isHomeShowing', false);
+      this.set('isStudentsRecordsDataEntry', false);
+      this.set('isAboutShowing', false);
+      this.set('isManageCodeShowing', false);
+      this.set('isAddShowing', false);
+      this.set('isUploadShowing', true);
     }
   }
 });

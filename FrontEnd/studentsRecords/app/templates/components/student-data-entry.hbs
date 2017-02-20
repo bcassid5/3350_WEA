@@ -144,10 +144,7 @@
   </div>
   <div class="ui tab" data-tab="advanced">
        <div class="ui grid">
-            <div class="ui left aligned one wide column"></div>
-            
             <div class="ui right aligned seven wide column">
-                <div class="ui form">
                     <br>
                     {{#each advStandingModel as |advStandingChoice index|}}
                     <p>
@@ -161,11 +158,14 @@
                       <br>
                       <label>From: </label> {{advStandingChoice.from}}
                       <br>
-                      
                     </p>
-                    <hr><hr>
+                    <hr>
                     {{/each}}
+                    </div>
+                <div class="ui right aligned seven wide column">
+                  <div class="ui form">
                     <div class="inline field">
+                      <br>
                     <label>Course:</label> <input name="course" type="text" onchange={{action 'updateCourse' value="target.value"}}>
                     </div>
                     <div class="inline field">
@@ -180,12 +180,6 @@
                     <div class="inline field">
                     <label>From:</label> <input name="from" type="text" onchange={{action 'updateFrom' value="target.value"}}>
                     </div>
-                    
-                </div>
-                
-            </div>
-            <div class="ui center aligned five wide column"></div> 
-            <div class="ui right aligned eight wide column">
                     <button class="ui violet button" {{action 'addcredit'}} >
                         Add 
                     </button>
@@ -193,7 +187,8 @@
                         Delete
                     </button>
                 </div>
-
+                
+            </div>
             
         </div>
        
