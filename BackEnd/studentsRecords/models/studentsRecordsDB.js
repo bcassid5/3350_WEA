@@ -33,7 +33,7 @@ var genderSchema = mongoose.Schema(
     }
 );
 
-var advStandingSchema=mongoose.Schema(
+var advStandingSchema = mongoose.Schema(
     {
         course: String,
         description: String,
