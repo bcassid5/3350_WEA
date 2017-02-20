@@ -25,21 +25,14 @@ app.use('/genders', genders);
 app.use('/advStandings', advStandings);
 
 
-
-app.listen(3700, function () {
-    console.log('Listening on port 3700');
-});
-
-
-
-app.post('/studentInputFile', function(request, response){
+app.post('/upload', function(request, response){
     console.log("hi");
     var name = request.body.studentInputFile.name;
     console.log(name);
     var json = request.body.studentInputFile.jsonTxt;
     json2 = json["MOCK_DATA (1)"];
     if(json2 == null){
-        json = json["SAS Data"];
+        json = json["MOCK_DATA (1)"];
     }
     else{
         json = json2;
@@ -64,4 +57,8 @@ app.post('/studentInputFile', function(request, response){
           db.close();
       });
     });
+});
+
+app.listen(3700, function () {
+    console.log('Listening on port 3700');
 });

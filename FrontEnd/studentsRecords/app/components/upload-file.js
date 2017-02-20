@@ -7,6 +7,34 @@ export default Ember.Component.extend({
     actions: {
 
         upload() { 
+            document.getElementById('file-field');
+            console.log('pressed');
+            
+            var file = document.getElementById('file-field');
+
+            if(file.files.length >0)
+            {
+                this.set('filename', file.files[0].name);
+                var formData = new FormData();
+                    
+                formData.append('uploads[]', file, file.name);
+                
+
+                $.ajax({
+                    url: '/upload',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(data){
+                        console.log('upload successful!\n' + data);
+                    }
+                });
+            }
+            
+            
+            
+            /*
             //document.getElementById('file-field');
             console.log('pressed');
             
@@ -32,7 +60,7 @@ export default Ember.Component.extend({
                 
                 
                 //reader.readAsText(file.files[0]);
-            }
+            }*/
         },
 
         
