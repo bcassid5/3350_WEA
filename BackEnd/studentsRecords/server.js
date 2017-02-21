@@ -1,8 +1,10 @@
 
 var express = require('express');
+var mongoose = require('mongoose');
 var logger = require('./logger');
 var app = express();
 var xlsx = require("node-xlsx").default;
+var mongoXlsx = require("mongo-xlsx");
 var path = require('path');
 var formidable = require('formidable');
 var fs = require('fs');
@@ -32,6 +34,8 @@ app.post('/upload', function(request, response){
     //var name = request.body.upload.name;
     // create an incoming form object
   var form = new formidable.IncomingForm();
+  var fileNameSave = null;
+  var collTitle = '';
   // specify that we want to allow the user to upload multiple files in a single request
   form.multiples = true;
   // store all uploads in the /uploads directory
@@ -44,6 +48,19 @@ app.post('/upload', function(request, response){
   form.on('file', function(field, file) {
     fs.rename(file.path, path.join(form.uploadDir, file.name));
     console.log('inside file');
+    console.log(file.name);
+    fileNameSave = file.name;
+    for(var i=0; i<fileNameSave.length;i++){
+        if(fileNameSave[i] == '.'){
+            break;
+        } else {
+            collTitle += fileNameSave[i];
+        }
+    }
+
+    console.log(fileNameSave);
+    console.log(collTitle);
+
   });
   // log any errors that occur
   console.log('outside error');
@@ -57,9 +74,24 @@ app.post('/upload', function(request, response){
     console.log('inside end');
     //console.log(request);
     response.end('success');
-    //response.end(request);
+    
+    var model = null;
+    var xlsx  = './uploads/'+fileNameSave;
+ 
+    mongoXlsx.xlsx2MongoData(xlsx, model, function(err, data) {
+        console.log(data);
+        
+        var db = mongoose.connection;
+
+        db.collection(collTitle).insert(data, function(err, records) {
+            if (err) throw err;
+            //console.log("Record added as " + records[0]._id);
+            console.log(collTitle);
+            console.log(data);
+        });
+        
+    });
   });
-  // parse the incoming request containing the form data
   form.parse(request);
 });
 
@@ -101,3 +133,8 @@ app.post('/upload', function(request, response){
 app.listen(3700, function () {
     console.log('Listening on port 3700');
 });
+
+
+
+
+
