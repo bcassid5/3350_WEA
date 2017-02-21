@@ -3,13 +3,14 @@ import Ember from 'ember';
 export default Ember.Component.extend({
     
     filename: null,
+    success: false,
 
     actions: {
 
         upload() { 
-            document.getElementById('file-field');
-            console.log('pressed');
+            //document.getElementById('file-field');
             
+            var self = this;
             var file = document.getElementById('file-field');
             //console.log(file.files.length);
             //console.log(file.files[0]);
@@ -17,11 +18,12 @@ export default Ember.Component.extend({
 
             if(file.files.length >0)
             {
-                this.set('filename', file.files[0].name);
+                //self.set('filename', file.files[0].name);
                 var formData = new FormData();
+
                     
-                console.log(file.files[0]);
-                console.log(file.files[0].name);
+                //console.log(file.files[0]);
+                //console.log(file.files[0].name);
                     
                 formData.append('uploads[]', file.files[0], file.files[0].name);
                 console.log(formData);
@@ -33,6 +35,10 @@ export default Ember.Component.extend({
                     processData: false,
                     contentType: false,
                     success: function(data){
+                        
+                        self.set('filename', file.files[0].name);
+                        self.set('success', true);
+                        
                         console.log('upload successful!\n' + data);
                     }
                 });

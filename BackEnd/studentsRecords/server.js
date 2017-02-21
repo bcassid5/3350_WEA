@@ -62,7 +62,7 @@ app.post('/upload', function(request, response){
   // once all the files have been uploaded, send a response to the client
   form.on('end', function() {
     
-    response.end('success');
+    
     
     var model = null;
     var xlsx  = './uploads/'+fileNameSave;
@@ -77,6 +77,7 @@ app.post('/upload', function(request, response){
         });
         
     });
+    response.end('Successfully uploaded file: '+fileNameSave);
   });
   form.parse(request);
 });
