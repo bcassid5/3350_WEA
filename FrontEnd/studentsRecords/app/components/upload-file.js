@@ -11,6 +11,9 @@ export default Ember.Component.extend({
             console.log('pressed');
             
             var file = document.getElementById('file-field');
+            console.log(file.files.length);
+            console.log(file.files[0]);
+            console.log(file.files[0].name);
 
             if(file.files.length >0)
             {
@@ -21,7 +24,7 @@ export default Ember.Component.extend({
                 
 
                 $.ajax({
-                    url: '/upload',
+                    url: 'http://localhost:3700/upload',
                     type: 'POST',
                     data: formData,
                     processData: false,
