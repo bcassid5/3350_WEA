@@ -40,17 +40,24 @@ app.post('/upload', function(request, response){
   //console.log(request.name);
   // every time a file has been uploaded successfully,
   // rename it to it's orignal name
+  console.log('outside file');
   form.on('file', function(field, file) {
     fs.rename(file.path, path.join(form.uploadDir, file.name));
-    console.log(file.name);
+    console.log('inside file');
   });
   // log any errors that occur
+  console.log('outside error');
   form.on('error', function(err) {
-    console.log('An error has occured: \n' + err);
+    
+    console.log('inside error - An error has occured: \n' + err);
   });
   // once all the files have been uploaded, send a response to the client
+  console.log('outside end');
   form.on('end', function() {
+    console.log('inside end');
+    //console.log(request);
     response.end('success');
+    //response.end(request);
   });
   // parse the incoming request containing the form data
   form.parse(request);
