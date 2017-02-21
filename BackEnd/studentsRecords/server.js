@@ -40,16 +40,12 @@ app.post('/upload', function(request, response){
   form.multiples = true;
   // store all uploads in the /uploads directory
   form.uploadDir = path.join(__dirname, '/uploads');
-  console.log(form.uploadDir);
-  //console.log(request.name);
-  // every time a file has been uploaded successfully,
-  // rename it to it's orignal name
-  console.log('outside file');
+  
   form.on('file', function(field, file) {
     fs.rename(file.path, path.join(form.uploadDir, file.name));
-    console.log('inside file');
-    console.log(file.name);
+    
     fileNameSave = file.name;
+    
     for(var i=0; i<fileNameSave.length;i++){
         if(fileNameSave[i] == '.'){
             break;
@@ -57,22 +53,15 @@ app.post('/upload', function(request, response){
             collTitle += fileNameSave[i];
         }
     }
-
-    console.log(fileNameSave);
-    console.log(collTitle);
-
   });
-  // log any errors that occur
-  console.log('outside error');
+  
   form.on('error', function(err) {
     
-    console.log('inside error - An error has occured: \n' + err);
+    console.log('An error has occured: \n' + err);
   });
   // once all the files have been uploaded, send a response to the client
-  console.log('outside end');
   form.on('end', function() {
-    console.log('inside end');
-    //console.log(request);
+    
     response.end('success');
     
     var model = null;
@@ -85,9 +74,6 @@ app.post('/upload', function(request, response){
 
         db.collection(collTitle).insert(data, function(err, records) {
             if (err) throw err;
-            //console.log("Record added as " + records[0]._id);
-            console.log(collTitle);
-            console.log(data);
         });
         
     });
