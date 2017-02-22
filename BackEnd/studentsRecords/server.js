@@ -30,7 +30,7 @@ app.use('/genders', genders);
 app.use('/advStandings', advStandings);
 
 app.post('/upload', function(request, response){
-    console.log('entering upload route');
+    //console.log('entering upload route');
     //var name = request.body.upload.name;
     // create an incoming form object
   var form = new formidable.IncomingForm();
