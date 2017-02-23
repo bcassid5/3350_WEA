@@ -107,10 +107,10 @@
                             <label style="text-align: center">Option {{index}}</label>
                         </div>
                         <div class="field">
-                            <label>Name</label> <input value={{highSchoolSubjectChoice.name}} type="text"  onchange = {{action 'changeSubjectName' index}} class = {{index}}>
+                            <label>Name</label> <input value={{highSchoolSubjectChoice.name}} type="text"  onchange = {{action 'changeSubjectName' highSchoolSubjectChoice.id}} class = {{highSchoolSubjectChoice.id}}>
                         </div>
                         <div class="field">
-                            <label>Description</label> <input value={{highSchoolSubjectChoice.description}} type="text"  onchange = {{action 'changeSubjectDescription' index}} class = {{index}} >
+                            <label>Description</label> <input value={{highSchoolSubjectChoice.description}} type="text"  onchange = {{action 'changeSubjectDescription' highSchoolSubjectChoice.id}} id = {{highSchoolSubjectChoice.id}} >
                         </div>
                         <div class="field">
                             <br/><br/>
@@ -162,7 +162,7 @@
                         </div>
                         <div class="field">
                             <label>Name</label>
-                            <input style="width: 500px" value={{highSchoolChoice.name}} type="text"  onchange = {{action 'changeHighSchoolName' index}} class = {{index}}>
+                            <input style="width: 500px" value={{highSchoolChoice.name}} type="text"  onchange = {{action 'changeHighSchoolName' highSchoolChoice.id}} class = {{highSchoolChoice.id}}>
                         </div>
                         <div class="field">
                             <br/><br/>

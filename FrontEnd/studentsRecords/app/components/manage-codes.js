@@ -150,24 +150,38 @@ export default Ember.Component.extend({
 
       changeSubjectName(index)
       {
+          console.log("changeSubjectName called");
           var self = this;
         if((this.$('.' + index)).val()!== ""){
+            console.log(index);
+            console.log('hello   '+(this.$('.'+index)).val());
+            console.log('hellox2   '+(self.$('.'+index)).val());
             this.get('store').find('highschool-subject', this.get('highSchoolSubjectModel').objectAt(index).get('id')).then(function(record){
-            record.set('name', (self.$('.' + index)).val());
-            record.save();
-                
+            //this.get('store').find('highschool-subject', index).then(function(record){
+                record.set('name', (self.$('.' + index)).val());
+                console.log(record.get('name'));
+                console.log(record.data.name);
+                console.log(record);
+                record.save();
           });
         }
       },
 
       changeSubjectDescription(index)
       {
+          console.log("changeSubjectDescription called");
           var self = this;
-        if((this.$('.' + index)).val()!== ""){
+        if((this.$('#' + index)).val()!== ""){
+            console.log(index);
+            console.log('hello   '+(this.$('.'+index)).val());
+            console.log('hellox2   '+(self.$('.'+index)).val());
             this.get('store').find('highschool-subject', this.get('highSchoolSubjectModel').objectAt(index).get('id')).then(function(record){
-            record.set('description', (self.$('.' + index)).val());
-            record.save();
-                
+            //this.get('store').find('highschool-subject', index).then(function(record){
+                record.set('description', (self.$('#' + index)).val());
+                console.log(record.get('description'));
+                console.log(record.data.description);
+                console.log(record);
+                record.save();
           });
         }
       },
@@ -199,18 +213,23 @@ export default Ember.Component.extend({
          console.log('Change HS Name called');
           var self = this;
         if((this.$('.' + index)).val()!== ""){
-            console.log(this.get('highSchoolModel').objectAt(index).get('id'));
-            console.log((this.$('.'+index)).val());
-            this.get('store').find('highSchool', this.get('highSchoolModel').objectAt(index).get('id')).then(function(record){
-            record.set('name', (self.$('.' + index)).val());
-            record.save();
-                
+            console.log(index);
+            console.log('hello   '+(this.$('.'+index)).val());
+            console.log('hellox2   '+(self.$('.'+index)).val());
+            this.get('store').find('highSchool', index).then(function(record){
+                //record.data.name= (self.$('.' + index)).val();
+                record.set('name', (self.$('.' + index)).val());
+                console.log(record.get('name'));
+                console.log(record.data.name);
+                console.log(record);
+                record.save();
+
           });
         }
       },
 
       removeHighSchoolOption(index){
-       this.get('store').find('highSchool',this.get('highSchoolModel').objectAt(index).get('id')).then(function(record){
+       this.get('store').find('highSchool',index).then(function(record){
                 record.deleteRecord();
                 if(record.get('isDeleted'))
                 {
