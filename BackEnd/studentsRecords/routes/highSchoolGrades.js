@@ -10,7 +10,7 @@ router.route('/')
         var highSchoolGrade = new models.HighSchoolGrades(request.body.highSchoolGrade);
         highSchoolGrade.save(function (error) {
             if (error) response.send(error);
-            response.json({highSchoolGrade: highSchoolGrade});
+            response.json({highschoolGrade: highSchoolGrade});
         });
     })
     .get(parseUrlencoded, parseJSON, function (request, response) {
@@ -20,12 +20,12 @@ router.route('/')
             console.log("1");
             models.HighSchoolGrades.find(function (error, highSchoolGrades) {
                 if (error) response.send(error);
-                response.json({highSchoolGrade: highSchoolGrades});
+                response.json({highschoolGrade: highSchoolGrades});
             });   
         } else {
             models.HighSchoolGrades.find({"student": Student.student}, function (error, students) {
                 if (error) response.send(error);
-                response.json({highSchoolGrade: students});
+                response.json({highschoolGrade: students});
             });
         }
     });
@@ -33,7 +33,7 @@ router.route('/:highSchoolGrade_id')
     .get(parseUrlencoded, parseJSON, function (request, response) {
         models.HighSchoolGrades.findById(request.params.highSchoolGrade_id, function (error, highSchoolGrade) {
             if (error) response.send(error);
-            response.json({highSchoolGrade: highSchoolGrade});
+            response.json({highschoolGrade: highSchoolGrade});
         })
     })
     .put(parseUrlencoded, parseJSON, function (request, response) {
@@ -49,7 +49,7 @@ router.route('/:highSchoolGrade_id')
                         response.send({error: error});
                     }
                     else {
-                        response.json({highSchoolGrade: highSchoolGrade});
+                        response.json({highschoolGrade: highSchoolGrade});
                     }
                 });
             }
@@ -59,7 +59,7 @@ router.route('/:highSchoolGrade_id')
         models.HighSchoolGrades.findByIdAndRemove(request.params.highSchoolGrade_id,
             function (error, deleted) {
                 if (!error) {
-                    response.json({highSchoolGrade: deleted});
+                    response.json({highschoolGrade: deleted});
                 }
             }
         );

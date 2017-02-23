@@ -2,23 +2,73 @@
   <div class="header" style="font-size: 150%">Add High School Course</div>
   <div class="content">
      <div class="ui grid">
-      <div class="ui left aligned seven wide column">
+      <div class="ui left aligned sixteen wide column">
       <div class="ui form">
         <div class="inline field">
             <label>Grade</label><br/>
-            <input type="text" value="" style="width: 300px">
+            <input type="text" value="" style="width: 300px" onchange={{action 'updateGrade' value="target.value"}}>
           </div>
 
             <div class="inline field">
                 <label>High School</label><br/>
                 <select style="width: 300px" name = "hsName" onchange={{action 'updateHighSchoolSelection' value="target.value"}}>
+                  <option value="" disabled selected style="display: none;">Select High School</option>
                    {{#each highSchoolModel as |highSchoolChoice|}}
                       <option value={{highSchoolChoice.id}}>{{highSchoolChoice.name}} </option>
                     {{/each}}
                 </select> 
             </div>
+            
+            {{#if showList}}
+                {{#each highSchoolCourseModel as |highSchoolCourseChoice index|}}
+                  {{#if (eq highSchoolCourseChoice.highschool.id currentHighSchool)}}
+                    <div class="fields">
+                        <div class="field">
+                            <br/>
+                            <label style="text-align: center">Option: </label>
+                            <!--<label style="text-align: center">{{optionNumber}}</label>-->
+                        </div>
+                        <div class="field">
+                            <label>Level</label>
+                            <input  readonly="readonly" style="width: 70px" value={{highSchoolCourseChoice.level}} type="text"  class = {{index}}>
+                        </div>
+                        <div class="field">
+                            <label>Source</label> 
+                            <input readonly="readonly" style="width: 80px" value={{highSchoolCourseChoice.source}} type="text" class = {{index}} >
+                        </div>
+                        <div class="field">
+                            <label>Unit</label> 
+                            <input readonly="readonly" style="width: 60px" value={{highSchoolCourseChoice.unit}} type="text" class = {{index}} >
+                        </div>
+                        <div class="field">
+                            <label>Subject</label>
+                            {{#each highSchoolSubjectModel as |highSchoolSubjectChoice|}}
+                               {{#if (eq highSchoolSubjectChoice.id highSchoolCourseChoice.subject.id)}}
+                                    <input readonly="readonly" style="width: 120px" value={{highSchoolSubjectChoice.description}} type="text" class = {{index}} >
+                               {{/if}}
+                            {{/each}}
+                        </div>
+                        <div class="field">
+                            <label>Department</label>
+                            {{#each highSchoolSubjectModel as |highSchoolSubjectChoice|}}
+                               {{#if (eq highSchoolSubjectChoice.id highSchoolCourseChoice.subject.id)}}
+                                    <input readonly="readonly" style="width: 120px" value={{highSchoolSubjectChoice.name}} type="text" class = {{index}} >
+                               {{/if}}
+                            {{/each}}
+                        </div>
+                        
+                        <div class="field">
+                            <br/><br/>
+                            <a {{action 'addCourseToRecord' index}}> 
+                                <i class="large green add circle icon"></i> <br>
+                            </a>
+                        </div>
+                    </div>
+                  {{/if}}
+                {{/each}}
+              {{/if}}
 
-          <div class="inline field">
+          <!--<div class="inline field">
             <label>Source</label><br/>
             <select style="width: 300px" name = "courseSource" onchange={{action 'updateSourceSelection' value="target.value"}}>
                   <option value="" disabled selected style="display: none;">Source</option>
@@ -53,15 +103,9 @@
                   <option value="" disabled selected style="display: none;">Unit</option>
                     {{#each highSchoolCourseModel as |highSchoolUnitsChoice|}}
                       {{#if (eq highSchoolUnitsChoice.highschool.id currentHighSchool)}}
-                      {{log "first if"}}
                         {{#if (eq highSchoolUnitsChoice.source currentSource)}}
-                        {{log "second if"}}
-                        {{log highSchoolUnitsChoice.level}}
-                        {{log currentLevel}}
-                        {{log (eq highSchoolUnitsChoice.level currentLevel)}}
                           {{#if (eq highSchoolUnitsChoice.level currentLevel)}}
-                          {{log 'added'}}
-                            <option value={{highSchoolLevelChoice.id}}>{{highSchoolLevelChoice.unit}}</option>
+                            <option value={{highSchoolUnitsChoice.unit}}>{{highSchoolUnitsChoice.unit}}</option>
                           {{/if}}
                         {{/if}}
                       {{/if}}
@@ -73,12 +117,30 @@
           {{#if showSubject}}
               <div class="inline field">
                 <label>Subject</label><br/>
-                <select style="width: 300px">
-                        <option value="1">English</option>
-                        <option value="2">Spanish</option>
-                        <option value="3">French</option>
-                        <option value="4">COMMTECH</option>
-                </select> 
+                <select style="width: 300px" name = "courseSubject" onchange={{action 'updateSubjectSelection' value="target.value"}}>
+                  <option value="" disabled selected style="display: none;">Subject</option>
+                    {{#each highSchoolCourseModel as |highSchoolSubjectChoice|}}
+                    {{log "entered for each... loop"}}
+                      {{#if (eq highSchoolSubjectChoice.highschool.id currentHighSchool)}}
+                      {{log "first if"}}
+                        {{#if (eq highSchoolSubjectChoice.source currentSource)}}
+                        {{log "second if"}}
+                          {{#if (eq highSchoolSubjectChoice.level currentLevel)}}
+                          {{log 'third if'}}
+                          {{log highSchoolSubjectChoice.unit}}
+                          {{log currentUnit}}
+                          {{log (eq highSchoolSubjectChoice.unit currentUnit)}}
+                            {{#if (eq highSchoolSubjectChoice.unit currentUnit)}}
+                            {{log 'added'}}
+                            {{log highSchoolSubjectChoice}}
+                            {{log highSchoolSubjectChoice.subject}}
+                              <option value={{highSchoolSubjectChoice.id}}>{{highSchoolSubjectChoice.subject}}</option>
+                            {{/if}}
+                          {{/if}}
+                        {{/if}}
+                      {{/if}}
+                    {{/each}}
+                  </select>
               </div>
           {{/if}}
 
@@ -87,18 +149,16 @@
               <label>Description</label><br/>
               <input type="text" value="" style="width: 300px">
             </div>
-          {{/if}}
-
-          
-
+          {{/if}}         
+-->
       </div>
      </div>    
     </div>
     <div class="actions">
         <br/><br/>
-        {{#if DONE}}
+        <!--{{#if DONE}}
           <div class="ui button" {{action "add"}}>Add</div>
-        {{/if}}
+        {{/if}}-->
       <div class="ui button" {{action "exit"}}>Cancel</div>
     </div>
 </div>

@@ -55,7 +55,7 @@ var highSchoolSubjectSchema = mongoose.Schema(
 
 var highSchoolCourseSchema = mongoose.Schema(
     {
-        level: Number,
+        level: String,
         subject: String,
         description: String,
         unit: String,

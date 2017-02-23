@@ -40,6 +40,11 @@ export default Ember.Component.extend({
   unit: null,
   from: null,
   showAddCoursePage: false,
+
+  highSchoolModel: null,
+  highSchoolSubjectModel: null,
+  highSchoolCourseModel: null,
+  highSchoolGradeModel: null,
     
   studentModel: Ember.observer('offset', function () {
     var self = this;
@@ -98,6 +103,26 @@ export default Ember.Component.extend({
 
   init() {
     this._super(...arguments);
+
+    this.get('store').findAll('highSchool').then(function (records) {
+            self.set('highSchoolModel', records);
+        });
+
+        this.get('store').findAll('highschool-subject').then(function(records){
+            self.set('highSchoolSubjectModel', records);
+        });
+
+        this.get('store').findAll('high-school-course').then(function(records){
+            self.set('highSchoolCourseModel', records);
+        });
+/********************************************************************************************************** */
+        this.get('store').findAll('highschool-grade').then(function(records){
+            self.set('highSchoolGradeModel', records);
+            console.log('getting grade records from store');
+            console.log(records);
+        });
+/************************************************************************************************************* */
+
     // load Residency data model
     this.get('store').findAll('residency').then(function (records) {
       self.set('residencyModel', records);
