@@ -6,7 +6,7 @@ export default Ember.Component.extend({
     success: false,
     genders: false,
     residencies: false,
-    AdvancedStanding: false,
+    advStanding: false,
 
     actions: {
 
@@ -31,7 +31,7 @@ export default Ember.Component.extend({
             {   
                 switch(file.files[0].name){
                     case 'students.xlsx':
-                        if(self.get('genders')&&self.get('residencies')&&self.get('AdvancedStanding')){
+                        if(self.get('genders')&&self.get('residencies')&&self.get('advStanding')){
                             self.send('send2Back', file);
                         } else {
                             alert('Error: Must upload dependent documents first!');
