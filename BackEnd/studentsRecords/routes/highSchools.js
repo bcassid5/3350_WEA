@@ -43,7 +43,8 @@ router.route('/:highSchool_id')
                 response.send({error: error});
             }
             else {
-                highSchool.type = request.body.highSchool.type;
+                console.log(request.body);
+                highSchool.name = request.body.highSchool.name;
 
                 highSchool.save(function (error) {
                     if (error) {

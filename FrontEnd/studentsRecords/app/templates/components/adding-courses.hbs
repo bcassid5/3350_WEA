@@ -26,7 +26,6 @@
                         <div class="field">
                             <br/>
                             <label style="text-align: center">Option: </label>
-                            <!--<label style="text-align: center">{{optionNumber}}</label>-->
                         </div>
                         <div class="field">
                             <label>Level</label>
@@ -68,97 +67,11 @@
                 {{/each}}
               {{/if}}
 
-          <!--<div class="inline field">
-            <label>Source</label><br/>
-            <select style="width: 300px" name = "courseSource" onchange={{action 'updateSourceSelection' value="target.value"}}>
-                  <option value="" disabled selected style="display: none;">Source</option>
-                  {{#each highSchoolCourseModel as |highSchoolSourceChoice|}}
-                    {{#if (eq highSchoolSourceChoice.highschool.id currentHighSchool)}}
-                     <option value={{highSchoolSourceChoice.source}}>{{highSchoolSourceChoice.source}} </option>
-                    {{/if}}
-                  {{/each}}
-            </select> 
-          </div>
-
-           {{#if showLevel}}
-            <div class="inline field">
-                  <label>Level</label><br/>
-                  <select style="width: 300px" name = "courseLevel" onchange={{action 'updateLevelSelection' value="target.value"}}>
-                  <option value="" disabled selected style="display: none;">Level</option>
-                    {{#each highSchoolCourseModel as |highSchoolLevelChoice|}}
-                      {{#if (eq highSchoolLevelChoice.highschool.id currentHighSchool)}}
-                        {{#if (eq highSchoolLevelChoice.source currentSource)}}
-                        <option value={{highSchoolLevelChoice.level}}>{{highSchoolLevelChoice.level}} </option>
-                        {{/if}}
-                      {{/if}}
-                    {{/each}}
-                  </select>             
-            </div>
-          {{/if}}
-
-          {{#if showUnits}}
-            <div class="inline field">
-              <label>Unit</label><br/>
-              <select style="width: 300px" name = "courseUnit" onchange={{action 'updateUnitSelection' value="target.value"}}>
-                  <option value="" disabled selected style="display: none;">Unit</option>
-                    {{#each highSchoolCourseModel as |highSchoolUnitsChoice|}}
-                      {{#if (eq highSchoolUnitsChoice.highschool.id currentHighSchool)}}
-                        {{#if (eq highSchoolUnitsChoice.source currentSource)}}
-                          {{#if (eq highSchoolUnitsChoice.level currentLevel)}}
-                            <option value={{highSchoolUnitsChoice.unit}}>{{highSchoolUnitsChoice.unit}}</option>
-                          {{/if}}
-                        {{/if}}
-                      {{/if}}
-                    {{/each}}
-                  </select> 
-            </div>
-          {{/if}}
-
-          {{#if showSubject}}
-              <div class="inline field">
-                <label>Subject</label><br/>
-                <select style="width: 300px" name = "courseSubject" onchange={{action 'updateSubjectSelection' value="target.value"}}>
-                  <option value="" disabled selected style="display: none;">Subject</option>
-                    {{#each highSchoolCourseModel as |highSchoolSubjectChoice|}}
-                    {{log "entered for each... loop"}}
-                      {{#if (eq highSchoolSubjectChoice.highschool.id currentHighSchool)}}
-                      {{log "first if"}}
-                        {{#if (eq highSchoolSubjectChoice.source currentSource)}}
-                        {{log "second if"}}
-                          {{#if (eq highSchoolSubjectChoice.level currentLevel)}}
-                          {{log 'third if'}}
-                          {{log highSchoolSubjectChoice.unit}}
-                          {{log currentUnit}}
-                          {{log (eq highSchoolSubjectChoice.unit currentUnit)}}
-                            {{#if (eq highSchoolSubjectChoice.unit currentUnit)}}
-                            {{log 'added'}}
-                            {{log highSchoolSubjectChoice}}
-                            {{log highSchoolSubjectChoice.subject}}
-                              <option value={{highSchoolSubjectChoice.id}}>{{highSchoolSubjectChoice.subject}}</option>
-                            {{/if}}
-                          {{/if}}
-                        {{/if}}
-                      {{/if}}
-                    {{/each}}
-                  </select>
-              </div>
-          {{/if}}
-
-          {{#if showDescription}}
-            <div class="inline field">
-              <label>Description</label><br/>
-              <input type="text" value="" style="width: 300px">
-            </div>
-          {{/if}}         
--->
       </div>
      </div>    
     </div>
     <div class="actions">
         <br/><br/>
-        <!--{{#if DONE}}
-          <div class="ui button" {{action "add"}}>Add</div>
-        {{/if}}-->
       <div class="ui button" {{action "exit"}}>Cancel</div>
     </div>
 </div>

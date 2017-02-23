@@ -15,7 +15,7 @@ router.route('/')
     })
     .get(parseUrlencoded, parseJSON, function (request, response) {
         console.log("0");
-        var Student = request.query.filter;
+        var Student = request.query;
         if (!Student) {
             console.log("1");
             models.HighSchoolSubjects.find(function (error, highSchoolSubjects) {
@@ -31,25 +31,32 @@ router.route('/')
     });
 router.route('/:highSchoolSubject_id')
     .get(parseUrlencoded, parseJSON, function (request, response) {
-        models.HighSchoolSubjects.findById(request.params.highSchoolSubject_id, function (error, highSchoolSubject) {
+        models.HighSchoolSubjects.findById(request.params.highschoolSubject_id, function (error, highSchoolSubject) {
             if (error) response.send(error);
-            response.json({highSchoolSubject: highSchoolSubject});
+            response.json({highschoolSubject: highSchoolSubject});
         })
     })
     .put(parseUrlencoded, parseJSON, function (request, response) {
+        console.log('before');
         models.HighSchoolSubjects.findById(request.params.highSchoolSubject_id, function (error, highSchoolSubject) {
             if (error) {
+                console.log('error lol');
                 response.send({error: error});
             }
             else {
-                highSchoolSubject.type = request.body.highSchoolSubject.type;
-
+                console.log(request.body);
+                highSchoolSubject.name = request.body.highschoolSubject.name;
+                highSchoolSubject.description = request.body.highschoolSubject.description;
+                console.log('before save');
                 highSchoolSubject.save(function (error) {
+                    console.log('inside save');
                     if (error) {
                         response.send({error: error});
+                        console.log('in error 2');
                     }
                     else {
-                        response.json({highSchoolSubject: highSchoolSubject});
+                        response.json({highschoolSubject: highSchoolSubject});
+                        console.log('in else 2');
                     }
                 });
             }

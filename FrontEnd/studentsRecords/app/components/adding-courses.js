@@ -93,38 +93,6 @@ actions:{
         Ember.$('.ui.modal').modal('hide');
         Ember.$('.ui.modal').modal('show');
     },
-
-    /*updateSourceSelection: function(val){
-        this.set('currentSource', val);
-        this.set('showLevel', true);
-        this.set('showUnits', false);
-        this.set('showSubject', false);
-        Ember.$('.ui.modal').modal('hide');
-        Ember.$('.ui.modal').modal('show');
-    },
-
-    updateLevelSelection: function(val){
-        this.set('currentLevel', val);
-        this.set('showUnits', true);
-        this.set('showSubject', false);
-        Ember.$('.ui.modal').modal('hide');
-        Ember.$('.ui.modal').modal('show');
-    },
-
-    updateUnitSelection: function(val){
-        this.set('currentUnit', val);
-        this.set('showSubject', true);
-        Ember.$('.ui.modal').modal('hide');
-        Ember.$('.ui.modal').modal('show');
-    },
-
-    updateSubjectSelection: function(val){
-        this.set('currentCourse', val);
-        this.set('DONE', true);
-        Ember.$('.ui.modal').modal('hide');
-        Ember.$('.ui.modal').modal('show');
-    }*/
-
     updateGrade: function(val){
         this.set('newGrade', val);
     },
