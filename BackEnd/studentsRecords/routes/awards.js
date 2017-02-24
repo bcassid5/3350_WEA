@@ -7,62 +7,68 @@ var parseJSON = bodyParser.json();
 
 router.route('/')
     .post(parseUrlencoded, parseJSON, function (request, response) {
-        var gender = new models.Genders(request.body.gender);
         
-        gender.save(function (error) {
+
+        var award = new models.Awards(request.body.award);
+        
+        award.save(function (error) {
             if (error) response.send(error);
-            response.json({gender: gender});
+            response.json({award: award});
         });
     })
     .get(parseUrlencoded, parseJSON, function (request, response) {
-        
-        var Student = request.query.filter;
+        var Student = request.query;
         if (!Student) {
             
-            models.Genders.find(function (error, genders) {
+            models.Awards.find(function (error, awards) {
                 if (error) response.send(error);
-                response.json({gender: genders});
-            });   
+                response.json({award: awards});
+            });
         } else {
-            models.Genders.find({"student": Student.student}, function (error, students) {
+            
+            models.Awards.find({"student": Student.student}, function (error, award) {
                 if (error) response.send(error);
-                response.json({gender: students});
+                response.json({award: award});
             });
         }
     });
-router.route('/:gender_id')
+
+router.route('/:award_id')
     .get(parseUrlencoded, parseJSON, function (request, response) {
-        models.Genders.findById(request.params.gender_id, function (error, gender) {
+        models.Awards.findById(request.params.award_id, function (error, award) {
             if (error) response.send(error);
-            response.json({gender: gender});
+            response.json({award: award});
         })
     })
     .put(parseUrlencoded, parseJSON, function (request, response) {
-        models.Genders.findById(request.params.gender_id, function (error, gender) {
+        models.Awards.findById(request.params.award_id, function (error, award) {
             if (error) {
                 response.send({error: error});
             }
             else {
-                gender.type = request.body.gender.type;
-
-                gender.save(function (error) {
+                award.note = request.body.award.note;
+                
+                award.student = request.body.award.student;
+                
+                award.save(function (error) {
                     if (error) {
                         response.send({error: error});
                     }
                     else {
-                        response.json({gender: gender});
+                        response.json({award: award});
                     }
                 });
             }
         })
     })
     .delete(parseUrlencoded, parseJSON, function (request, response) {
-        models.Genders.findByIdAndRemove(request.params.gender_id,
+        models.Awards.findByIdAndRemove(request.params.award_id,
             function (error, deleted) {
                 if (!error) {
-                    response.json({gender: deleted});
+                    response.json({award: deleted});
                 }
             }
         );
     });
-module.exports=router;
+
+module.exports = router;

@@ -1,68 +1,73 @@
 var express = require('express');
 var router = express.Router();
-var models = require('../models/studentsRecordsDB');
+var models = require('../models/programMark');
 var bodyParser = require('body-parser');
 var parseUrlencoded = bodyParser.urlencoded({extended: false});
 var parseJSON = bodyParser.json();
 
 router.route('/')
     .post(parseUrlencoded, parseJSON, function (request, response) {
-        var gender = new models.Genders(request.body.gender);
         
-        gender.save(function (error) {
+
+        var schoolTerm = new models.SchoolTerms(request.body.schoolTerm);
+        
+        schoolTerm.save(function (error) {
             if (error) response.send(error);
-            response.json({gender: gender});
+            response.json({schoolTerm: schoolTerm});
         });
     })
     .get(parseUrlencoded, parseJSON, function (request, response) {
-        
-        var Student = request.query.filter;
+        var Student = request.query;
         if (!Student) {
             
-            models.Genders.find(function (error, genders) {
+            models.SchoolTerms.find(function (error, schoolTerms) {
                 if (error) response.send(error);
-                response.json({gender: genders});
-            });   
+                response.json({schoolTerm: schoolTerms});
+            });
         } else {
-            models.Genders.find({"student": Student.student}, function (error, students) {
+            
+            models.SchoolTerms.find({"student": Student.student}, function (error, schoolTerm) {
                 if (error) response.send(error);
-                response.json({gender: students});
+                response.json({schoolTerm: schoolTerm});
             });
         }
     });
-router.route('/:gender_id')
+
+router.route('/:schoolTerm_id')
     .get(parseUrlencoded, parseJSON, function (request, response) {
-        models.Genders.findById(request.params.gender_id, function (error, gender) {
+        models.SchoolTerms.findById(request.params.schoolTerm_id, function (error, schoolTerm) {
             if (error) response.send(error);
-            response.json({gender: gender});
+            response.json({schoolTerm: schoolTerm});
         })
     })
     .put(parseUrlencoded, parseJSON, function (request, response) {
-        models.Genders.findById(request.params.gender_id, function (error, gender) {
+        models.SchoolTerms.findById(request.params.schoolTerm_id, function (error, schoolTerm) {
             if (error) {
                 response.send({error: error});
             }
             else {
-                gender.type = request.body.gender.type;
-
-                gender.save(function (error) {
+                
+                schoolTerm.name = request.body.schoolTerm.name;
+                
+                schoolTerm.save(function (error) {
                     if (error) {
                         response.send({error: error});
                     }
                     else {
-                        response.json({gender: gender});
+                        response.json({schoolTerm: schoolTerm});
                     }
                 });
             }
         })
     })
     .delete(parseUrlencoded, parseJSON, function (request, response) {
-        models.Genders.findByIdAndRemove(request.params.gender_id,
+        models.SchoolTerms.findByIdAndRemove(request.params.schoolTerm_id,
             function (error, deleted) {
                 if (!error) {
-                    response.json({gender: deleted});
+                    response.json({schoolTerm: deleted});
                 }
             }
         );
     });
-module.exports=router;
+
+module.exports = router;

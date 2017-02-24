@@ -65,7 +65,7 @@ router.route('/:student_id')
                 student.admissAvg = request.body.student.admissAvg;
                 student.admissComments = request.body.student.admissComments;
                 student.advStanding= request.body.student.advStanding;
-                console.log(student.advStanding);
+                console.log(request.body.student);
                 console.log(request.body.student.advStanding);
 
                 student.save(function (error) {

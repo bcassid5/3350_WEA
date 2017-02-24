@@ -16,7 +16,7 @@ router.route('/')
     .get(parseUrlencoded, parseJSON, function (request, response) {
         var Student = request.query.filter;
         if (!Student) {
-            console.log("5");
+            
             models.Residencies.find(function (error, residencies) {
                 if (error) response.send(error);
                 response.json({residency: residencies});

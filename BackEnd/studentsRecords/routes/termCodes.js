@@ -1,68 +1,75 @@
 var express = require('express');
 var router = express.Router();
-var models = require('../models/studentsRecordsDB');
+var models = require('../models/programMark');
 var bodyParser = require('body-parser');
 var parseUrlencoded = bodyParser.urlencoded({extended: false});
 var parseJSON = bodyParser.json();
 
 router.route('/')
     .post(parseUrlencoded, parseJSON, function (request, response) {
-        var gender = new models.Genders(request.body.gender);
         
-        gender.save(function (error) {
+
+        var termCode = new models.TermCodes(request.body.termCode);
+        
+        termCode.save(function (error) {
             if (error) response.send(error);
-            response.json({gender: gender});
+            response.json({termCode: termCode});
         });
     })
     .get(parseUrlencoded, parseJSON, function (request, response) {
-        
-        var Student = request.query.filter;
+        var Student = request.query;
         if (!Student) {
             
-            models.Genders.find(function (error, genders) {
+            models.TermCodes.find(function (error, termCodes) {
                 if (error) response.send(error);
-                response.json({gender: genders});
-            });   
+                response.json({termCode: termCodes});
+            });
         } else {
-            models.Genders.find({"student": Student.student}, function (error, students) {
+            
+            models.TermCodes.find({"student": Student.student}, function (error, termCode) {
+                
                 if (error) response.send(error);
-                response.json({gender: students});
+                response.json({termCode: termCode});
             });
         }
     });
-router.route('/:gender_id')
+
+router.route('/:termCode_id')
     .get(parseUrlencoded, parseJSON, function (request, response) {
-        models.Genders.findById(request.params.gender_id, function (error, gender) {
+        models.TermCodes.findById(request.params.termCode_id, function (error, termCode) {
             if (error) response.send(error);
-            response.json({gender: gender});
+            response.json({termCode: termCode});
         })
     })
     .put(parseUrlencoded, parseJSON, function (request, response) {
-        models.Genders.findById(request.params.gender_id, function (error, gender) {
+        models.TermCodes.findById(request.params.termCode_id, function (error, termCode) {
             if (error) {
                 response.send({error: error});
             }
             else {
-                gender.type = request.body.gender.type;
-
-                gender.save(function (error) {
+                
+                termCode.name = request.body.termCode.name;
+                termCode.program = request.body.termCode.program;
+                termCode.student=request.body.termCode.student;
+                termCode.save(function (error) {
                     if (error) {
                         response.send({error: error});
                     }
                     else {
-                        response.json({gender: gender});
+                        response.json({termCode: termCode});
                     }
                 });
             }
         })
     })
     .delete(parseUrlencoded, parseJSON, function (request, response) {
-        models.Genders.findByIdAndRemove(request.params.gender_id,
+        models.TermCodes.findByIdAndRemove(request.params.termCode_id,
             function (error, deleted) {
                 if (!error) {
-                    response.json({gender: deleted});
+                    response.json({termCode: deleted});
                 }
             }
         );
     });
-module.exports=router;
+
+module.exports = router;

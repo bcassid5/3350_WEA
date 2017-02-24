@@ -9,12 +9,13 @@ var studentsSchema = mongoose.Schema(
         DOB: Date,
         photo: String,
         resInfo: {type: mongoose.Schema.ObjectId, ref: 'Residencies'},
-        advStanding: [{type: mongoose.Schema.ObjectId, ref: 'AdvancedStandings'}],
+        advStanding: [{type: mongoose.Schema.ObjectId, ref: 'AdvStandings'}],
         regComments: String,
         BOA: String,
         admissAvg: Number,
         admissComments: String,
-
+        mark: [{type: mongoose.Schema.ObjectId, ref: 'Grades'}],
+        awards: [{type: mongoose.Schema.ObjectId, ref: 'Awards'}],
     }
 );
 studentsSchema.plugin(mongoosePaginate);
@@ -42,11 +43,19 @@ var advStandingSchema=mongoose.Schema(
         from: String,
         students: {type: mongoose.Schema.ObjectId, ref: ('Students')}
     }
-)
+);
+
+var awardsSchema=mongoose.Schema(
+    {
+        note: String,
+        student: {type: mongoose.Schema.ObjectId, ref: ('Students')}
+    }
+);
 var Students = mongoose.model('student', studentsSchema);
 var Residencies = mongoose.model('residency', residencySchema);
 var Genders = mongoose.model('gender', genderSchema);
-var AdvancedStandings = mongoose.model('advStanding', advStandingSchema);
+var AdvStandings = mongoose.model('advStanding', advStandingSchema);
+var Awards = mongoose.model('awards', awardsSchema);
 
 
 
@@ -58,8 +67,8 @@ db.once('open', function() {
     exports.Students = Students;
     exports.Residencies = Residencies;
     exports.Genders=Genders;
-    exports.AdvancedStandings= AdvancedStandings;
-
+    exports.AdvStandings= AdvStandings;
+    exports.Awards = Awards;
 
 });
 
