@@ -17,6 +17,10 @@
         <i class="large code icon"></i>
         Manage Code
       </a>
+      <a class="item" {{action "uploadFile"}} >
+        <i class="large file text icon"></i>
+        Upload Document
+      </a>
       <a class="item " {{action "about"}} >
         <i class="large user icon"></i>
         About
@@ -43,6 +47,9 @@
       
       {{#if isManageCodeShowing}}
         {{manage-codes}}
+      {{/if}}
+      {{#if isUploadShowing}}
+        {{upload-file}}
       {{/if}}
     </div>
   </div>

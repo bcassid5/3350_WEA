@@ -29,7 +29,7 @@ router.route('/')
         }
     });
 
-router.route('/:advStanding_id')
+router.route('/:advStandings_id')
     .get(parseUrlencoded, parseJSON, function (request, response) {
         models.AdvancedStandings.findById(request.params.advStanding_id, function (error, advStanding) {
             if (error) response.send(error);

@@ -30,7 +30,7 @@ export default Ember.Component.extend({
 
   actions: {
     genderChange (newGen){
-      this.set('gen', this.get('genderModel').objectAt(newGen-1).get('id'));
+      this.set('gen', newGen);//this.get('genderModel').objectAt(newGen-1).get('id'));
     },
 
     dateChange (newDate){
