@@ -209,7 +209,7 @@ export default Ember.Component.extend({
                 console.log(record);
                 record.set('name', (self.$('.' + index)).val());
                 record.data.name= (self.$('.' + index)).val();
-                console.log(self.$('#'+ index).val());
+                console.log(self.$('.'+ index).val());
                 console.log(record.get('name'));
                 record.save();
 
@@ -218,7 +218,7 @@ export default Ember.Component.extend({
       },
 
       removeHighSchoolOption(index){
-       this.get('store').findRecord('highSchool', index).then(function(record){
+        this.get('store').find('highSchool',this.get('highSchoolModel').objectAt(index).get('id')).then(function(record){
                 record.deleteRecord();
                 if(record.get('isDeleted'))
                 {

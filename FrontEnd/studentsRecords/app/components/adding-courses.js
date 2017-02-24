@@ -99,7 +99,7 @@ actions:{
 
     addCourseToRecord: function(index){
         var self = this;
-        this.get('store').find('high-school-course', this.get('highSchoolCourseModel').objectAt(index).get('id')).then(function(record){
+        this.get('store').find('high-school-course', index).then(function(record){
             //console.log('course to be added found')
             //console.log('record if: '+record.id);
             //console.log('record.... '+record);
