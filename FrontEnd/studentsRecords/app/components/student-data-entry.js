@@ -278,7 +278,14 @@ export default Ember.Component.extend({
         this.$("#terms").find('.'+termIndex).form('add prompt', 'currentmark', 'error text');
       }
       else{
-        this.$("#terms").find('.'+termIndex).form('remove prompt', 'currentmark', 'error text');
+        this.$("#terms").find('.'+termIndex).form('remove prompt', 'currentmark');
+        var self = this;
+        this.get('store').find('grade',this.get('gradeModel').objectAt(gradeIndex).get('id')).then(function(record){
+            record.set('mark', self.$('#terms').find('.'+termIndex).find('.'+gradeIndex).find('.currentGrade').val());
+            record.set('note', self.$('#terms').find('.'+termIndex).find('.'+gradeIndex).find('.currentNote').val())
+            record.save();
+                
+            });
       }
     },
     addGrade(index)
@@ -338,41 +345,41 @@ export default Ember.Component.extend({
     addProgram(index)
     {
       var e = false;
-      if(this.$('#terms').find('.'+index).find('.level').val()=="")
+      if(this.$('#terms').find('.'+index).find('.newProgram').find('.level').val()=="")
       {
         e = true;
-        this.$("#terms").find('.'+index).form('add prompt', 'level', 'error text');
+        this.$("#terms").find('.'+index).find('.newProgram').form('add prompt', 'level', 'error text');
       }
       else 
       {
-        this.$("#terms").find('.'+index).form('remove prompt', 'level');
+        this.$("#terms").find('.'+index).find('.newProgram').form('remove prompt', 'level');
       }
-      if(this.$('#terms').find('.'+index).find('.load').val()=="")
+      if(this.$('#terms').find('.'+index).find('.newProgram').find('.load').val()=="")
       {
         e = true;
-        this.$("#terms").find('.'+index).form('add prompt', 'load', 'error text');
+        this.$("#terms").find('.'+index).find('.newProgram').form('add prompt', 'load', 'error text');
       }
       else 
       {
-        this.$("#terms").find('.'+index).form('remove prompt', 'load');
+        this.$("#terms").find('.'+index).find('.newProgram').form('remove prompt', 'load');
       }
-      if(this.$('#terms').find('.'+index).find('.status').val()=="")
+      if(this.$('#terms').find('.'+index).find('.newProgram').find('.status').val()=="")
       {
         e = true;
-        this.$("#terms").find('.'+index).form('add prompt', 'status', 'error text');
+        this.$("#terms").find('.'+index).find('.newProgram').form('add prompt', 'status', 'error text');
       }
       else 
       {
-        this.$("#terms").find('.'+index).form('remove prompt', 'status');
+        this.$("#terms").find('.'+index).find('.newProgram').form('remove prompt', 'status');
       }
-      if(this.$('#terms').find('.'+index).find('.selectedProgram').val()=="Select")
+      if(this.$('#terms').find('.'+index).find('.newProgram').find('.selectedProgram').val()=="Select")
       {
         e = true;
-        this.$("#terms").find('.'+index).form('add prompt', 'list', 'error text');
+        this.$("#terms").find('.'+index).find('.newProgram').form('add prompt', 'list', 'error text');
       }
       else 
       {
-        this.$("#terms").find('.'+index).form('remove prompt', 'list');
+        this.$("#terms").find('.'+index).find('.newProgram').form('remove prompt', 'list');
       }
       if(!e)
       {
