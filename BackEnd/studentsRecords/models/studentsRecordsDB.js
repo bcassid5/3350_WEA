@@ -9,12 +9,14 @@ var studentsSchema = mongoose.Schema(
         DOB: Date,
         photo: String,
         resInfo: {type: mongoose.Schema.ObjectId, ref: 'Residencies'},
-        advStanding: {type: mongoose.Schema.ObjectId, ref: 'AdvancedStandings'},
+        advStanding: [{type: mongoose.Schema.ObjectId, ref: 'AdvStandings'}],
         regComments: String,
         BOA: String,
         admissAvg: Number,
         admissComments: String,
-        highSchoolGrade: {type: mongoose.Schema.ObjectId, ref: 'HighSchoolGrades'}
+        highSchoolGrade: {type: mongoose.Schema.ObjectId, ref: 'HighSchoolGrades'},
+        mark: [{type: mongoose.Schema.ObjectId, ref: 'Grades'}],
+        awards: [{type: mongoose.Schema.ObjectId, ref: 'Awards'}],
 
     }
 );
@@ -44,6 +46,7 @@ var advStandingSchema = mongoose.Schema(
         students: {type: mongoose.Schema.ObjectId, ref: ('Students')}
     }
 );
+
 
 var highSchoolSubjectSchema = mongoose.Schema(
     {
@@ -90,6 +93,21 @@ var HighSchoolCourses = mongoose.model('highSchoolCourse', highSchoolCourseSchem
 var HighSchools = mongoose.model('highSchool', highSchoolSchema);
 var HighSchoolGrades = mongoose.model('highSchoolGrade', highSchoolGradeSchema);
 
+var awardsSchema=mongoose.Schema(
+    {
+        note: String,
+        student: {type: mongoose.Schema.ObjectId, ref: ('Students')}
+    }
+);
+var Students = mongoose.model('student', studentsSchema);
+var Residencies = mongoose.model('residency', residencySchema);
+var Genders = mongoose.model('gender', genderSchema);
+var AdvStandings = mongoose.model('advStanding', advStandingSchema);
+var Awards = mongoose.model('awards', awardsSchema);
+
+
+
+
 mongoose.connect('mongodb://localhost/studentsRecords');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -103,6 +121,8 @@ db.once('open', function() {
     exports.HighSchoolSubjects = HighSchoolSubjects;
     exports.HighSchoolGrades = HighSchoolGrades;
     exports.HighSchoolCourses = HighSchoolCourses;
+    exports.AdvStandings= AdvStandings;
+    exports.Awards = Awards;
 
 });
 

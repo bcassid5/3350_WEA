@@ -175,10 +175,10 @@
                     </div>
                     <div class="fields">
                         <div class = "four wide field">
-                          <label>Mark</label> <input type="text"  class="currentgrade" value={{gradeChoice.mark}} name = "currentmark" >
+                          <label>Mark</label> <input type="text"  class="currentGrade" value={{gradeChoice.mark}} name = "currentmark" >
                         </div>
                         <div class = "twelve wide field">
-                          <label>Note</label> <input type="text"  class="currentnote" name = "currentnote" value = {{gradeChoice.note}}>
+                          <label>Note</label> <input type="text"  class="currentNote" name = "currentnote" value = {{gradeChoice.note}}>
                         </div>
                       </div>
                       <div class="ui small header" >Course Info:</div>
@@ -236,6 +236,8 @@
                       </button>
                     </div>
                     <button class="ui violet button" {{action 'addcredit'}} >
+                      Add Credit
+                    </button>
                     {{/if}}
                     
                   {{/if}}

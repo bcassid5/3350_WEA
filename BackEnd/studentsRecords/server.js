@@ -16,6 +16,14 @@ var highSchoolSubjects = require('./routes/highSchoolSubjects');
 var highSchools = require('./routes/highSchools');
 var highSchoolGrades = require('./routes/highSchoolGrades');
 var highSchoolCourses = require('./routes/highSchoolCourses');
+var awards = require('./routes/awards');
+var courseCodes = require('./routes/courseCodes');
+var planCodes = require('./routes/planCodes');
+var termCodes = require('./routes/termCodes');
+var grades = require('./routes/grades');
+var programRecords = require('./routes/programRecords');
+var schoolTerms = require('./routes/schoolTerms');
+var programs = require('./routes/programs')
 
 
 app.use(function (request, response, next) {
@@ -35,6 +43,14 @@ app.use('/highSchools', highSchools);
 app.use('/highSchoolSubjects', highSchoolSubjects);
 app.use('/highSchoolGrades', highSchoolGrades);
 app.use('/highSchoolCourses', highSchoolCourses);
+app.use('/awards', awards);
+app.use('/courseCodes',courseCodes);
+app.use('/planCodes',planCodes);
+app.use('/termCodes',termCodes);
+app.use('/grades',grades);
+app.use('/programRecords', programRecords);
+app.use('/schoolTerms', schoolTerms );
+app.use('/programs', programs);
 
 app.post('/upload', function(request, response){
     //console.log('entering upload route');
@@ -107,6 +123,7 @@ app.post('/upload', function(request, response){
     var assert = require('assert');
     var ObjectId = require('mongodb').ObjectID;
     var url = 'mongodb://localhost/studentsRecords';
+
 
     var insertDocument = function(db, callback) {
        db.collection(name).insert(json, function(err, result) {

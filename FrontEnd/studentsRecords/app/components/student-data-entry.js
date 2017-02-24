@@ -289,7 +289,13 @@ export default Ember.Component.extend({
     updateTheGrade(termIndex, gradeIndex)
     {
       console.log(this.$('#terms').find('.'+termIndex).find('.'+gradeIndex).find('.currentGrade').val());
-      console.log(gradeIndex);
+      if(this.$('#terms').find('.'+termIndex).find('.'+gradeIndex).find('.currentGrade').val()=="")
+      {
+        this.$("#terms").find('.'+termIndex).form('add prompt', 'currentmark', 'error text');
+      }
+      else{
+        this.$("#terms").find('.'+termIndex).form('remove prompt', 'currentmark', 'error text');
+      }
     },
     addGrade(index)
     {

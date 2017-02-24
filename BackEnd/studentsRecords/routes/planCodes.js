@@ -1,68 +1,74 @@
 var express = require('express');
 var router = express.Router();
-var models = require('../models/studentsRecordsDB');
+var models = require('../models/programMark');
 var bodyParser = require('body-parser');
 var parseUrlencoded = bodyParser.urlencoded({extended: false});
 var parseJSON = bodyParser.json();
 
 router.route('/')
     .post(parseUrlencoded, parseJSON, function (request, response) {
-        var gender = new models.Genders(request.body.gender);
         
-        gender.save(function (error) {
+
+        var planCode = new models.PlanCodes(request.body.planCode);
+        
+        planCode.save(function (error) {
             if (error) response.send(error);
-            response.json({gender: gender});
+            response.json({planCode: planCode});
         });
     })
     .get(parseUrlencoded, parseJSON, function (request, response) {
-        
-        var Student = request.query.filter;
+        var Student = request.query;
         if (!Student) {
             
-            models.Genders.find(function (error, genders) {
+            models.PlanCodes.find(function (error, planCodes) {
                 if (error) response.send(error);
-                response.json({gender: genders});
-            });   
+                response.json({planCode: planCodes});
+            });
         } else {
-            models.Genders.find({"student": Student.student}, function (error, students) {
+            
+            models.PlanCodes.find({"student": Student.student}, function (error, planCode) {
                 if (error) response.send(error);
-                response.json({gender: students});
+                response.json({planCode: planCode});
             });
         }
     });
-router.route('/:gender_id')
+
+router.route('/:planCode_id')
     .get(parseUrlencoded, parseJSON, function (request, response) {
-        models.Genders.findById(request.params.gender_id, function (error, gender) {
+        models.PlanCodes.findById(request.params.planCode_id, function (error, planCode) {
             if (error) response.send(error);
-            response.json({gender: gender});
+            response.json({planCode: planCode});
         })
     })
     .put(parseUrlencoded, parseJSON, function (request, response) {
-        models.Genders.findById(request.params.gender_id, function (error, gender) {
+        models.PlanCodes.findById(request.params.planCode_id, function (error, planCode) {
             if (error) {
                 response.send({error: error});
             }
             else {
-                gender.type = request.body.gender.type;
-
-                gender.save(function (error) {
+                planCode.name = request.body.planCode.name;
+                
+                
+                
+                planCode.save(function (error) {
                     if (error) {
                         response.send({error: error});
                     }
                     else {
-                        response.json({gender: gender});
+                        response.json({planCode: planCode});
                     }
                 });
             }
         })
     })
     .delete(parseUrlencoded, parseJSON, function (request, response) {
-        models.Genders.findByIdAndRemove(request.params.gender_id,
+        models.PlanCodes.findByIdAndRemove(request.params.planCode_id,
             function (error, deleted) {
                 if (!error) {
-                    response.json({gender: deleted});
+                    response.json({planCode: deleted});
                 }
             }
         );
     });
-module.exports=router;
+
+module.exports = router;
