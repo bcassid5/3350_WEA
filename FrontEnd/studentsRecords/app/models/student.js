@@ -12,5 +12,6 @@ export default DS.Model.extend({
   BOA: DS.attr(),
   admissAvg: DS.attr('number'),
   admissComments: DS.attr(),
-
+  advStanding: DS.hasMany('adv-standing'),
+  mark: DS.hasMany('grade'),
 });

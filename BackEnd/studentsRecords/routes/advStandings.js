@@ -7,6 +7,8 @@ var parseJSON = bodyParser.json();
 
 router.route('/')
     .post(parseUrlencoded, parseJSON, function (request, response) {
+        console.log('d');
+
         var advStanding = new models.AdvancedStandings(request.body.advStanding);
         advStanding.save(function (error) {
             if (error) response.send(error);
