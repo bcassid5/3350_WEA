@@ -76,8 +76,8 @@ var highSchoolSchema= mongoose.Schema(
 var highSchoolGradeSchema = mongoose.Schema(
     {
         grade: String,
-        course: [{type:mongoose.Schema.ObjectId, ref: ('HighSchoolCourses')}],
-        student: [{type:mongoose.Schema.ObjectId, ref: ('Students')}]
+        course: {type:mongoose.Schema.ObjectId, ref: ('HighSchoolCourses')},
+        student: {type:mongoose.Schema.ObjectId, ref: ('Students')}
     }
 );
 

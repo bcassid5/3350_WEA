@@ -7,7 +7,8 @@ var parseJSON = bodyParser.json();
 
 router.route('/')
     .post(parseUrlencoded, parseJSON, function (request, response) {
-        var highSchoolGrade = new models.HighSchoolGrades(request.body.highSchoolGrade);
+        console.log(request.body);
+        var highSchoolGrade = new models.HighSchoolGrades(request.body.highschoolGrade);
         highSchoolGrade.save(function (error) {
             if (error) response.send(error);
             response.json({highschoolGrade: highSchoolGrade});

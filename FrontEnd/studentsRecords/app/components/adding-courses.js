@@ -99,7 +99,29 @@ actions:{
 
     addCourseToRecord: function(index){
         var self = this;
-        this.get('store').find('high-school-course', index).then(function(record){
+        
+        var myCourse = (this.get('highSchoolCourseModel')).objectAt(index).get('id');
+
+        console.log('newGrade');
+        console.log(this.get('newGrade'));
+        console.log('high school course');
+        console.log(this.get('store').peekRecord('high-school-course', myCourse));
+        console.log('student');
+        console.log(this.get('store').peekRecord('student', this.get('currentStudent').get('id')));
+
+
+        var record = this.get('store').createRecord('highschool-grade', {
+            grade: this.get('newGrade'),
+            course: (this.get('highSchoolCourseModel')).objectAt(index),
+            student: this.get('currentStudent')
+        });
+                   
+                    record.save();
+
+        console.log(record);
+
+
+        /*this.get('store').find('high-school-course', index).then(function(record){
             //console.log('course to be added found')
             //console.log('record if: '+record.id);
             //console.log('record.... '+record);
@@ -125,7 +147,7 @@ actions:{
                 console.log(record.student);
                 record.save();
             }
-          });
+          });*/
        
 
         this.set('notDONE', false);
