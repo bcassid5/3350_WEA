@@ -1,12 +1,12 @@
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-    name: DS.attr(),
+    name: DS.belongsTo('program'),
     level: DS.attr('number'),
     load: DS.attr(),
     status: DS.attr(),
-    courseCode: DS.belongsTo('course-code'),
-    planCode: DS.hasMany('plan-code'),
-    termCode: DS.hasMany('term-code'),
-    grade: DS.hasMany('grade'),
+    
+    plan: DS.hasMany('plan-code'),
+    semester: DS.hasMany('term-code'),
+    
 });

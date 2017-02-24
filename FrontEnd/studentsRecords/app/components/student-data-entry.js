@@ -6,6 +6,12 @@ export default Ember.Component.extend({
   residencyModel: null,
   genderModel: null,
   advStandingModel: null,
+  planCodeModel: null,
+  courseCodeModel: null,
+  termCodeModel: null,
+  termModel: null,
+  programModel: null,
+  gradeModel: null,
   awards: null,
   selectedResidency: null,
   selectedGender: null,
@@ -41,7 +47,15 @@ export default Ember.Component.extend({
   unit: null,
   from: null,
   newAdv: null,
+  newAwd: null,
+  newStudentTerm: null,
+  newProg: false,
+  newGrade: false,
   note: null,
+  err: null,
+  enableAdvEdit: null,
+  enableAwdEdit: null,
+  enableGradeEdit: null,
     
   studentModel: Ember.observer('offset', function () {
     var self = this;
@@ -118,12 +132,34 @@ export default Ember.Component.extend({
     this.get('store').findAll('gender').then(function(records) {
       self.set('genderModel', records);
     });
+    
+    this.get('store').findAll('courseCode').then(function(records) {
+      self.set('courseCodeModel', records);
+    });
+    this.get('store').findAll('planCode').then(function(records) {
+      self.set('planCodeModel', records);
+    });
+    this.get('store').findAll('schoolTerm').then(function(records) {
+      self.set('termModel', records);
+    });
+    this.get('store').findAll('program').then(function(records) {
+      self.set('programModel', records);
+    });
     // load first page of the students records
     this.set('limit', 10);
     this.set('offset', 0);
     this.set('pageSize', 10);
+    this.set('course', "");
+    this.set('description', "");
+    this.set('unit', "");
+    this.set('grade', "");
+    this.set('from', "");
+    this.set('note', "");
+    this.set('enableAdvEdit', false);
+    this.set('enableAwdEdit', false);
+    this.set('enableGradeEdit', false);
     this.resetUndo();
-    
+    this.set('err', false);
     var self = this;
     this.get('store').query('student', {
       limit: 1000000,
@@ -148,20 +184,33 @@ export default Ember.Component.extend({
   showStudentData: function (index) {
     this.set('currentStudent', this.get('studentsRecords').objectAt(index));
 
-    console.log(this.get('currentStudent').get('advStanding').get('length'));
+    
     //this.get('currentStudent').set('advStanding', []);
     //console.log(this.get('currentStudent').get('advStanding'));
     var self = this;
+    self.get('store').query('termCode',{student: self.get('currentStudent').get('id')}).then(function(terms){
+          self.set('termCodeModel', terms);
+          self.set('gradeModel', []);
+          for(var i =0; i <self.get('termCodeModel').get('length'); i++){
+           self.get('store').query('grade',{term: self.get('termCodeModel').objectAt(i).get('id')}).then(function(grades){
+            self.get('gradeModel').addObjects(grades);
+            });
+          
+          }
+          
+        });
+   
     this.get('store').query('advStanding',{student: this.get('currentStudent').get('id')}).then(function(adv){
       self.set('advStandingModel', adv);
       self.get('store').query('award',{student: self.get('currentStudent').get('id')}).then(function(awd){
         self.set('awards', awd);
-      
+        
       });
     });
     
     //console.log(this.get('advStandingModel'));
     this.set('newAdv', false);
+    this.set('newAwd', false);
     this.set('selectedGender', this.get('currentStudent').get('gender'));
     this.set('selectedResidency', this.get('currentStudent').get('resInfo'));
     //console.log(this.get('currentStudent').get('id'));
@@ -201,6 +250,305 @@ export default Ember.Component.extend({
   },
 
   actions: {
+    removeGrade(termIndex, gradeIndex)
+    {
+      var self = this;
+      this.get('store').find('grade',this.get('gradeModel').objectAt(gradeIndex).get('id')).then(function(record){
+                record.deleteRecord();
+                if(record.get('isDeleted'))
+                {
+                    record.save();
+                    self.get('gradeModel').removeAt(gradeIndex);
+                }
+                
+          }, function (error){
+              console.log(error);
+          });
+    },
+    updateGrade(termIndex, gradeIndex)
+    {
+      console.log('yo');
+      //console.log(this.$('#terms').find('.'+termIndex).find('.'+gradeIndex).find('.currentGrade').val());
+    },
+    updateTheGrade(termIndex, gradeIndex)
+    {
+      console.log(this.$('#terms').find('.'+termIndex).find('.'+gradeIndex).find('.currentGrade').val());
+      console.log(gradeIndex);
+    },
+    addGrade(index)
+    {
+      console.log(this.$('#terms').find('.'+index).find('.mark').val());
+      console.log(this.$('#terms').find('.'+index).find('.note').val());
+      console.log(this.$('#terms').find('.'+index).find('.selectedCourse').val());
+      var e = false;
+      if(this.$('#terms').find('.'+index).find('.mark').val() == "")
+      {
+        e = true;
+        this.$("#terms").find('.'+index).form('add prompt', 'mark', 'error text');
+      }
+      else 
+      {
+        this.$("#terms").find('.'+index).form('remove prompt', 'mark');
+      }
+      if(this.$('#terms').find('.'+index).find('.note').val() == "")
+      {
+        e = true;
+        this.$("#terms").find('.'+index).form('add prompt', 'note', 'error text');
+      }
+      else 
+      {
+        this.$("#terms").find('.'+index).form('remove prompt', 'note');
+      }
+      if(this.$('#terms').find('.'+index).find('.selectedCourse').val() == "Select")
+      {
+        e = true;
+        this.$("#terms").find('.'+index).form('add prompt', 'courseList', 'error text');
+      }
+      else 
+      {
+        this.$("#terms").find('.'+index).form('remove prompt', 'courseList');
+      }
+      if(!e)
+      {
+        var record = this.get('store').createRecord('grade', {
+                mark: this.$('#terms').find('.'+index).find('.mark').val(),
+                note: this.$('#terms').find('.'+index).find('.note').val(),
+                term: this.get('termCodeModel').objectAt(index),
+                course: this.get('courseCodeModel').objectAt(this.$('#terms').find('.'+index).find('.selectedCourse').val()),
+                
+                });
+        var self =this;
+        record.save().then(() =>{
+          self.set('gradeModel', []);
+          for(var i =0; i <self.get('termCodeModel').get('length'); i++){
+           self.get('store').query('grade',{term: self.get('termCodeModel').objectAt(i).get('id')}).then(function(grades){
+            self.get('gradeModel').addObjects(grades);
+           });
+          }
+        });
+        
+      }
+    },
+    addProgram(index)
+    {
+      var e = false;
+      if(this.$('#terms').find('.'+index).find('.level').val()=="")
+      {
+        e = true;
+        this.$("#terms").find('.'+index).form('add prompt', 'level', 'error text');
+      }
+      else 
+      {
+        this.$("#terms").find('.'+index).form('remove prompt', 'level');
+      }
+      if(this.$('#terms').find('.'+index).find('.load').val()=="")
+      {
+        e = true;
+        this.$("#terms").find('.'+index).form('add prompt', 'load', 'error text');
+      }
+      else 
+      {
+        this.$("#terms").find('.'+index).form('remove prompt', 'load');
+      }
+      if(this.$('#terms').find('.'+index).find('.status').val()=="")
+      {
+        e = true;
+        this.$("#terms").find('.'+index).form('add prompt', 'status', 'error text');
+      }
+      else 
+      {
+        this.$("#terms").find('.'+index).form('remove prompt', 'status');
+      }
+      if(this.$('#terms').find('.'+index).find('.selectedProgram').val()=="Select")
+      {
+        e = true;
+        this.$("#terms").find('.'+index).form('add prompt', 'list', 'error text');
+      }
+      else 
+      {
+        this.$("#terms").find('.'+index).form('remove prompt', 'list');
+      }
+      if(!e)
+      {
+        var record = this.get('store').createRecord('programRecord', {
+                name: this.get('programModel').objectAt(this.$('#terms').find('.'+index).find('.selectedProgram').val()),
+                level: this.$('#terms').find('.'+index).find('.level').val(),
+                load: this.$('#terms').find('.'+index).find('.load').val(),
+                status: this.$('#terms').find('.'+index).find('.status').val(),
+                
+                plan: [],
+                
+                });
+        var self = this;
+        
+        record.save().then(() =>{
+          self.get('termCodeModel').objectAt(index).get('program').pushObject(record);
+          self.get('termCodeModel').objectAt(index).save();
+        });
+      }
+      
+    },
+    addTerm()
+    {
+      var e = false;
+      if(this.$('#newTerm').find('.selectedSemester').val()=="Select")
+      {
+        e=true;
+      }
+      else 
+      {
+        for (var i =0; i<this.get('termCodeModel').get('length');i++)
+        {
+          if (this.get('termCodeModel').objectAt(i).get('name').get('name')==this.get('termModel').objectAt(this.$('#newTerm').find('.selectedSemester').val()).get('name'))
+          {
+            e=true;
+          }
+        }
+      }
+      if (!e) 
+      {
+        this.set('newStudentTerm', !(this.get('newStudentTerm')));
+        var record = this.get('store').createRecord('termCode', {
+                name: this.get('termModel').objectAt(this.$('#newTerm').find('.selectedSemester').val()),
+                program: [],
+                marks: [],
+                student: this.get('currentStudent'),
+                });
+        var self = this;
+        
+        record.save().then(() =>{
+        
+          self.get('store').query('termCode',{student: self.get('currentStudent').get('id')}).then(function(terms){
+          self.set('termCodeModel', terms);
+          });
+        });
+      }
+
+    
+    },
+    selectPlan(i)
+    {
+
+    },
+    toggleAdvEdit ()
+    {
+      this.set('enableAdvEdit', !(this.get('enableAdvEdit')));
+    },
+    toggleAwdEdit()
+    {
+      this.set('enableAwdEdit', !(this.get('enableAwdEdit')));
+    },
+    toggleGradeEdit()
+    {
+      console.log(this.get('gradeModel').get('length'));
+      this.set('enableGradeEdit', !(this.get('enableGradeEdit')));
+    },
+    newProgClicked()
+    {
+      this.set('newProg', !(this.get('newProg')));
+    },
+    newGradeClicked()
+    {
+      this.set('newGrade', !(this.get('newGrade')));
+    },
+    newStudentTermClicked()
+    {
+      this.set('newStudentTerm', !(this.get('newStudentTerm')));
+    },
+    removeAdvOption(index)
+    {
+      
+      this.get('store').find('advStanding',this.get('advStandingModel').objectAt(index).get('id')).then(function(record){
+                record.deleteRecord();
+                if(record.get('isDeleted'))
+                {
+                    record.save();
+                }
+                
+          }, function (error){
+              console.log(error);
+          });
+    },
+    removeAwdOption(index)
+    {
+      
+      this.get('store').find('award',this.get('awards').objectAt(index).get('id')).then(function(record){
+                record.deleteRecord();
+                if(record.get('isDeleted'))
+                {
+                    record.save();
+                }
+                
+          }, function (error){
+              console.log(error);
+          });
+    },
+    updateAwdChoice(index)
+    {
+      var n = this.$("#award").find('.'+index).find('.note').val();
+      if (n=="")
+      {
+        this.$("#award").find('.'+index).find('.note').val(this.get('awards').objectAt(index).get('note'));
+      }
+      else 
+      {
+        this.get('store').find('award',this.get('awards').objectAt(index).get('id')).then(function(record){
+            record.set('note', n);
+            
+            record.save();
+                
+            });
+      }
+    },
+    updateAdvChoice(index)
+    {
+      
+      var c = this.$("#advStanding").find('.'+index).find('.course').val();
+      var g = this.$("#advStanding").find('.'+index).find('.grade').val();
+      var f = this.$("#advStanding").find('.'+index).find('.from').val();
+      var u = this.$("#advStanding").find('.'+index).find('.unit').val();
+      var d = this.$("#advStanding").find('.'+index).find('.description').val();
+      var e = 0;
+      if(c=="")
+      {
+        this.$('#advStanding').find('.'+index).find('.course').val(this.get('advStandingModel').objectAt(index).get('course'));
+        c = this.get('advStandingModel').objectAt(index).get('course');
+        
+        e++;
+      }
+      if(g=="")
+      {
+        this.$('#advStanding').find('.'+index).find('.grade').val(this.get('advStandingModel').objectAt(index).get('grade'));
+        g = this.get('advStandingModel').objectAt(index).get('grade');
+        e++;
+      }
+      if(f=="")
+      {
+        this.$('#advStanding').find('.'+index).find('.from').val(this.get('advStandingModel').objectAt(index).get('from'));
+        f = this.get('advStandingModel').objectAt(index).get('from');
+        e++;
+      }
+      if(u=="")
+      {
+        this.$('#advStanding').find('.'+index).find('.unit').val(this.get('advStandingModel').objectAt(index).get('unit'));
+        u = this.get('advStandingModel').objectAt(index).get('unit');
+        e++;
+      }
+      if (e< 4)
+        {
+          
+            this.get('store').find('advStanding',this.get('advStandingModel').objectAt(index).get('id')).then(function(record){
+            record.set('course', c);
+            record.set('grade', g);
+            record.set('from', f);
+            record.set('unit', u);
+            record.set('description', d);
+            record.save();
+                
+            });
+        }
+      
+    },
     saveStudent () {
 
       var updatedStudent = this.get('currentStudent');
@@ -234,6 +582,11 @@ export default Ember.Component.extend({
     newAdvClicked()
     {
       this.set('newAdv', !(this.get('newAdv')));
+      this.set('err', false);
+    },
+    newAwdClicked()
+    {
+      this.set('newAwd', !(this.get('newAwd')));
     },
     nextStudent() {
       this.resetUndo();
@@ -319,53 +672,94 @@ export default Ember.Component.extend({
         this.get('currentStudent').set('regComments', rc);
       },
     addAward(){
-      var student = this.get('currentStudent');
-      console.log(student.get('id'));
-      var award =this.get('store').createRecord('award', {
+      if(this.get('note') != "")
+      {
+        var student = this.get('currentStudent');
+        console.log(student.get('id'));
+        var award =this.get('store').createRecord('award', {
 
-        note: this.get('note'),
-        student: this.get('currentStudent'),
-      });
-      var self=this;
-      this.set('newAdv', false);
-      award.save().then(() => {
-        
-        
-        self.get('store').query('award',{student: this.get('currentStudent').get('id')}).then(function(awd){
-          self.set('awards', awd);
+          note: this.get('note'),
+          student: this.get('currentStudent'),
         });
-        //console.log(self.get('currentStudent').get('advStanding'));
-        //self.set('advStandingModel',student.get('advStanding'));
-        
-      });
+        var self=this;
+        this.set('newAwd', false);
+        award.save().then(() => {
+          
+          
+          self.get('store').query('award',{student: this.get('currentStudent').get('id')}).then(function(awd){
+            self.set('awards', awd);
+          });
+          //console.log(self.get('currentStudent').get('advStanding'));
+          //self.set('advStandingModel',student.get('advStanding'));
+          
+        });
+      }
       
     },
     addcredit(){
-
-      var student = this.get('currentStudent');
-      console.log(student.get('id'));
-      var standing =this.get('store').createRecord('adv-Standing', {
-
-        course: this.get('course'),
-        description: this.get('description'),
-        unit: this.get('unit'),
-        grade: this.get('grade'),
-        from: this.get('from'),
-        students: this.get('currentStudent'),
-      });
-      var self=this;
-      this.set('newAdv', false);
-      standing.save().then(() => {
-        console.log(student.get('advStanding').objectAt(0).get('course'));
+      this.set("err", false);
+      if(this.get('course')=="")
+      {
+        this.$("#newAdv").form('add prompt', 'course', 'error text');
+            this.set("err", true);
+      }
+      else 
+      {
+          this.$("#newAdv").form('remove prompt', 'course');
+      }
+      if(this.get('unit')=="")
+      {
+        this.$("#newAdv").form('add prompt', 'unit', 'error text');
+            this.set("err", true);
+      }
+      else 
+      {
+          this.$("#newAdv").form('remove prompt', 'unit');
+      }
+      if(this.get('grade')=="")
+      {
+        this.$("#newAdv").form('add prompt', 'grade', 'error text');
+            this.set("err", true);
+      }
+      else 
+      {
+          this.$("#newAdv").form('remove prompt', 'grade');
+      }
+      if(this.get('from')=="")
+      {
+        this.$("#newAdv").form('add prompt', 'from', 'error text');
+            this.set("err", true);
+      }
+      else 
+      {
+          this.$("#newAdv").form('remove prompt', 'from');
+      }
+      if (!this.get("err"))
+      {
+        var student = this.get('currentStudent');
         
-        self.get('store').query('advStanding',{student: this.get('currentStudent').get('id')}).then(function(adv){
-          self.set('advStandingModel', adv);
+        var standing =this.get('store').createRecord('adv-Standing', {
+
+          course: this.get('course'),
+          description: this.get('description'),
+          unit: this.get('unit'),
+          grade: this.get('grade'),
+          from: this.get('from'),
+          students: this.get('currentStudent'),
         });
-        //console.log(self.get('currentStudent').get('advStanding'));
-        //self.set('advStandingModel',student.get('advStanding'));
-        
-      });
-      
+        var self=this;
+        this.set('newAdv', false);
+        standing.save().then(() => {
+          console.log(student.get('advStanding').objectAt(0).get('course'));
+          
+          self.get('store').query('advStanding',{student: this.get('currentStudent').get('id')}).then(function(adv){
+            self.set('advStandingModel', adv);
+          });
+          //console.log(self.get('currentStudent').get('advStanding'));
+          //self.set('advStandingModel',student.get('advStanding'));
+          
+        });
+      }
     },
     updateNote(noted){
       this.set('note',noted);

@@ -2,5 +2,6 @@ import DS from 'ember-data';
 
 export default DS.Model.extend({
     name: DS.attr(),
-    programRecord: DS.hasMany('program-record'),
+    programRecords: DS.hasMany('program-record'),
+    availableTo: DS.hasMany('program'),
 });

@@ -1,95 +1,378 @@
-<div class="ui center aligned header">
-  <h2>Manage Code</h2>
-</div>
+    <div class="ui center aligned header">
+    <h2>Manage Code</h2>
+    </div>
 
-<div class="ui top attached tabular menu">
-    <div class="active item" data-tab="residencies">Residencies</div>
-    <div class="item" data-tab="genders">Gender</div>
-    
-  </div>
+    <div class="ui violet secondary pointing menu">
+        <div class="active item" data-tab="residencies">Residencies</div>
+        <div class="item" data-tab="genders">Gender</div>
+        <div class="item" data-tab="programCodes">Program</div>
+        
+        
+    </div>
 
-   <div class="ui bottom attached active tab segment"data-tab="residencies">
-    
+    <div class="ui  active tab"data-tab="residencies">
+        
 
+            <div class="ui grid">
+                <div class="ui lef aligned five wide column"></div>
+                <div class="ui lef aligned seven wide column">
+                    <div class="ui form">
+                        <br>
+                        {{#each residencyModel as |residencyChoice index|}}
+                        <div class="inline field">
+                        <label>Option {{increment index}}:</label> <input value={{residencyChoice.name}} type="text"  onchange = {{action 'changeResName' index}} id = {{index}} >
+                        <a {{action 'removeStudentOption' index}}> 
+                            <i class="large red minus circle icon"></i> <br>
+                        </a>
+                        </div>
+                        {{/each}}
+                        <div class="inline field">
+                            <label>Add New</label>
+                            <input value="" type="text" placeholder="New Residency" onchange={{action 'updateResChoice' value="target.value"}}>
+                            <a {{action 'addStudentOption'}}> 
+                            <i class="large green add square icon"></i> <br>
+                        </a>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                </div>
+
+                <!-- <div class="ui center aligned five wide column"></div> 
+                <div class="ui center aligned five wide column">
+                        <button class="ui violet button">
+                            Save 
+                        </button>
+                        <button class="ui button">
+                            Undo All <i class="undo icon"></i>
+                        </button>
+                    </div> -->
+
+                
+            </div>
+    </div>
+    <div class="ui tab" data-tab="genders">
         <div class="ui grid">
-            <div class="ui lef aligned five wide column"></div>
-            <div class="ui lef aligned seven wide column">
-                <div class="ui form">
-                    
-                     {{#each residencyModel as |residencyChoice index|}}
-                    <div class="inline field">
-                    <label>Option {{index}}:</label> <input value={{residencyChoice.name}} type="text"  onchange = {{action 'changeResName' index}} id = {{index}} >
-                    <a {{action 'removeStudentOption' index}}> 
-                        <i class="large red minus circle icon"></i> <br>
-                    </a>
-                    </div>
-                    {{/each}}
-                    <div class="inline field">
-                        <label>Add New</label>
-                        <input value="" type="text" onchange={{action 'updateResChoice' value="target.value"}}>
-                        <a {{action 'addStudentOption'}}> 
-                        <i class="large green add square icon"></i> <br>
-                    </a>
-                    </div>
-                    
-                    
-                </div>
-                
-            </div>
-
-            <!-- <div class="ui center aligned five wide column"></div> 
-            <div class="ui center aligned five wide column">
-                    <button class="ui violet button">
-                        Save 
-                    </button>
-                    <button class="ui button">
-                        Undo All <i class="undo icon"></i>
-                    </button>
-                </div> -->
-
-            
-        </div>
-   </div>
-   <div class="ui tab" data-tab="genders">
-       <div class="ui grid">
-            <div class="ui lef aligned five wide column"></div>
-            <div class="ui lef aligned seven wide column">
-                <div class="ui form">
-                    <br>
-                     {{#each genderModel as |genderChoice index|}}
-                    <div class="inline field">
-                    <label>Option {{index}}:</label> <input value={{genderChoice.type}} type="text"  onchange = {{action 'changeGenderName' index}} class = {{index}} >
-                    <a {{action 'removeGenderOption' index}}> 
-                        <i class="large red minus circle icon"></i> <br>
-                    </a>
-                    </div>
-                    {{/each}}
-                    
-                    <div class="inline field">
-                        <label>Add New</label>
-                        <input value="" type="text" onchange={{action 'updateGenderChoice' value="target.value"}}>
-                        <a {{action 'addGenderOption'}}> 
-                        <i class="large green add square icon"></i> <br>
-                    </a>
+                <div class="ui lef aligned five wide column"></div>
+                <div class="ui lef aligned seven wide column">
+                    <div class="ui form">
+                        <br>
+                        {{#each genderModel as |genderChoice index|}}
+                        <div class="inline field">
+                        <label>Option {{increment index}}:</label> <input value={{genderChoice.type}} type="text"  onchange = {{action 'changeGenderName' index}} class = {{index}} >
+                        <a {{action 'removeGenderOption' index}}> 
+                            <i class="large red minus circle icon"></i> <br>
+                        </a>
+                        </div>
+                        {{/each}}
+                        
+                        <div class="inline field">
+                            <label>Add New</label>
+                            <input value="" type="text" placeholder="New Gender" onchange={{action 'updateGenderChoice' value="target.value"}}>
+                            <a {{action 'addGenderOption'}}> 
+                            <i class="large green add square icon"></i> <br>
+                        </a>
+                        </div>
+                        
                     </div>
                     
                 </div>
+                <!-- <div class="ui center aligned five wide column"></div> 
+                <div class="ui center aligned five wide column">
+                        <button class="ui violet button">
+                            Save 
+                        </button>
+                        <button class="ui button">
+                            Undo All <i class="undo icon"></i>
+                        </button>
+                    </div> -->
+
                 
             </div>
-            <!-- <div class="ui center aligned five wide column"></div> 
-            <div class="ui center aligned five wide column">
-                    <button class="ui violet button">
-                        Save 
-                    </button>
-                    <button class="ui button">
-                        Undo All <i class="undo icon"></i>
-                    </button>
-                </div> -->
+        
+    </div>
 
-            
+    <div class="ui tab" data-tab="programCodes">
+        
+        <div class="ui four item inverted menu" style="background-color: #4F2683; color: #ffffff">
+                <div class="active violet item" data-tab="termCodes">Term Codes</div>
+                <div class="violet item" data-tab="planCodes">Plan Codes</div>
+                <div class="violet item" data-tab="courseCodes">Course Codes</div>
+                <div class = "violet item" data-tab="programs">Programs</div>
+            </div>
+            <div class="ui active tab" data-tab="termCodes">
+                <div class="ui grid">
+                    <div class="ui lef aligned five wide column"></div>
+                        <div class="ui lef aligned seven wide column">
+                            <div class="ui form">
+                                <br>
+                                <div id = "termCodes">
+                                    {{#each termModel as |termChoice index|}}
+                                    <div class="inline field">
+                                    <label>Option {{increment index}}:</label> <input value={{termChoice.name}} type="text"  onchange = {{action 'changeTermName' index}} class = {{index}}>
+                                    <a {{action 'removeTermOption' index}}> 
+                                        <i class="large red minus circle icon"></i> <br>
+                                    </a>
+                                    </div>
+                                    {{/each}}
+                                </div>
+                                <br>
+                                <div class="inline field">
+                                    <label>Add New</label>
+                                    <input value="" type="text" placeholder="New Term" onchange={{action 'updateTermChoice' value="target.value"}}>
+                                    <a {{action 'addTermOption'}}> 
+                                    <i class="large green add square icon"></i> <br>
+                                </a>
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                </div>
+            </div>
+        <div class="ui tab" data-tab="planCodes">
+            <div class="ui grid">
+                <div class="ui lef aligned five wide column">
+                    
+                </div>
+                        <div class="ui lef aligned seven wide column">
+                            <div class="ui form">
+                                <br>
+                                <div id="planCodes">
+                                {{#each planModel as |planChoice index|}}
+                                
+                                <div class="inline field">
+                                <label>Option {{increment index}}:</label> <input value={{planChoice.name}} type="text"  onchange = {{action 'changePlanName' index}} class = {{index}}>
+                                <a {{action 'removePlanOption' index}}> 
+                                    <i class="large red minus circle icon"></i> <br>
+                                </a>
+                                </div>
+                                {{/each}}
+
+                                </div>
+                                <br>
+                                <div class="inline field">
+                                    
+                                    <label>Add New: </label>
+                                    <input value="" type="text" placeholder="New Plan" onchange={{action 'updatePlanChoice' value="target.value"}}>
+                                    <a {{action 'addPlanOption'}}> 
+                                    <i class="large green add square icon"></i> <br>
+                                </a>
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+            </div>
         </div>
-       
-   </div>
+
+            <div class="ui tab" data-tab="courseCodes">
+                <div class=" ui inverted segment" style="background-color: #4F2683" id="find">
+                                <div class="field">
+                                    
+                                    <div class="ui medium header" style="color: #FFFFFF">Search By Number</div>
+                                    <div class="ui icon input">
+                                        
+                                    <input type="text" placeholder="Search..." class="searchVal">
+                                    <i class="search icon"></i>
+                                    </div>
+                                    
+                                        
+                                        <button class="ui button" {{action 'findClicked'}}>
+                                            Find 
+                                        </button>
+                                    
+                                    
+                                </div>
+                            </div>
+                <div class="ui grid">
+                    
+                    <div class="ui center aligned four wide column"></div>
+                        <div class="ui  aligned seven wide column"  >
+                            <div class="ui form" >
+                                <br>
+                                <div id="courseCodes">
+                                {{#each courseModel as |courseChoice index|}}
+                                <div class={{index}}>
+                                    <div class="ui large header" style="color: #4F2683">Option {{increment index}}
+                                        <a {{action 'removeCourseOption' index}}> 
+                                        <span data-tooltip="Remove This Option"><i class="red minus circle icon"></i></span> </a> <a {{action 'updateCourseChoice' index}}> 
+                                        <span data-tooltip="Save Changes to Option"><i class=" save icon" ></i></span></a> 
+                                        
+                                        
+                                    </div>
+                                    <!--<div class="ui mini positive message">
+                                        <i class="close icon"></i>
+                                        <div class="header">
+                                            You are eligible for a reward
+                                        </div>
+                                        <p>Go to your <b>special offers</b> page to see now.</p>
+                                        </div>-->
+                                        <div class="fields" >
+                                            <div class = "seven wide field">
+                                            <label>Course Letter </label> <input value = {{courseChoice.courseLetter}} type="text" class="letter">
+                                            </div>
+                                            <div class = "five wide field">
+                                            <label>Course Number</label> <input value = {{courseChoice.courseNumber}}  type="text" class="number">
+                                            </div>
+                                            <div class = "three wide field">
+                                            <label>Unit</label> <input value = {{courseChoice.unit}}  type="text" class="unit">
+                                            </div>
+                                        </div>
+                                        <div class ="fifteen wide field">
+                                            <label>Course Name</label><input value = {{courseChoice.name}}  type = "text" class="name">
+                                        </div>
+                                    </div>
+                                    <h4 class="ui horizontal divider header" style="color: #4F2683">
+                                    <i class="angle double left icon"></i><i class="angle double right icon"></i>
+                                    
+                                    </h4>
+                                {{/each}}
+                                </div>
+                                
+                                
+                            
+                            
+                            <div class = "ui form" id = "find">
+                                <a {{action 'newCourseClicked'}}> 
+                                <i class="large green add square icon"></i>Add New Course Code</a>
+                                <br>
+                                {{#if newCourse}}
+                                <br>
+                                <div id="newCourse">
+                                    <div class = "ui form error">
+                                    <div class="required fields">
+                                        <div class = "seven wide field">
+                                        <label>Course Letter</label> <input type="text" placeholder="Letter" class="letter" name="letter">
+                                        </div>
+                                        <div class = "five wide field">
+                                        <label>Course Number</label> <input type="text" placeholder="Number" class="number" name = "number">
+                                        </div>
+                                        <div class = "three wide field">
+                                        <label>Unit</label> <input type="text" placeholder="Unit" class="unit" name = "unit">
+                                        </div>
+                                    </div>
+                                    <div class ="required fifteen wide field">
+                                        <label>Course Name</label><input type = "text" class="name" placeholder="Name" name = "name">
+                                    </div>
+                                    <button class="ui violet button" {{action 'addCourseOption'}} >
+                                        Add 
+                                    </button>
+                                    <button class="ui button" {{action 'newCourseClicked'}}>
+                                        Cancel
+                                    </button>
+                                    {{#if err}}
+                                    
+                                    <div class="ui error message">
+                                        <div class="header">Missing Fields</div>
+                                        <p>Please make sure all required fields are filled and try again.</p>
+                                    </div>
+                                    {{/if}}
+                                    </div>
+                                </div>
+                                {{/if}}
+                            </div>
+                    
+                            </div>
+                            
+                        </div>
+                        
+                </div>
+            </div>
+            <div class="ui tab" data-tab="programs">
+                <div class = "ui grid">
+                <div class="ui center aligned four wide column"></div>
+                <div class="ui left aligned seven wide column">
+                    <div class = "ui form" id = "programs">
+                                {{#each programModel as |programChoice index|}}
+                                <div class = {{index}}>
+                                    <div class="ui form">
+                                    <div class = "ui large header" style="color: #4F2683">Option {{increment index}}
+                                        <a {{action 'removeProgramOption' index}}> 
+                                        <span data-tooltip="Remove This Option"><i class="red minus circle icon"></i></span> </a> <a {{action 'updateProgramChoice' index}}> 
+                                        <span data-tooltip="Save Changes to Option"><i class=" save icon" ></i></span></a> 
+                                    </div>
+                                   <div class ="fifteen wide field">
+                                        <label>Program Name</label>{{input type = "text" class="name" placeholder="Name"  value = programChoice.name name="name"}}
+                                    </div> 
+                                    <div class = "field">
+                                        <label name="list">Available Plans</label>
+                                        <select onchange={{action 'updatePlan' index }} class="selectedPlan" name="list">
+                                            <option hidden>Select</option>
+                                        {{#each planModel as |planChoice index2|}}
+                                            <option value={{index2}}> {{planChoice.name}} </option> 
+                                            
+                                        {{/each}}
+                                        </select>
+                                    </div>
+                                    <div class="ui small header" style="color: #4F2683">Selected Plans:</div>
+                                    <ul>
+                                    {{#each programChoice.availablePlans as |programPlan index2|}}
+                                        <li class={{index2}}>{{programPlan.name}}
+                                            <a {{action 'removeProgramPlan' index index2}}><span data-tooltip="Remove This Plan"><i class=" large red minus circle icon"></i></span></a></li>
+                                    {{/each}}
+                                    </ul>
+                                    <h4 class="ui horizontal divider header" style="color: #4F2683">
+                                    <i class="angle double left icon"></i><i class="angle double right icon"></i></h4>
+                                    </div>
+                                </div>
+                                {{/each}}
+                                <a {{action 'newProgramClicked'}}> 
+                                <i class="large green add square icon"></i>Add New Program</a>
+                                <br>
+                                {{#if newProgram}}
+                                <br>
+                                <div id="newProgram">
+                                    <div class = "ui form error">
+                                    
+                                    <div class ="required fifteen wide field">
+                                        <label>Program Name</label><input type = "text" class="name" placeholder="Name" name = "name">
+                                    </div>
+                                    <div class = "field">
+                                        <label name="list">Available Plans</label>
+                                        <select onchange={{action 'selectPlan' value="target.value"}} name = "listname">
+                                            <option hidden>Select</option>
+                                        {{#each planModel as |planChoice index|}}
+                                            <option value={{index}}> {{planChoice.name}} </option> 
+                                            
+                                        {{/each}}
+                                        </select>
+                                    </div>
+                                    <div class="ui medium header" style="color: #4F2683">Select Plans:</div>
+                                    <ul>
+                                    {{#each newPlanList as |newPlanChoice index|}}
+                                            <li class={{index}}>{{newPlanChoice.name}}
+                                            <a {{action 'removeNewPlan' index}}><span data-tooltip="Remove This Plan"><i class=" large red minus circle icon"></i></span></a></li>
+                                    {{/each}}
+                                    </ul>
+                                    <br>
+                                    <button class="ui violet button" {{action 'addProgramOption'}} >
+                                        Add 
+                                    </button>
+                                    <button class="ui button" {{action 'newProgramClicked'}}>
+                                        Cancel
+                                    </button>
+                                    {{#if errProgram}}
+                                    
+                                    <div class="ui error message">
+                                        <div class="header">Missing Fields</div>
+                                        <p>Please make sure all required fields are filled and at least one plan selected.</p>
+                                    </div>
+                                    {{/if}}
+                                    </div>
+                                </div>
+                                {{/if}}
+                            </div>
+                            
+                </div>
+                </div>
+                
+                
+            </div>
+    </div>
+
+    
    
   
 
