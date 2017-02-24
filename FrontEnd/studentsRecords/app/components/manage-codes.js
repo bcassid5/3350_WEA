@@ -298,12 +298,14 @@ export default Ember.Component.extend({
               console.log(error);
           });
       },
-      addCourseOption()
+      addCoursesOption()
       {
+          console.log("Here");
         var l =this.$("#newCourse").find('.letter').val();
         var n = this.$("#newCourse").find('.number').val();
         var u =this.$("#newCourse").find('.unit').val();
         var Nname =this.$("#newCourse").find('.name').val();
+        console.log(l + " " + n + " " + u + " " + Nname);
         this.set("err", false);
         if(l=="")
         {
