@@ -14,14 +14,13 @@
         <div class="active item" data-tab="residencies">Residencies</div>
         <div class="item" data-tab="genders">Gender</div>
         <div class="item" data-tab="programCodes">Program</div>
-        <div class="item" data-tab="highSchool">High School</div>
+        <div class="item" data-tab="highschool">High School</div>
         
         
     </div>
 
     <div class="ui  active tab"data-tab="residencies">
         
-
             <div class="ui grid">
                 <div class="ui lef aligned five wide column"></div>
                 <div class="ui lef aligned seven wide column">
@@ -382,8 +381,13 @@
     </div>
 
     
-   
-  
+   <div class="ui tab" data-tab="highschool">
+     <div class="ui three item inverted menu" style="background-color: #4F2683; color: #ffffff">
+                <div class="active violet item" data-tab="highSchools">High Schools</div>
+                <div class="violet item" data-tab="hsSubject">Subjects</div>
+                <div class="violet item" data-tab="hsCourse">Courses</div>
+                
+    </div>
  <div class="ui tab" data-tab="hsSubject">
        <div class="ui grid">
             <div class="ui lef aligned five wide column"></div>
@@ -396,10 +400,10 @@
                             <br/>
                             <label style="text-align: center">Option {{index}}</label>
                         </div>
-                        <div class="field">
+                        <div class="required field">
                             <label>Name</label> <input value={{highSchoolSubjectChoice.name}} type="text"  onchange = {{action 'changeSubjectName' highSchoolSubjectChoice.id}} class = {{highSchoolSubjectChoice.id}}>
                         </div>
-                        <div class="field">
+                        <div class="required field">
                             <label>Description</label> <input value={{highSchoolSubjectChoice.description}} type="text"  onchange = {{action 'changeSubjectDescription' highSchoolSubjectChoice.id}} id = {{highSchoolSubjectChoice.id}} >
                         </div>
                         <div class="field">
@@ -417,11 +421,11 @@
                             <br/>
                             <label style="text-align: center">Add New</label>
                         </div>
-                        <div class="field">
+                        <div class="required field">
                             <label>Name</label>
                             <input placeholder="Name" value="" type="text" onchange={{action 'updateSubjectName' value="target.value"}}>
                         </div>
-                        <div class="field">
+                        <div class="required field">
                             <label>Description</label>
                             <input placeholder="Description" value="" type="text" onchange={{action 'updateSubjectDescription' value="target.value"}}>
                         </div>
@@ -437,7 +441,7 @@
         </div>
    </div>
 
-<div class="ui tab" data-tab="highSchools">
+<div class="active ui tab" data-tab="highSchools">
        <div class="ui grid">
             <div class="ui lef aligned two wide column"></div>
             <div class="ui lef aligned fourteen wide column">
@@ -450,7 +454,7 @@
                             <label style="text-align: center">Option</label>
                             <label style="text-align: center">{{index}}</label>
                         </div>
-                        <div class="field">
+                        <div class="required field">
                             <label>Name</label>
                             <input style="width: 500px" value={{highSchoolChoice.name}} type="text"  onchange = {{action 'changeHighSchoolName' highSchoolChoice.id}} class = {{highSchoolChoice.id}}>
                         </div>
@@ -470,7 +474,7 @@
                             <label style="text-align: center">Add</label>
                             <label style="text-align: center">New</label>
                         </div>
-                        <div class="field">
+                        <div class="required field">
                             <label>Name</label>
                             <input style="width: 500px" placeholder="Name" value="" type="text" onchange={{action 'updateHighSchoolName' value="target.value"}}>
                         </div>
@@ -499,19 +503,19 @@
                             <label style="text-align: center">Option</label>
                             <label style="text-align: center">{{index}}</label>
                         </div>
-                        <div class="field">
+                        <div class="required field">
                             <label>Level</label>
                             <input  style="width: 70px" value={{highSchoolCourseChoice.level}} type="text"  onchange = {{action 'changeCourseLevel' index}} class = {{index}}>
                         </div>
-                        <div class="field">
+                        <div class="required field">
                             <label>Source</label> 
                             <input style="width: 80px" value={{highSchoolCourseChoice.source}} type="text"  onchange = {{action 'changeCourseSource' index}} class = {{index}} >
                         </div>
-                        <div class="field">
+                        <div class="required field">
                             <label>Unit</label> 
                             <input style="width: 60px" value={{highSchoolCourseChoice.unit}} type="text"  onchange = {{action 'changeCourseUnit' index}} class = {{index}} >
                         </div>
-                        <div class="field">
+                        <div class="required field">
                             <label>Subject</label>
                             <select onchange={{action 'updateCourseSubject' value="target.value"}}>
                                 {{#each highSchoolSubjectModel as |highSchoolSubjectChoice|}}
@@ -520,7 +524,7 @@
                                 {{/each}}
                             </select>
                         </div>
-                        <div class="field">
+                        <div class="required field">
                             <label>High School</label>
                             <select style="width: 250px" onchange={{action 'updateCourseHighSchool' value="target.value"}}>
                                 {{#each highSchoolModel as |highSchoolChoice|}}
@@ -546,19 +550,19 @@
                             <label style="text-align: center">Add</label>
                             <label style="text-align: center">New</label>
                         </div>
-                        <div class="field">
+                        <div class="required field">
                             <label>Level</label>
                             <input style="width: 70px" placeholder="Level" value="" type="text" onchange={{action 'updateCourseLevel' value="target.value"}}>
                         </div>
-                        <div class="field">
+                        <div class="required field">
                             <label>Source</label>
                             <input style="width: 80px" placeholder="Source" value="" type="text" onchange={{action 'updateCourseSource' value="target.value"}}>
                         </div>
-                        <div class="field">
+                        <div class="required field">
                             <label>Unit</label>
                             <input style="width: 60px" placeholder="Unit" value="" type="text" onchange={{action 'updateCourseUnit' value="target.value"}}>
                         </div>
-                        <div class="field">
+                        <div class="required field">
                             <label>Subject</label>
                             <select onchange={{action 'updateCourseSubject' value="target.value"}}>
                                 <option value="" disabled selected style="display: none;">Subject</option>
@@ -567,7 +571,7 @@
                                 {{/each}}
                             </select>
                         </div>
-                        <div class="field">
+                        <div class="required field">
                             <label>High School</label>
                             <select style="width: 250px" onchange={{action 'updateCourseHighSchool' value="target.value"}}>
                                 <option value="" disabled selected style="display: none;">High School</option>
@@ -586,4 +590,5 @@
                 </div>
             </div>          
         </div>
+   </div>
    </div>
