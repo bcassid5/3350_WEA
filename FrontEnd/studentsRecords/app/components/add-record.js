@@ -50,7 +50,7 @@ export default Ember.Component.extend({
       var gend = this.get('store').peekRecord('gender', this.get('gen'));
 
       //logs
-      console.log(this.get('firstName'));
+      /*console.log(this.get('firstName'));
       console.log(this.get('gen'));
       console.log(this.get('res'));
       console.log(this.get('selectedDate'));
@@ -59,7 +59,7 @@ export default Ember.Component.extend({
 
       console.log("Res:" + setRes.id);
       console.log("Gen:" + gend.get("type"));
-      console.log(gend.get('type'));
+      console.log(gend.get('type'));*/
       if (gend.get('type') == 'Male') {
         setGen = "assets/studentsPhotos/male.png";
       } else if (gend.get('type') == 'Female') {

@@ -3,6 +3,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
     
+    store: Ember.inject.service(),
     filename: null,
     success: false,
     genders: false,
@@ -18,13 +19,14 @@ export default Ember.Component.extend({
 
             this.set('isLoading', true);
             //var workbook = XLSX
-            //var workbook = XLSX.read(file.data, {type: 'binary'});
+            var workbook = XLSX.read(file.data, {type: 'binary'});
+
             var row = 0;
             var col = null;
             var data = [];
             var header = [];
             var first_sheet_name = workbook.SheetNames[0];
-            console.log(workbook);
+            console.log(file.name);
 
             /* Get worksheet */
             var worksheet = workbook.Sheets[first_sheet_name];
@@ -47,6 +49,35 @@ export default Ember.Component.extend({
             }
             this.set('tableHeader', header);
             this.set('tableData', data);
+            console.log(data[1][0]);
+            
+            
+            if(file.name == "genders.xlsx"){
+                for (var i=1; i<3; i++){
+                    var record = this.get('store').createRecord('gender', {
+                        type: data[i][0],
+                        students: []
+                    });
+                    console.log(record.get('type'));
+                    record.save();
+                }
+            } else if (file.name == "residencies.xlsx"){
+                for (var i=1; i<4; i++){
+                    var record = this.get('store').createRecord('residency', {
+                        name: data[i][0],
+                        students: []
+                    });
+                    console.log(record.get('type'));
+                    record.save();
+                }
+            } else if (file.name == "students.xlsx"){
+                var setGen = null;
+                var setDate = new Date(this.get('selectedDate'));
+                var setRes = this.get('store').peekRecord('residency', this.get('res'));
+                var gend = this.get('store').peekRecord('gender', this.get('gen'));
+
+
+            }
             
             /*var self = this;
             var file = document.getElementById('file-field');
