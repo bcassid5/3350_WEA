@@ -42,8 +42,12 @@ router.route('/:highSchoolCourse_id')
                 response.send({error: error});
             }
             else {
-                highSchoolCourse.type = request.body.highSchoolCourse.type;
-
+                console.log(request.body);
+                highSchoolCourse.level = request.body.highSchoolCourse.level;
+                highSchoolCourse.source = request.body.highSchoolCourse.source;
+                highSchoolCourse.unit = request.body.highSchoolCourse.unit;
+                highSchoolCourse.subject = request.body.highSchoolCourse.subject;
+                highSchoolCourse.highschool = request.body.highschool;
                 highSchoolCourse.save(function (error) {
                     if (error) {
                         response.send({error: error});

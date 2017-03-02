@@ -629,9 +629,9 @@ export default Ember.Component.extend({
       changeCourseLevel(index)
       {
           var self = this;
-        if((this.$('.' + index)).val()!== ""){
+        if((this.$('.level' + index)).val()!== ""){
             this.get('store').find('high-school-course', this.get('highSchoolCourseModel').objectAt(index).get('id')).then(function(record){
-            record.set('level', (self.$('.' + index)).val());
+            record.set('level', (self.$('.level' + index)).val());
             record.save();
                 
           });
@@ -641,28 +641,41 @@ export default Ember.Component.extend({
       changeCourseSource(index)
       {
           var self = this;
-        if((this.$('.' + index)).val()!== ""){
+        if((this.$('.source' + index)).val()!== ""){
             this.get('store').find('high-school-course', this.get('highSchoolCourseModel').objectAt(index).get('id')).then(function(record){
-            record.set('source', (self.$('.' + index)).val());
+            record.set('source', (self.$('.source' + index)).val());
             record.save();
                 
           });
         }
       },
 
-      changeCourseUnit(index)
+      changeCourseUnit(indexHS)
       {
           var self = this;
-        if((this.$('.' + index)).val()!== ""){
-            this.get('store').find('high-school-course', this.get('highSchoolCourseModel').objectAt(index).get('id')).then(function(record){
-            record.set('unit', (self.$('.' + index)).val());
+        if((this.$('.unit' + indexHS)).val()!== ""){
+            var toFind = "unit"+indexHS;
+            this.get('store').find('high-school-course', this.get('highSchoolCourseModel').objectAt(indexHS).get('id')).then(function(record){
+            record.set('unit', (self.$('.unit'+indexHS)).val());
             record.save();
                 
           });
         }
       },
+      changeCourseSchool(index){
+        var self = this;
+        var hs = this.get('store').peekRecord('high-school', self.$(".hs"+index).val());
+        console.log(hs);
+        console.log(self.$(".hs"+index).val());
+        this.get('store').find('high-school-course', this.get('highSchoolCourseModel').objectAt(index).get('id')).then(function(record){
+           console.log(record);
+           record.set('highschool', hs);
+           console.log(record);
+           record.save();
+        });
+      },
 
-      removeCourseOption(index){
+      removeHSCourseOption(index){
        this.get('store').find('high-school-course',this.get('highSchoolCourseModel').objectAt(index).get('id')).then(function(record){
                 record.deleteRecord();
                 if(record.get('isDeleted'))

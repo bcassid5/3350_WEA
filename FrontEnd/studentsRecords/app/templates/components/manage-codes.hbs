@@ -496,24 +496,24 @@
             <div class="ui lef aligned fifteen wide column">
                 <div class="ui form">
                     <br>
-                     {{#each highSchoolCourseModel as |highSchoolCourseChoice index|}}
-                    <div class="fields">
+                     {{#each highSchoolCourseModel as |highSchoolCourseChoice indexHS|}}
+                    <div class="fields" id="HS">
                         <div class="field">
                             <br/>
                             <label style="text-align: center">Option</label>
-                            <label style="text-align: center">{{index}}</label>
+                            <label style="text-align: center">{{indexHS}}</label>
                         </div>
                         <div class="required field">
                             <label>Level</label>
-                            <input  style="width: 70px" value={{highSchoolCourseChoice.level}} type="text"  onchange = {{action 'changeCourseLevel' index}} class = {{index}}>
+                            <input  style="width: 70px" value={{highSchoolCourseChoice.level}} type="text"  onchange = {{action 'changeCourseLevel' indexHS}} class = "level{{indexHS}}" >
                         </div>
                         <div class="required field">
                             <label>Source</label> 
-                            <input style="width: 80px" value={{highSchoolCourseChoice.source}} type="text"  onchange = {{action 'changeCourseSource' index}} class = {{index}} >
+                            <input style="width: 80px" value={{highSchoolCourseChoice.source}} type="text"  onchange = {{action 'changeCourseSource' indexHS}} class = "source{{indexHS}}">
                         </div>
                         <div class="required field">
                             <label>Unit</label> 
-                            <input style="width: 60px" value={{highSchoolCourseChoice.unit}} type="text"  onchange = {{action 'changeCourseUnit' index}} class = {{index}} >
+                            <input style="width: 60px" value={{highSchoolCourseChoice.unit}} type="text"  onchange = {{action 'changeCourseUnit' indexHS}} class = "unit{{indexHS}}">
                         </div>
                         <div class="required field">
                             <label>Subject</label>
@@ -526,7 +526,7 @@
                         </div>
                         <div class="required field">
                             <label>High School</label>
-                            <select style="width: 250px" onchange={{action 'updateCourseHighSchool' value="target.value"}}>
+                            <select style="width: 250px" onchange={{action 'changeCourseSchool' indexHS}} class="hs{{indexHS}}">
                                 {{#each highSchoolModel as |highSchoolChoice|}}
                                     <option value={{highSchoolChoice.id}} selected={{eq highSchoolChoice.id
                                                                                     highSchoolCourseChoice.highschool.id}}>{{highSchoolChoice.name}} </option>
@@ -536,7 +536,7 @@
                         
                         <div class="field">
                             <br/><br/>
-                            <a {{action 'removeCourseOption' index}}> 
+                            <a {{action 'removeHSCourseOption' index}}> 
                                 <i class="large red minus circle icon"></i> <br>
                             </a>
                         </div>
@@ -564,7 +564,7 @@
                         </div>
                         <div class="required field">
                             <label>Subject</label>
-                            <select onchange={{action 'updateCourseSubject' value="target.value"}}>
+                            <select onchange={{action 'updateCourseSubject' value="target.value"}} class="sub{{index}}">
                                 <option value="" disabled selected style="display: none;">Subject</option>
                                 {{#each highSchoolSubjectModel as |highSchoolSubjectChoice|}}
                                     <option value={{highSchoolSubjectChoice.id}}>{{highSchoolSubjectChoice.description}} </option>
