@@ -49,8 +49,6 @@
   {{help-page notDONE = showHelpPage}}
 {{else if showFindRecordPage}}
   {{find-record notDONE = showFindRecordPage OFFSET = offset INDEX = currentIndex FOUND = found}}
-{{else if showAddCoursePage}}
-  {{adding-courses notDONE = showAddCoursePage currentStudent = currentStudent}}
 {{else}}
   <!-- Show data entry form -->
 
@@ -237,9 +235,6 @@
                         Cancel
                       </button>
                     </div>
-                    <button class="ui violet button" {{action 'addcredit'}} >
-                      Add Credit
-                    </button>
                     {{/if}}
                     
                   {{/if}}
@@ -435,11 +430,217 @@
           </div>
         
     </div>
-     <div class="ui tab"data-tab="highschool">
+    <div class="ui tab"data-tab="highschool">
     <!-- student high school information !-->
     <br/>
-    <h2>High School Courses and Grades</h2>
-    <button class="medium green fluid ui button" {{action 'showAddCourse'}}>Add</button>
+    <div class="ui grid">
+        <div class="ui left aligned four wide column"></div>
+        <div class="ui left aligned seven wide column">
+          {{#each highSchoolGradeModel as |highSchoolGradeChoice index|}}
+          {{#if enableHSCourseEdit}}     
+            <div class="ui large header"> Edit Option: 
+              <a {{action 'removeHSGradeOption' index}}> <span data-tooltip="Remove This Option">
+              <i class="red minus circle icon"></i> </span></a> <a {{action 'updateHSGradeSave' index}}>
+              <span data-tooltip="Save Changes"><i class=" save icon" data-content="Save Changes"></i></span></a> 
+             </div>
+            {{/if}}
+            {{#if (eq highSchoolGradeChoice.student.id currentStudent.id)}}
+            <div class="ui form" id="hsgrade{{index}}">
+              <div class="inline fields">
+                <div class="field">
+                  <h4>Course:</h4>
+                </div>
+              </div>
+              <div class="inline fields">             
+                <div class="field">
+                  <label>Grade</label><br/>
+                  <input type="text" value={{highSchoolGradeChoice.grade}} style="width: 60px" class="hsgrade">
+                </div>
+                <div class="field">
+                  <label>Subject</label><br/>
+                  {{#each highSchoolCourseModel as |highSchoolCourseChoice|}}
+                    {{#if (eq highSchoolGradeChoice.course.id highSchoolCourseChoice.id)}}
+                      {{#if enableHSCourseEdit}}
+                        <div>
+                          <span data-tooltip="Uneditable">
+                            <input readonly="readonly" type="text" value={{highSchoolCourseChoice.subject.description}} style="width: 100px">
+                          </span>
+                        </div>
+                      {{else}}
+                         <input readonly="readonly" type="text" value={{highSchoolCourseChoice.subject.description}} style="width: 100px">
+                      {{/if}}
+                    {{/if}}
+                  {{/each}}
+                </div>
+                <div class="field">
+                  <label>Department</label><br/>
+                  {{#each highSchoolCourseModel as |highSchoolCourseChoice|}}
+                    {{#if (eq highSchoolGradeChoice.course.id highSchoolCourseChoice.id)}}
+                      {{#if enableHSCourseEdit}}
+                          <div>
+                            <span data-tooltip="Uneditable">
+                              <input readonly="readonly" type="text" value={{highSchoolCourseChoice.subject.name}} style="width: 100px">
+                            </span>
+                          </div>
+                        {{else}}
+                          <input readonly="readonly" type="text" value={{highSchoolCourseChoice.subject.name}} style="width: 100px">
+                        {{/if}}
+                    {{/if}}
+                  {{/each}}
+                </div>
+                </div>
+                <div class="inline fields">
+                  <div class="field">
+                      <label>Level</label><br/>
+                      {{#if enableHSCourseEdit}}
+                        <div>
+                          <span data-tooltip="Uneditable">
+                            <input  readonly="readonly" style="width: 60px" value={{highSchoolGradeChoice.course.level}} type="text">
+                          </span>
+                        </div>
+                      {{else}}
+                        <input  readonly="readonly" style="width: 60px" value={{highSchoolGradeChoice.course.level}} type="text">
+                      {{/if}}
+                  </div>
+                  <div class="field">
+                      <label>Source</label><br/>
+                      {{#if enableHSCourseEdit}}
+                        <div>
+                          <span data-tooltip="Uneditable">
+                            <input readonly="readonly" style="width: 100px" value={{highSchoolGradeChoice.course.source}} type="text">
+                          </span>
+                        </div>
+                      {{else}}
+                        <input readonly="readonly" style="width: 100px" value={{highSchoolGradeChoice.course.source}} type="text">
+                      {{/if}}
+                  </div>
+                  <div class="field">
+                      <label>Unit</label><br/>
+                      {{#if enableHSCourseEdit}}
+                        <div>
+                          <span data-tooltip="Uneditable">
+                            <input readonly="readonly" style="width: 100px" value={{highSchoolGradeChoice.course.unit}} type="text">
+                          </span>
+                        </div>
+                      {{else}}
+                        <input readonly="readonly" style="width: 100px" value={{highSchoolGradeChoice.course.unit}} type="text">
+                      {{/if}}
+                  </div>
+                </div>
+                <div class="inline fields">
+                  <div class="field">
+                    <h4>From:</h4>
+                  </div>
+                </div>
+                <div class="inline fields">
+                <div class="field">
+                  <label>High School</label><br/>
+                    {{#each highSchoolCourseModel as |highSchoolCourseChoice|}}
+                      {{#each highSchoolModel as |highSchoolChoice|}}
+                        {{#if (eq highSchoolGradeChoice.course.id highSchoolCourseChoice.id)}}
+                          {{#if enableHSCourseEdit}}
+                            {{#if (eq highSchoolChoice.id highSchoolCourseChoice.highschool.id)}}
+                              <div>
+                                <span data-tooltip="Uneditable">
+                                  <input style="width: 285px" readonly="readonly" value={{highSchoolChoice.name}}>
+                                </span>
+                              </div>
+                            {{/if}}
+                          {{else}}
+                            {{#if (eq highSchoolChoice.id highSchoolCourseChoice.highschool.id)}}
+                              <input style="width: 285px" readonly="readonly" value={{highSchoolChoice.name}}>
+                            {{/if}}
+                          {{/if}}
+                        {{/if}}
+                      {{/each}}
+                    {{/each}}
+                </div>
+                </div>
+              </div>
+              <h4 class="ui horizontal divider header" style="color: #4F2683">
+                <i class="angle double left icon"></i><i class="angle double right icon"></i>
+              </h4>
+            {{/if}}
+          {{/each}}
+          {{#if showAddCoursePage}}
+            <div class="header" style="font-size: 150%">Add High School Course</div>
+            <br/>
+                <div class="ui form">
+                  <div class="inline field">
+                      <label>Grade</label><br/>
+                      <input type="text" value="" style="width: 300px" onchange={{action 'updateHSGrade' value="target.value"}}>
+                    </div>
+
+                      <div class="inline field">
+                          <label>High School</label><br/>
+                          <select style="width: 300px" name = "hsName" onchange={{action 'updateHighSchoolSelection' value="target.value"}}>
+                            <option value="" disabled selected style="display: none;">Select High School</option>
+                            {{#each highSchoolModel as |highSchoolChoice|}}
+                                <option value={{highSchoolChoice.id}}>{{highSchoolChoice.name}} </option>
+                              {{/each}}
+                          </select> 
+                      </div>
+                      
+                      {{#if showList}}
+                          {{#each highSchoolCourseModel as |highSchoolCourseChoice idx|}}
+                          {{log idx}}
+                            {{#if (eq highSchoolCourseChoice.highschool.id currentHighSchool)}}
+                              <div class="fields">
+                                  <div class="field">
+                                      <br/>
+                                      <label style="text-align: center">Option: </label>
+                                  </div>
+                                  <div class="field">
+                                      <label>Level</label>
+                                      <input  readonly="readonly" style="width: 70px" value={{highSchoolCourseChoice.level}} type="text"  class = {{idx}}>
+                                  </div>
+                                  <div class="field">
+                                      <label>Source</label> 
+                                      <input readonly="readonly" style="width: 80px" value={{highSchoolCourseChoice.source}} type="text" class = {{idx}} >
+                                  </div>
+                                  <div class="field">
+                                      <label>Unit</label> 
+                                      <input readonly="readonly" style="width: 60px" value={{highSchoolCourseChoice.unit}} type="text" class = {{idx}} >
+                                  </div>
+                                  <div class="field">
+                                      <label>Subject</label>
+                                      {{#each highSchoolSubjectModel as |highSchoolSubjectChoice|}}
+                                        {{#if (eq highSchoolSubjectChoice.id highSchoolCourseChoice.subject.id)}}
+                                              <input readonly="readonly" style="width: 120px" value={{highSchoolSubjectChoice.description}} type="text" class = {{idx}} >
+                                        {{/if}}
+                                      {{/each}}
+                                  </div>
+                                  <div class="field">
+                                      <label>Department</label>
+                                      {{#each highSchoolSubjectModel as |highSchoolSubjectChoice|}}
+                                        {{#if (eq highSchoolSubjectChoice.id highSchoolCourseChoice.subject.id)}}
+                                              <input readonly="readonly" style="width: 120px" value={{highSchoolSubjectChoice.name}} type="text" class = {{idx}} >
+                                        {{/if}}
+                                      {{/each}}
+                                  </div>
+                                  
+                                  <div class="field">
+                                      <br/><br/>
+                                      <a {{action 'addCourseToRecord' idx}}> 
+                                          <i class="large green add circle icon"></i>
+                                      </a>
+                                  </div>
+                              </div>
+                            {{/if}}
+                          {{/each}}
+                        {{/if}}
+
+                </div>
+          {{/if}}
+          <br/>
+          <a {{action 'showAddCourse'}}><i class="large green add square icon"></i>Add High School Course and Grade</a>
+          <br>
+        </div>
+        <div class="ui center aligned four wide column">
+          <br/><br/>
+          <button class="ui violet button" {{action 'toggleHSCourseEdit'}}>Toggle Edit</button>
+        </div>
+    </div>
   </div>
   </div>
    <div class="ui tab" data-tab="awards">
@@ -458,15 +659,14 @@
                             <i class="red minus circle icon"></i> </span></a> <a {{action 'updateAwdChoice' index}}>
                             <span data-tooltip="Save Changes to Option"><i class=" save icon" data-content="Save Changes"></i></span></a> 
                             </div>
-                      
-                          {{/if}}
+      
+                        {{/if}}
                         <div class = "field">
                         <label>Award: </label><input type = "text" value = {{award.note}} class="note">
                         </div>
   
                       <h4 class="ui horizontal divider header" style="color: #4F2683">
-                      <i class="angle double left icon"></i><i class="angle double right icon"></i>
-                      
+                        <i class="angle double left icon"></i><i class="angle double right icon"></i>
                       </h4>
                     </div>
                     {{/each}}
@@ -492,11 +692,8 @@
             </div>
             <div class="ui center aligned four wide column">
               <br><br>
-              <button class="ui violet button" {{action 'toggleAwdEdit'}}>
-                            Toggle Edit
-                        </button>
+              <button class="ui violet button" {{action 'toggleAwdEdit'}}>Toggle Edit</button>
             </div>
-            
         </div>
        
    </div>

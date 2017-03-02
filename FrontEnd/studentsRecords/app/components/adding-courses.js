@@ -120,36 +120,6 @@ actions:{
 
         console.log(record);
 
-
-        /*this.get('store').find('high-school-course', index).then(function(record){
-            //console.log('course to be added found')
-            //console.log('record if: '+record.id);
-            //console.log('record.... '+record);
-            self.set('newCourse', record.id);
-            console.log('newCourse: '+self.get('newCourse'));
-                
-            console.log(self.get('newGrade'));
-            console.log(self.get('newCourse'));
-            console.log(self.get('currentStudent').get('id'));
-
-            if (self.get('newGrade')!==""){
-                var record = self.get('store').createRecord('highschool-grade', {
-                    grade: self.get('newGrade'),
-                    course: self.get('newCourse'),
-                    student: self.get('currentStudent').get('id')
-                });
-                console.log(record);
-                console.log('grade: ');
-                console.log(record.grade);
-                console.log('course ');
-                console.log(record.course);
-                console.log('student ');
-                console.log(record.student);
-                record.save();
-            }
-          });*/
-       
-
         this.set('notDONE', false);
         Ember.$('.ui.modal').modal('hide');
         Ember.$('.ui.modal').remove();

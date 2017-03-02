@@ -7,7 +7,6 @@ var parseJSON = bodyParser.json();
 
 router.route('/')
     .post(parseUrlencoded, parseJSON, function (request, response) {
-        console.log(request.body);
         var highSchoolGrade = new models.HighSchoolGrades(request.body.highschoolGrade);
         highSchoolGrade.save(function (error) {
             if (error) response.send(error);
@@ -43,7 +42,9 @@ router.route('/:highSchoolGrade_id')
                 response.send({error: error});
             }
             else {
-                highSchoolGrade.type = request.body.highSchoolGrade.type;
+                highSchoolGrade.grade = request.body.highschoolGrade.grade;
+                highSchoolGrade.course =  request.body.highschoolGrade.course;
+                highSchoolGrade.student = request.body.highschoolGrade.student;
 
                 highSchoolGrade.save(function (error) {
                     if (error) {

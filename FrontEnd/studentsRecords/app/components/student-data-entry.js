@@ -63,6 +63,21 @@ export default Ember.Component.extend({
   enableAwdEdit: null,
   enableGradeEdit: null,
 
+  showSubject: false,
+  showDescription: false,
+  showLevel: false,
+  showUnits: false,
+  showList: false,
+  currentHighSchool: null,
+  currentSource: null,
+  currentLevel: null,
+  currentUnit: null,
+  currentCourse: null,
+  newHSCourseGrade: "",
+  newCourse: null,
+  enableHSCourseEdit: false,
+  
+
     
   studentModel: Ember.observer('offset', function () {
     var self = this;
@@ -136,8 +151,6 @@ export default Ember.Component.extend({
 /********************************************************************************************************** */
         this.get('store').findAll('highschool-grade').then(function(records){
             self.set('highSchoolGradeModel', records);
-            console.log('getting grade records from store');
-            console.log(records);
         });
 /************************************************************************************************************* */
 
@@ -266,6 +279,78 @@ export default Ember.Component.extend({
   },
 
   actions: {
+
+    updateHighSchoolSelection(val){
+        this.set('currentHighSchool', val);
+        this.set('optionNumber', 1);
+        this.set('showList', true);
+        this.set('showLevel', false);
+        this.set('showUnits', false);
+        this.set('showSubject', false);
+    },
+
+    updateHSGrade(val){
+        this.set('newHSCourseGrade', val);
+    },
+
+    addCourseToRecord(idx){
+
+        console.log('adding....');
+        var self = this;
+        
+        var myCourse = (this.get('highSchoolCourseModel')).objectAt(idx).get('id');
+
+        var record = this.get('store').createRecord('highschool-grade', {
+            grade: this.get('newHSCourseGrade'),
+            course: (this.get('highSchoolCourseModel')).objectAt(idx),
+            student: this.get('currentStudent')
+        });
+                   
+        record.save();
+
+        this.set('showAddCoursePage', false);
+        this.set('showList', false);
+        this.set('showLevel', false);
+        this.set('showUnits', false);
+        this.set('showSubject', false);
+    },
+
+    toggleHSCourseEdit()
+    {
+      console.log('called');
+      this.set('enableHSCourseEdit', !(this.get('enableHSCourseEdit')));
+    },
+
+    removeHSGradeOption(index)
+    {
+      
+      this.get('store').find('highschool-grade',this.get('highSchoolGradeModel').objectAt(index).get('id')).then(function(record){
+              console.log(record);
+              record.deleteRecord();
+              if(record.get('isDeleted'))
+              {
+                record.save();
+              }
+                
+          }, function (error){
+              console.log(error);
+          });
+    },
+
+    updateHSGradeSave(index)
+    {
+      var n = this.$("#hsgrade"+index).find('.hsgrade').val();
+      console.log('n: '+n);
+      
+      this.get('store').find('highschool-grade',this.get('highSchoolGradeModel').objectAt(index).get('id')).then(function(record){
+          
+          record.set('grade', n);
+         
+          record.save();
+              
+          });
+    },
+
     removeGrade(termIndex, gradeIndex)
     {
       var self = this;
@@ -680,7 +765,15 @@ export default Ember.Component.extend({
     },
 
     showAddCourse(){
-      this.set('showAddCoursePage', true);
+      if(this.get('showAddCoursePage')){
+        this.set('showAddCoursePage', false);
+        this.set('showList', false);
+        this.set('showLevel', false);
+        this.set('showUnits', false);
+        this.set('showSubject', false);
+      } else {
+        this.set('showAddCoursePage', true);
+      }
     },
 
     editNumber(num){
