@@ -1,4 +1,5 @@
 import Ember from 'ember';
+/* global XLSX */ 
 
 export default Ember.Component.extend({
     
@@ -7,12 +8,47 @@ export default Ember.Component.extend({
     genders: false,
     residencies: false,
     advStanding: false,
+    tableHeader: [],
+    tableData: null,
+    isLoading: false,
 
     actions: {
 
-        upload() { 
+        fileImported: function(file) { 
+
+            this.set('isLoading', true);
+            //var workbook = XLSX
+            //var workbook = XLSX.read(file.data, {type: 'binary'});
+            var row = 0;
+            var col = null;
+            var data = [];
+            var header = [];
+            var first_sheet_name = workbook.SheetNames[0];
+            console.log(workbook);
+
+            /* Get worksheet */
+            var worksheet = workbook.Sheets[first_sheet_name];
+            var size = 0;
+            for (var cellName in worksheet) {
+                //all keys that do not begin with "!" correspond to cell addresses
+                if (cellName[0] === '!') {
+                continue;
+                }
+                row = cellName.slice(1) - 1;
+                col = cellName.charCodeAt(0) - 65;
+                data[size++] = [];
+                if (row === 0) {
+
+                header[col] = worksheet[cellName].v;
+
+                } else {
+                data[row][col] = worksheet[cellName].v;
+                }
+            }
+            this.set('tableHeader', header);
+            this.set('tableData', data);
             
-            var self = this;
+            /*var self = this;
             var file = document.getElementById('file-field');
             var fileNameSave = file.files[0].name;
             var n = '';
@@ -74,6 +110,10 @@ export default Ember.Component.extend({
                 
                 //reader.readAsText(file.files[0]);
             }*/
+        },
+
+        done: function () {
+            this.set('isLoading', false);
         },
 
         send2Back(file){
