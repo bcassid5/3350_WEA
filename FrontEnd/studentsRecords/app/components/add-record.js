@@ -49,17 +49,24 @@ export default Ember.Component.extend({
       var setRes = this.get('store').peekRecord('residency', this.get('res'));
       var gend = this.get('store').peekRecord('gender', this.get('gen'));
 
-      //logs
-      /*console.log(this.get('firstName'));
-      console.log(this.get('gen'));
-      console.log(this.get('res'));
-      console.log(this.get('selectedDate'));
-      console.log(setDate);
-      console.log(setRes);
+      
+      
 
-      console.log("Res:" + setRes.id);
-      console.log("Gen:" + gend.get("type"));
-      console.log(gend.get('type'));*/
+      //logs
+      //console.log(this.get('firstName'));
+      //console.log(this.get('gen'));
+      //console.log(this.get('res'));
+      //console.log(this.get('selectedDate'));
+      //console.log(setDate);
+      //console.log(setRes);
+      /*
+      console.log("Res id:" + setRes.id);
+      console.log("Res name:" + setRes.get("name"));
+      console.log("gen id:" + gend.id);
+      console.log("Gen type:" + gend.get("type"));
+      console.log(gend);
+      console.log(setRes);*/
+      
       if (gend.get('type') == 'Male') {
         setGen = "assets/studentsPhotos/male.png";
       } else if (gend.get('type') == 'Female') {

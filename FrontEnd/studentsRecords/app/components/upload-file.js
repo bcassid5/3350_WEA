@@ -26,7 +26,7 @@ export default Ember.Component.extend({
             var data = [];
             var header = [];
             var first_sheet_name = workbook.SheetNames[0];
-            console.log(file.name);
+            //console.log(file.name);
 
             /* Get worksheet */
             var worksheet = workbook.Sheets[first_sheet_name];
@@ -49,7 +49,7 @@ export default Ember.Component.extend({
             }
             this.set('tableHeader', header);
             this.set('tableData', data);
-            console.log(data[1][0]);
+            //console.log(data[1][0]);
             
             
             if(file.name == "genders.xlsx"){
@@ -58,7 +58,7 @@ export default Ember.Component.extend({
                         type: data[i][0],
                         students: []
                     });
-                    console.log(record.get('type'));
+                    //console.log(record.get('type'));
                     record.save();
                 }
             } else if (file.name == "residencies.xlsx"){
@@ -67,15 +67,63 @@ export default Ember.Component.extend({
                         name: data[i][0],
                         students: []
                     });
-                    console.log(record.get('type'));
+                    //console.log(record.get('type'));
                     record.save();
                 }
             } else if (file.name == "students.xlsx"){
                 var setGen = null;
-                var setDate = new Date(this.get('selectedDate'));
-                var setRes = this.get('store').peekRecord('residency', this.get('res'));
-                var gend = this.get('store').peekRecord('gender', this.get('gen'));
+                //console.log(data[1][0]);
+                //console.log(data[1][1]);
+                //console.log(data[1][2]);
+                //console.log(data[1][3]);
+                //console.log(data[1][4]);
+                //console.log(data[1][5]);
+                var resID;
+                var genID;
+                var record;
+                var setRes;
+                var gend;
+                var setDate;
+                var currentGend;
+                var g = this.get('store').findAll('gender');
+                console.log(g);
+                
+                //console.log(g.content.content[1]._record.id);
+                
 
+                for (var i=1; i<101; i++){
+                    //6 columns: studentNumber, firstName, lastName, gender, DOB, residency
+                    currentGend = data[i][3];
+                    //console.log(currentGend);
+                    
+                    
+                    //var setRes = this.get('store').peekRecord('residency', resID);
+                    //var gend = this.get('store').peekRecord('gender', genID);
+
+                    setRes = this.get('store').peekRecord('residency', data[i][5]);
+                    gend = this.get('store').peekRecord('gender', genID);
+                    setDate = new Date(data[i][4]);
+
+                    if (data[i][3] == 'Male') {
+                        setGen = "assets/studentsPhotos/male.png";
+                    } else if (data[i][3] == 'Female') {
+                        setGen = "assets/studentsPhotos/female.png";
+                    } else {
+                        setGen = "assets/studentsPhotos/other.png";
+                    }
+                    /*
+                    record = this.get('store').createRecord('student', {
+                        number: data[i][0],
+                        firstName: data[i][1],
+                        lastName: data[i][2],
+                        gender: gend,
+                        DOB: setDate,
+                        resInfo: setRes,
+                        photo: setGen,
+                    });
+                    //console.log(record.get('type'));
+                    record.save();*/
+                }                
 
             }
             
