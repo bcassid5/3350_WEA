@@ -36,6 +36,7 @@ router.route('/:gender_id')
             if (error) response.send(error);
             response.json({gender: gender});
         })
+        
     })
     .put(parseUrlencoded, parseJSON, function (request, response) {
         models.Genders.findById(request.params.gender_id, function (error, gender) {
@@ -65,4 +66,15 @@ router.route('/:gender_id')
             }
         );
     });
+
+router.route('/:gender_type')
+    .get(parseUrlencoded, parseJSON, function (request, response) {
+        models.Genders.findOne(request.params.gender_type, function (error, gender) {
+            if (error) response.send(error);
+            //response.json({gender: gender});
+            console.log(gender);
+        })
+        
+    });
+
 module.exports=router;

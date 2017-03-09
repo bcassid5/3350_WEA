@@ -12,6 +12,8 @@ export default Ember.Component.extend({
     tableHeader: [],
     tableData: null,
     isLoading: false,
+    genderModel: null,
+    resModel: null,
 
     actions: {
 
@@ -71,124 +73,76 @@ export default Ember.Component.extend({
                     record.save();
                 }
             } else if (file.name == "students.xlsx"){
-                var setGen = null;
-                //console.log(data[1][0]);
-                //console.log(data[1][1]);
-                //console.log(data[1][2]);
-                //console.log(data[1][3]);
-                //console.log(data[1][4]);
-                //console.log(data[1][5]);
-                var resID;
-                var genID;
-                var record;
-                var setRes;
-                var gend;
-                var setDate;
-                var currentGend;
-                var g = this.get('store').findAll('gender');
-                console.log(g);
                 
-                //console.log(g.content.content[1]._record.id);
-                
+                var self = this;
+                var myStore = this.get('store');
 
-                for (var i=1; i<101; i++){
-                    //6 columns: studentNumber, firstName, lastName, gender, DOB, residency
-                    currentGend = data[i][3];
-                    //console.log(currentGend);
-                    
-                    
-                    //var setRes = this.get('store').peekRecord('residency', resID);
-                    //var gend = this.get('store').peekRecord('gender', genID);
+                this.get('store').findAll('gender').then(function (genders) {
+                    self.set('genderModel', genders);
+                    //console.log(genders);
+                    self.get('store').findAll('residency').then(function (residencies) {
+                        self.set('resModel', residencies);
+                        //console.log(residencies);
+                        //console.log(self.get('genderModel'));
+                        //console.log(self.get('resModel'));
+                        var setPhoto;
+                        var setGen = self.get('genderModel');
+                        var setRes = self.get('resModel');
+                        var setGenID;
+                        var setResID;
 
-                    setRes = this.get('store').peekRecord('residency', data[i][5]);
-                    gend = this.get('store').peekRecord('gender', genID);
-                    setDate = new Date(data[i][4]);
+                        for (var i=1; i<101; i++){
+                            //6 columns: studentNumber, firstName, lastName, gender, DOB, residency
 
-                    if (data[i][3] == 'Male') {
-                        setGen = "assets/studentsPhotos/male.png";
-                    } else if (data[i][3] == 'Female') {
-                        setGen = "assets/studentsPhotos/female.png";
-                    } else {
-                        setGen = "assets/studentsPhotos/other.png";
-                    }
-                    /*
-                    record = this.get('store').createRecord('student', {
-                        number: data[i][0],
-                        firstName: data[i][1],
-                        lastName: data[i][2],
-                        gender: gend,
-                        DOB: setDate,
-                        resInfo: setRes,
-                        photo: setGen,
-                    });
-                    //console.log(record.get('type'));
-                    record.save();*/
-                }                
+                            for (var j=0; j<2; j++){
+                                if (data[i][3] == setGen.content[j]._data.type){
+                                    
+                                    setGenID = setGen.content[j].id;
+                                    //console.log(setGenID);
+                                }    
+                            }
 
-            }
-            
-            /*var self = this;
-            var file = document.getElementById('file-field');
-            var fileNameSave = file.files[0].name;
-            var n = '';
+                            for (var j=0; j<3; j++){
+                                if (data[i][5] == setRes.content[j]._data.name){
+                                    
+                                    setResID = setRes.content[j].id;
+                                    console.log(setResID);
+                                }    
+                            }
 
-            for(var i=0; i<fileNameSave.length;i++){
-                if(fileNameSave[i] == '.'){
-                    break;
-                } else {
-                    n += fileNameSave[i];
-                }
-            }
-            //console.log(fileNameSave);
-            //console.log(n);
+                            var res = self.get('store').peekRecord('residency', setResID);
+                            var gen = self.get('store').peekRecord('gender', setGenID);
+                            //console.log(res);
+                            //console.log(gen);
 
-            if(file.files.length >0)
-            {   
-                switch(file.files[0].name){
-                    case 'students.xlsx':
-                        if(self.get('genders')&&self.get('residencies')&&self.get('advStanding')){
-                            self.send('send2Back', file);
-                        } else {
-                            alert('Error: Must upload dependent documents first!');
+                            if (data[i][3] == 'Male') {
+                                setPhoto = "assets/studentsPhotos/male.png";
+                            } else if (data[i][3] == 'Female') {
+                                setPhoto = "assets/studentsPhotos/female.png";
+                            } else {
+                                setPhoto = "assets/studentsPhotos/other.png";
+                            }
+                            
+                            var record = myStore.createRecord('student', {
+                                number: data[i][0],
+                                firstName: data[i][1],
+                                lastName: data[i][2],
+                                gender: gen,
+                                DOB: data[i][4],
+                                resInfo: res,
+                                photo: setGen,
+                                regComments: null,
+                                BOA: null,
+                                admissAvg: null,
+                                admissComments: null,
+                            });
+                            //console.log(record.get('type'));
+                            record.save();    
                         }
-                        break;
-                    default:
-                        self.set(n, true);
-                        self.send('send2Back', file);
-                        break;
-                }
-                
-            }
-            
-            
-            
-            /*
-            //document.getElementById('file-field');
-            console.log('pressed');
-            
-            var file = document.getElementById('file-field');
-            var buffer;
-
-            if(file.files.length) {
-                var reader = new FileReader();
-
-                reader.onload = function(e)
-                {
-                    var data = e.target.result;
-                    var workbook = XLSX.read(data, {type: 'binary'});
-                    //document.getElementById('outputDiv').innerHTML = e.target.result;
-                    //console.log(dataView.getInt32(0).toString(16));
-                    //console.log(e.target.result);
-                };
-
-                reader.readAsArrayBuffer(file.files[0]);
-                
-                this.set('filename', file.files[0].name);
-                console.log(file.files[0]);
-                
-                
-                //reader.readAsText(file.files[0]);
-            }*/
+                        
+                    });
+                });
+                }               
         },
 
         done: function () {
@@ -220,7 +174,5 @@ export default Ember.Component.extend({
                 }
             });
         },
-
-
     }
 });

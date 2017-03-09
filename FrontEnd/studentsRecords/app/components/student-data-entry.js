@@ -136,8 +136,8 @@ export default Ember.Component.extend({
 /********************************************************************************************************** */
         this.get('store').findAll('highschool-grade').then(function(records){
             self.set('highSchoolGradeModel', records);
-            console.log('getting grade records from store');
-            console.log(records);
+            //console.log('getting grade records from store');
+            //console.log(records);
         });
 /************************************************************************************************************* */
 
