@@ -105,8 +105,59 @@ var Genders = mongoose.model('gender', genderSchema);
 var AdvStandings = mongoose.model('advStanding', advStandingSchema);
 var Awards = mongoose.model('awards', awardsSchema);
 
-
-
+var adjudicationSchema=mongoose.Schema(
+    {
+        date: Date,
+        termAVG: Number,
+        termUnitPassed: String,
+        termUnitTotal: String,
+        note: String,
+        assessmentCode: [{type: mongoose.Schema.ObjectId, ref:('AssessmentCodes')}]
+    }
+);
+var facultySchema=mongoose.Schema(
+    {
+        name: String,
+        department: [{type: mongoose.Schema.ObjectId, ref:('Departments')}],
+        assessmentCode: {type: mongoose.Schema.ObjectId, ref:('AssessmentCodes')}
+    }
+);
+var assessmentCodeSchema=mongoose.Schema(
+    {
+        code: String,
+        name: String,
+        faculty: [{type: mongoose.Schema.ObjectId, ref:('Faculties')}],
+        adjudication: {type: mongoose.Schema.ObjectId, ref:('Adjudications')},
+        logExpress: [{type: mongoose.Schema.ObjectId, ref:('LogicalExpressions')}]
+    }
+);
+var departmentSchema = mongoose.Schema(
+    {
+        name: String,
+        progAdmin: [{type: mongoose.Schema.ObjectId, ref:('ProgramAdministration')}],
+        faculty: {type: mongoose.Schema.ObjectId, ref:('Faculties')},
+    }
+);
+var progAdminSchema=mongoose.Schema(
+    {
+        name: String,
+        position: String,
+        department: {type: mongoose.Schema.ObjectId, ref:('Departments')}
+    }
+);
+var logExpressSchema = mongoose.Schema(
+    {
+        boolExpress: String,
+        logicalLink: String,
+        assessmentCode:{type: mongoose.Schema.ObjectId, ref:("AssessmentCodes")}
+    }
+)
+var Adjudications = mongoose.model('adjudication', adjudicationSchema);
+var Faculties = mongoose.model('faculty', facultySchema);
+var AssessmentCodes = mongoose.model('assessmentCode', assessmentCodeSchema);
+var ProgramAdministrations = mongoose.model('progAdmin', progAdminSchema);
+var Departments = mongoose.model('department', departmentSchema);
+var LogicalExpressions = mongoose.model('logExpress', logExpressSchema);
 
 mongoose.connect('mongodb://localhost/studentsRecords');
 var db = mongoose.connection;
@@ -123,6 +174,12 @@ db.once('open', function() {
     exports.HighSchoolCourses = HighSchoolCourses;
     exports.AdvStandings= AdvStandings;
     exports.Awards = Awards;
+    exports.Adjudications = Adjudications;
+    exports.Faculties = Faculties;
+    exports.AssessmentCodes = AssessmentCodes;
+    exports.ProgramAdministrations = ProgramAdministrations;
+    exports.Departments = Departments;
+    exports.LogicalExpressions = LogicalExpressions;
 
 });
 
