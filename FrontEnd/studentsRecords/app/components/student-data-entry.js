@@ -171,9 +171,7 @@ export default Ember.Component.extend({
     this.get('store').findAll('schoolTerm').then(function(records) {
       self.set('termModel', records);
     });
-    this.get('store').findAll('program').then(function(records) {
-      self.set('programModel', records);
-    });
+    
     // load first page of the students records
     this.set('limit', 10);
     this.set('offset', 0);

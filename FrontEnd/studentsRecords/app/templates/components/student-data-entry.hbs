@@ -163,124 +163,116 @@
                 <div class = "ui form" id = "termPrograms">
                   <div class="ui medium header" >Grades:</div>
                   {{#each gradeModel as |gradeChoice index2|}}
-                  <div class={{index2}}>
-                    {{#if (eq gradeChoice.term.id termChoice.id)}}
-                    <div class="ui medium header" >{{increment index2}}.
-                      {{#if enableGradeEdit}}
-                      <a {{action 'removeGrade' index index2}}> 
-                                        <span data-tooltip="Remove This Grade"><i class="large red minus circle icon"></i></span> </a> 
-                                        <a {{action 'updateTheGrade' index index2}}> 
-                                        <span data-tooltip="Save Changes To Mark"><i class="large save icon" ></i></span></a> 
-                    {{/if}}
-                    </div>
-                    <div class="fields">
-                        <div class = "four wide field">
-                          <label>Mark</label> <input type="text"  class="currentGrade" value={{gradeChoice.mark}} name = "currentmark" >
+                    <div class={{index2}}>
+                      {{#if (eq gradeChoice.term.id termChoice.id)}}
+                        <div class="ui medium header" >{{increment index2}}
+                          {{#if enableGradeEdit}}
+                            <a {{action 'removeGrade' index index2}}> 
+                            <span data-tooltip="Remove This Grade"><i class="large red minus circle icon"></i></span> </a> 
+                            <a {{action 'updateTheGrade' index index2}}> 
+                            <span data-tooltip="Save Changes To Mark"><i class="large save icon" ></i></span></a> 
+                          {{/if}}
                         </div>
-                        <div class = "twelve wide field">
-                          <label>Note</label> <input type="text"  class="currentNote" name = "currentnote" value = {{gradeChoice.note}}>
-                        </div>
-                      </div>
-                      <div class="ui small header" >Course Info:</div>
-                      <div class="fields">
-                        <div class = "eight wide field">
-                          <label>Letter</label> <input type="text"  class="currentLetter" value={{gradeChoice.course.courseLetter}} name = "currentLetter" >
-                        </div>
-                        <div class = "eight wide field">
-                          <label>Number</label> <input type="text"  class="currentNumber" name = "currentNumber" value = {{gradeChoice.course.courseNumber}}>
-                        </div>
-                      </div>
-                      <div class="fields">
-                        <div class = "eleven wide field">
-                          <label>Name</label> <input type="text"  class="currentName" value={{gradeChoice.course.name}} name = "currentName" >
-                        </div>
-                        <div class = "eight wide field">
-                          <label>Unit</label> <input type="text"  class="currentUnit" name = "currentUnit" value = {{gradeChoice.course.unit}}>
-                        </div>
-                      </div>
-
-                    {{/if}}
+                        <div class="fields">
+                            <div class = "four wide field">
+                              <label>Mark</label> <input type="text" class="currentGrade" value={{gradeChoice.mark}} name = "currentmark" >
+                            </div>
+                            <div class = "twelve wide field">
+                              <label>Note</label> <input type="text" class="currentNote" name = "currentnote" value = {{gradeChoice.note}}>
+                            </div>
+                          </div>
+                          <div class="ui small header" >Course Info:</div>
+                          <div class="fields">
+                            <div class = "eight wide field">
+                              <label>Letter</label> <input type="text"  class="currentLetter" value={{gradeChoice.course.courseLetter}} name = "currentLetter" >
+                            </div>
+                            <div class = "eight wide field">
+                              <label>Number</label> <input type="text"  class="currentNumber" name = "currentNumber" value = {{gradeChoice.course.courseNumber}}>
+                            </div>
+                          </div>
+                          <div class="fields">
+                            <div class = "eleven wide field">
+                              <label>Name</label> <input type="text"  class="currentName" value={{gradeChoice.course.name}} name = "currentName" >
+                            </div>
+                            <div class = "eight wide field">
+                              <label>Unit</label> <input type="text"  class="currentUnit" name = "currentUnit" value = {{gradeChoice.course.unit}}>
+                            </div>
+                          </div>
+                      {{/if}}
                     </div>
                   {{/each}}
-                  
 
                   {{#if enableGradeEdit}}
                     <a {{action 'newGradeClicked'}}> <br>
                     <i class="large green add square icon"></i>Add Grade</a>
                     {{#if newGrade}}
-                    <div class = "ui form">
-                      <div class = "required field">
-                        <label name="list">Select Course</label>
-                        <select  class="selectedCourse" name="courseList">
-                        <option hidden>Select</option>
-                        {{#each courseCodeModel as |courseCodeChoice index2|}}
-                          <option value={{index2}}> {{courseCodeChoice.courseLetter}} {{courseCodeChoice.courseNumber}} </option> 
-                          
-                        {{/each}}
-                        </select>
-                      </div>
-                      <div class="required fields">
-                        <div class = "four wide field">
-                          <label>Mark</label> <input type="text" placeholder="Mark" class="mark" name="mark">
+                      <div class = "ui form">
+                        <div class = "required field">
+                          <label name="list">Select Course</label>
+                          <select  class="selectedCourse" name="courseList">
+                            <option hidden>Select</option>
+                            {{#each courseCodeModel as |courseCodeChoice index4|}}
+                              <option value={{index4}}> {{courseCodeChoice.courseLetter}} {{courseCodeChoice.courseNumber}} </option> 
+                            {{/each}}
+                          </select>
                         </div>
-                        <div class = "twelve wide field">
-                          <label>Note</label> <input type="text" placeholder="Note" class="note" name = "note">
+                        <div class="required fields">
+                          <div class = "four wide field">
+                            <label>Mark</label> <input type="text" placeholder="Mark" class="mark" name="mark">
+                          </div>
+                          <div class = "twelve wide field">
+                            <label>Note</label> <input type="text" placeholder="Note" class="note" name = "note">
+                          </div>
                         </div>
+                        <button class="ui violet button" {{action 'addGrade' index}} >Add</button>
+                        <button class="ui button" {{action 'newGradeClicked'}}>Cancel</button>
                       </div>
-                      
-                      <button class="ui violet button" {{action 'addGrade' index}} >
-                        Add 
-                      </button>
-                      <button class="ui button" {{action 'newGradeClicked'}}>
-                        Cancel
-                      </button>
-                    </div>
                     {{/if}}
-                    
                   {{/if}}
                   <div class="ui medium header" >Programs:</div>
-                {{#each termChoice.program as |programChoice index2|}}
-                          <div class = "field">
-                          <label>Name</label> <input type="text" value = {{programChoice.name.name}} class="level">
-                        </div>
-                          
-                {{/each}}
+                  {{#each termChoice.program as |programChoice|}}
+                    {{log "program choice"}}
+                    {{log programChoice}}
+                    {{log "programChoice.id"}}
+                    {{log programChoice.id}}
+                    {{log "programChoice.load"}}
+                    {{log programChoice.load}}
+                    <div class = "field">
+                      <label>Name</label> <input type="text" value = {{programChoice.name.name}} class="level">
+                    </div>
+                  {{/each}}
                 </div>
                 {{#if enableGradeEdit}}
+                  <br/>
                   <a {{action 'newProgClicked'}}>
                   <i class="large green add square icon"></i>Add Program</a>
                   {{#if newProg}}
-                  <div class="newProgram">
-                    <div class = "ui form">
-                      <div class = "required field">
-                        <label name="list">Select Program</label>
-                        <select  class="selectedProgram" name="list">
-                        <option hidden>Select</option>
-                        {{#each programModel as |programChoice index2|}}
-                          <option value={{index2}}> {{programChoice.name}} </option> 
-                          
-                        {{/each}}
-                        </select>
+                    <div class="newProgram">
+                      <div class = "ui form">
+                        <div class = "required field">
+                          <label name="list">Select Program</label>
+                          <select  class="selectedProgram" name="list">
+                            <option hidden>Select</option>
+                            {{#each programModel as |programChoice index3|}}
+                              <option value={{index3}}> {{programChoice.name}} </option> 
+                            {{/each}}
+                          </select>
+                        </div>
+                        <div class="required fields">
+                          <div class = "six wide field">
+                            <label>Level</label> <input type="text" placeholder="Level" class="level" name="level">
+                          </div>
+                          <div class = "six wide field">
+                            <label>Load</label> <input type="text" placeholder="Load" class="load" name = "load">
+                          </div>
+                          <div class = "six wide field">
+                            <label>Status</label> <input type="text" placeholder="Status" class="status" name = "status">
+                          </div>
+                        </div>
+                        <button class="ui violet button" {{action 'addProgram' index}} >Add</button>
+                        <button class="ui button" {{action 'newProgClicked'}}>Cancel</button>
                       </div>
-                      <div class="required fields">
-                        <div class = "six wide field">
-                          <label>Level</label> <input type="text" placeholder="Level" class="level" name="level">
-                        </div>
-                        <div class = "six wide field">
-                          <label>Load</label> <input type="text" placeholder="Load" class="load" name = "load">
-                        </div>
-                        <div class = "six wide field">
-                          <label>Status</label> <input type="text" placeholder="Status" class="status" name = "status">
-                        </div>
-                      </div>
-                      <button class="ui violet button" {{action 'addProgram' index}} >
-                        Add 
-                      </button>
-                      <button class="ui button" {{action 'newProgClicked'}}>
-                        Cancel
-                      </button>
                     </div>
-                  </div>
                   {{/if}}
                 {{/if}}
                 <h4 class="ui horizontal divider header" style="color: #4F2683">
@@ -293,33 +285,25 @@
           <br><br>
           <div id = "newTerm">
             <div class = "ui form">
-                <button class="ui violet button" {{action 'toggleGradeEdit'}}>
-                              Toggle Edit
-                          </button><br>
-                          {{#if enableGradeEdit}}
-                            <a {{action 'newStudentTermClicked'}}> 
-                            <i class="large green add square icon"></i>Add Term</a>
-                            {{#if newStudentTerm}}
-                              <div class = "field">
-                                        <label name="list">Select Semester</label>
-                                        <select  class="selectedSemester" name="list">
-                                            <option hidden>Select</option>
-                                        {{#each termModel as |termChoice index|}}
-                                            <option value={{index}}> {{termChoice.name}} </option> 
-                                            
-                                        {{/each}}
-                                        </select>
-                                    </div>
-                                    <button class="ui violet button" {{action 'addTerm'}} >
-                                        Add 
-                                    </button>
-                                    <button class="ui button" {{action 'newStudentTermClicked'}}>
-                                        Cancel
-                                    </button>
-                            {{/if}}
-                            
-                            
-                          {{/if}}
+              <button class="ui violet button" {{action 'toggleGradeEdit'}}>Toggle Edit</button>
+              <br>
+              {{#if enableGradeEdit}}
+                <a {{action 'newStudentTermClicked'}}> 
+                <i class="large green add square icon"></i>Add Term</a>
+                {{#if newStudentTerm}}
+                  <div class = "field">
+                    <label name="list">Select Semester</label>
+                    <select  class="selectedSemester" name="list">
+                      <option hidden>Select</option>
+                      {{#each termModel as |termChoice index|}}
+                        <option value={{index}}> {{termChoice.name}} </option>                       
+                      {{/each}}
+                    </select>
+                  </div>
+                  <button class="ui violet button" {{action 'addTerm'}} >Add</button>
+                  <button class="ui button" {{action 'newStudentTermClicked'}}>Cancel</button>
+                {{/if}}
+              {{/if}}
             </div>
           </div>
         </div>
