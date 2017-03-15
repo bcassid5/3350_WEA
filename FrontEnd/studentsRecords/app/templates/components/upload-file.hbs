@@ -33,14 +33,20 @@
       
   {{else}}
     <div>
-      <button class="ui fluid button" style="background-color: #4F2683; color: #ffffff">{{#file-picker fileLoaded="fileImported" accept=".xlsx" readAs="readAsBinaryString"}}
-        Select Excel File
-      {{/file-picker}}</button>
-      
+      <div class="ui grid">
+        <div class="eight wide centered column">
+          <button class="ui fluid button" style="background-color: #4F2683; color: #ffffff">{{#file-picker fileLoaded="fileImported" accept=".xlsx" readAs="readAsBinaryString"}}
+            <div class="ui center aligned header" style="color: #FFFFFF">
+              Select Excel File
+            </div>
+            <i class="massive file text icon"></i>
+          {{/file-picker}}</button>
+        </div>
+      </div>
     </div>
   {{/if}}
 
 
 
-<br><br><br><br><br><br>
+<br><br><br>
 

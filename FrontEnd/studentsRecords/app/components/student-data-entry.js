@@ -873,10 +873,11 @@ export default Ember.Component.extend({
           from: this.get('from'),
           students: this.get('currentStudent'),
         });
+        console.log(this.get('currentStudent'));
         var self=this;
         this.set('newAdv', false);
         standing.save().then(() => {
-          console.log(student.get('advStanding').objectAt(0).get('course'));
+          //console.log(student.get('advStanding').objectAt(0).get('course'));
           
           self.get('store').query('advStanding',{student: this.get('currentStudent').get('id')}).then(function(adv){
             self.set('advStandingModel', adv);

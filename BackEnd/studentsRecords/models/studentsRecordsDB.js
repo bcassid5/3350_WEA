@@ -41,7 +41,7 @@ var advStandingSchema = mongoose.Schema(
         course: String,
         description: String,
         unit: Number,
-        grade: Number,
+        grade: String,
         from: String,
         students: {type: mongoose.Schema.ObjectId, ref: ('Students')}
     }

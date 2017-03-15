@@ -23,6 +23,7 @@ export default Ember.Component.extend({
 
         fileImported: function(file) { 
 
+            
             this.set('isLoading', true);
             this.set('fileName', file.name);
             //var workbook = XLSX
@@ -51,12 +52,16 @@ export default Ember.Component.extend({
                 if (row === 0) {
                     header[col] = worksheet[cellName].v;
                 } else {
+                    
                     data[row][col] = worksheet[cellName].v;
+                    
                 }
             }
             this.set('tableHeader', header);
             this.set('tableData', data);
-            //console.log(data[1][0]);
+            console.log(data);
+            
+            //console.log(data.length);
             
             
             if(file.name == "genders.xlsx"){
@@ -161,6 +166,7 @@ export default Ember.Component.extend({
                 this.get('store').query('student', {limit: 1000000, offset: 0}).then(function (student) {
                     self.set('studentsModel', student);
                     //console.log(student);
+
                     for (var i=0;i<118;i++){
                         if (data[i][1] == "NONE FOUND"){
                             //console.log("NF");
@@ -179,39 +185,35 @@ export default Ember.Component.extend({
                                     //console.log(addNumList);
                                     //console.log(addIDList);
                                     var ch = i;
+                                    //console.log(student.content[j]);
                                     do {
                                         ch++; 
-                                        console.log(data[i][0]);
+                                        //console.log(data[i][0]);
                                         //console.log(ch);
                                         if (data[ch][1]=="NONE FOUND"){
                                             //console.log("next is NONE FOUND");
                                             _break = false;
-                                            break;
+                                            
                                         } else if (data[ch][0]!=null){
                                             //console.log("next is DIFFERENT STUDENT");
-                                            
                                             _break = false;
-                                            break;
+                                            
                                         }
                                         //else continue
                                         //console.log("next is SAME STUDENT");
-                                        var standing = myStore.createRecord('adv-Standing', {
+
+                                        var im = self.get('store').peekRecord('student', student.content[j].id);
+
+                                        var record = myStore.createRecord('adv-standing', {
                                             course: data[i][1],
                                             description: data[i][2],
                                             unit: data[i][3],
                                             grade: data[i][4],
                                             from: data[i][5],
-                                            students: student,
+                                            students: im,
                                         });
-                                                
-                                        standing.save().then(() => {
-                                            
-                                            myStore.query('advStanding',{student: student.content[j].id}).then(function(adv){
-                                                self.set('advStandingModel', adv);
-                                            });
-                                            //console.log(self.get('currentStudent').get('advStanding'));
-                                            //self.set('advStandingModel',student.get('advStanding'));
-                                        });
+                                        
+                                        record.save()
 
                                     } while (_break);
                                     _break = true;
@@ -221,12 +223,48 @@ export default Ember.Component.extend({
                         }
                     }
                 });
-            }            
+            } else if (file.name == "termcodes.xlsx") {
+                for (var i=1; i<data.length; i++){
+                    var record = this.get('store').createRecord('schoolTerm', {
+                        name: data[i][0],
+                        terms: []
+                    });
+                    record.save();
+                }
+            } else if (file.name == "UndergraduateCourses.xlsx"){
+                for (var i=1; i<data.length; i++){
+                    var record = this.get('store').createRecord('courseCode', {
+                        courseLetter: data[i][0],
+                        courseNumber: data[i][1],
+                        name: data[i][2],
+                        unit: data[i][3],
+                        marks: [],
+                    });
+                    record.save();
+                }
+            } else if (file.name == "HighSchools.xlsx"){
+                //console.log(data[1][0]);
+                for (var i=1; i<data.length; i++){
+                    var record = this.get('store').createRecord('highSchool', {
+                        name: data[i][0],
+                        course: []
+                    });
+                    record.save();
+                }
+            } else if (file.name == "HighSchoolCourseInformation.xlsx"){
+                for(var i=1; i<data.length; i++){
+                    
+                }
+            } else if (file.name == ".xlsx"){
+                
+            }
+
         },
 
         done: function () {
             this.set('showTable', false);
             this.set('isLoading', false);
+            this.set('showTitle', "Show Data Table");
         },
         show: function () {
             if (this.get('showTable')==true){
