@@ -178,9 +178,43 @@ export default Ember.Component.extend({
                                     //addIDList.push(student.content[j].id);
                                     //console.log(addNumList);
                                     //console.log(addIDList);
+                                    var ch = i;
                                     do {
+                                        ch++; 
+                                        console.log(data[i][0]);
+                                        //console.log(ch);
+                                        if (data[ch][1]=="NONE FOUND"){
+                                            //console.log("next is NONE FOUND");
+                                            _break = false;
+                                            break;
+                                        } else if (data[ch][0]!=null){
+                                            //console.log("next is DIFFERENT STUDENT");
+                                            
+                                            _break = false;
+                                            break;
+                                        }
+                                        //else continue
+                                        //console.log("next is SAME STUDENT");
+                                        var standing = myStore.createRecord('adv-Standing', {
+                                            course: data[i][1],
+                                            description: data[i][2],
+                                            unit: data[i][3],
+                                            grade: data[i][4],
+                                            from: data[i][5],
+                                            students: student,
+                                        });
+                                                
+                                        standing.save().then(() => {
+                                            
+                                            myStore.query('advStanding',{student: student.content[j].id}).then(function(adv){
+                                                self.set('advStandingModel', adv);
+                                            });
+                                            //console.log(self.get('currentStudent').get('advStanding'));
+                                            //self.set('advStandingModel',student.get('advStanding'));
+                                        });
 
                                     } while (_break);
+                                    _break = true;
                                     
                                 }                                
                             }
