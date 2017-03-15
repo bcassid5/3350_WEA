@@ -118,17 +118,15 @@ var adjudicationSchema=mongoose.Schema(
 var facultySchema=mongoose.Schema(
     {
         name: String,
-        department: [{type: mongoose.Schema.ObjectId, ref:('Departments')}],
-        assessmentCode: {type: mongoose.Schema.ObjectId, ref:('AssessmentCodes')}
+        department: [{type: mongoose.Schema.ObjectId, ref:('Departments')}]
     }
 );
 var assessmentCodeSchema=mongoose.Schema(
     {
         code: String,
-        name: String,
-        faculty: [{type: mongoose.Schema.ObjectId, ref:('Faculties')}],
+        description: String,
         adjudication: {type: mongoose.Schema.ObjectId, ref:('Adjudications')},
-        logExpress: [{type: mongoose.Schema.ObjectId, ref:('LogicalExpressions')}]
+        rule: [{type: mongoose.Schema.ObjectId, ref:('Rules')}]
     }
 );
 var departmentSchema = mongoose.Schema(
@@ -149,7 +147,15 @@ var logExpressSchema = mongoose.Schema(
     {
         boolExpress: String,
         logicalLink: String,
-        assessmentCode:{type: mongoose.Schema.ObjectId, ref:("AssessmentCodes")}
+        parentLink: String,
+        rule:{type: mongoose.Schema.ObjectId, ref:("Rules")}
+    }
+);
+var ruleSchema = mongoose.Schema(
+    {
+        description: String,
+        logExpressions: [{type: mongoose.Schema.ObjectId, ref:('LogicalExpressions')}],
+        assessmentCode: {type: mongoose.Schema.ObjectId, ref:('AssessmentCodes')}
     }
 )
 var Adjudications = mongoose.model('adjudication', adjudicationSchema);
@@ -158,6 +164,7 @@ var AssessmentCodes = mongoose.model('assessmentCode', assessmentCodeSchema);
 var ProgramAdministrations = mongoose.model('progAdmin', progAdminSchema);
 var Departments = mongoose.model('department', departmentSchema);
 var LogicalExpressions = mongoose.model('logExpress', logExpressSchema);
+var Rules = mongoose.model('rule', ruleSchema);
 
 mongoose.connect('mongodb://localhost/studentsRecords');
 var db = mongoose.connection;
@@ -180,7 +187,7 @@ db.once('open', function() {
     exports.ProgramAdministrations = ProgramAdministrations;
     exports.Departments = Departments;
     exports.LogicalExpressions = LogicalExpressions;
-
+    exports.Rules = Rules;
 });
 
 

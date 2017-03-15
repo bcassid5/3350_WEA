@@ -2,8 +2,7 @@ import DS from 'ember-data';
 
 export default DS.Model.extend({
     code: DS.attr(),
-    name: DS.attr(),
-    faculty: DS.hasMany("faculty"),
+    description: DS.attr(),
     adjudication: DS.belongsTo("adjudication"),
-    logExpress: DS.hasMany("logExpress")
+    rule: DS.hasMany("rule")
 });

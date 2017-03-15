@@ -47,13 +47,10 @@ router.route('/:logExpresses_id')
                 response.send({error: error});
             }
             else {
-                logExpress.course = request.body.logExpress.course;
-                logExpress.description = request.body.logExpress.description;
-                logExpress.unit = request.body.logExpress.unit;
-                logExpress.grade = request.body.logExpress.grade;
-                logExpress.from = request.body.logExpress.from;
-                logExpress.students = request.body.logExpress.students;
-                console.log(request.body.logExpress.students);
+                logExpress.boolExpress = request.body.logExpress.boolExpress;
+                logExpress.logicalLink = request.body.logExpress.logicalLink;
+                logExpress.parentLink = request.body.logExpress.parentLink;
+                logExpress.rule = request.body.logExpress.rule;
                 logExpress.save(function (error) {
                     if (error) {
                         response.send({error: error});

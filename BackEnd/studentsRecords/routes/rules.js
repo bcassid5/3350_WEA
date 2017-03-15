@@ -9,11 +9,11 @@ router.route('/')
     .post(parseUrlencoded, parseJSON, function (request, response) {
         
 
-        var assessmentCode = new models.assessmentCodes(request.body.assessmentCode);
+        var rule = new models.rules(request.body.rule);
         
-        assessmentCode.save(function (error) {
+        rule.save(function (error) {
             if (error) response.send(error);
-            response.json({assessmentCode: assessmentCode});
+            response.json({rule: rule});
         });
     })
     .get(parseUrlencoded, parseJSON, function (request, response) {
@@ -21,53 +21,51 @@ router.route('/')
         
         if (!Student) {
             
-            models.assessmentCodes.find(function (error, assessmentCodes) {
+            models.rules.find(function (error, rules) {
                 if (error) response.send(error);
-                response.json({assessmentCode: assessmentCodes});
+                response.json({rule: rules});
             });
         } else {
             
-            models.assessmentCodes.find({"students": Student.student}, function (error, students) {
+            models.rules.find({"students": Student.student}, function (error, students) {
                 if (error) response.send(error);
-                response.json({assessmentCode: students});
+                response.json({rule: students});
             });
         }
     });
 
-router.route('/:assessmentCodes_id')
+router.route('/:rules_id')
     .get(parseUrlencoded, parseJSON, function (request, response) {
-        models.assessmentCodes.findById(request.params.assessmentCode_id, function (error, assessmentCode) {
+        models.rules.findById(request.params.rule_id, function (error, rule) {
             if (error) response.send(error);
-            response.json({assessmentCode: assessmentCode});
+            response.json({rule: rule});
         })
     })
     .put(parseUrlencoded, parseJSON, function (request, response) {
-        models.assessmentCodes.findById(request.params.assessmentCode_id, function (error, assessmentCode) {
+        models.rules.findById(request.params.rule_id, function (error, rule) {
             if (error) {
                 response.send({error: error});
             }
             else {
-                assessmentCode.code = request.body.assessmentCode.code;
-                assessmentCode.description = request.body.assessmentCode.description;
-                assessmentCode.adjudication = request.body.assessmentCode.adjudication;
-                assessmentCode.rule = request.body.rule;
-             //   console.log(request.body.assessmentCode.students);
-                assessmentCode.save(function (error) {
+                rule.description = request.body.rule.description;
+                rule.logExpressions = request.body.rule.logExpressions;
+                rule.assessmentCode = request.body.assessmentCode;
+                rule.save(function (error) {
                     if (error) {
                         response.send({error: error});
                     }
                     else {
-                        response.json({assessmentCode: assessmentCode});
+                        response.json({rule: rule});
                     }
                 });
             }
         })
     })
     .delete(parseUrlencoded, parseJSON, function (request, response) {
-        models.assessmentCodes.findByIdAndRemove(request.params.assessmentCode_id,
+        models.rules.findByIdAndRemove(request.params.rule_id,
             function (error, deleted) {
                 if (!error) {
-                    response.json({assessmentCode: deleted});
+                    response.json({rule: deleted});
                 }
             }
         );

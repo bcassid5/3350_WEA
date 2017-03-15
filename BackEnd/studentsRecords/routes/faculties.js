@@ -49,7 +49,6 @@ router.route('/:advStandings_id')
             else {
                 faculty.name = request.body.faculty.name;
                 faculty.department = request.body.faculty.department;
-                faculty.assessmentCode = request.body.faculty.assessmentCode;
                 faculty.save(function (error) {
                     if (error) {
                         response.send({error: error});
