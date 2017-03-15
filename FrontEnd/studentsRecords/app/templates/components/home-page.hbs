@@ -1,36 +1,87 @@
-<div class="ui grid">
-  <div class="three wide column">
-    <div class="ui violet vertical pointing menu">
-      <a class="item active" {{action "home"}}>
+<!--<div class="ui grid">
+  <div class="three wide column">-->
+    <div class="ui violet menu">
+      <div class="item">
+        <img src="/assets/images/WEA.png"> 
+        <div class="item" style="color: #4F2683">Western Engineering Adjudication</div>
+      </div>
+      
+      <a class={{H}} {{action "home"}}>
         <i class="large home icon"></i>
         Home
       </a>
-      <a class="item" {{action "studentsDataEntry"}} >
+      <a class={{SR}} {{action "studentsDataEntry"}} >
         <i class="large leanpub icon"></i>
         Students Records
       </a>
-      <a class="item" {{action "new"}} >
+      <a class={{CR}} {{action "new"}} >
           <i class="large add user icon"></i>
         Create New Record
       </a>
-      <a class="item" {{action "manageCode"}} >
+      <a class={{MC}} {{action "manageCode"}} >
         <i class="large code icon"></i>
         Manage Code
       </a>
-      <a class="item" {{action "uploadFile"}} >
+      <a class={{UD}} {{action "uploadFile"}} >
         <i class="large file text icon"></i>
         Upload Document
       </a>
-      <a class="item " {{action "about"}} >
-        <i class="large user icon"></i>
-        About
-      </a>
+      <div class="right menu">
+        <a class="item " {{action "about"}} >
+          <i class="large user icon"></i>
+          About
+        </a>
+        <a class="item">
+          <i class="large sign out icon"></i>
+          Log Out
+        </a>
+      </div>
     </div>
-  </div>
-  <div class="thirteen wide column ">
+  <!--</div>
+  <div class="thirteen wide column ">-->
     <div class="ui segment container">
       {{#if isHomeShowing}}
-        {{welcome-page}}
+        <div class="ui center aligned header">
+    <h2>Welcome to the Western Engineering Adjudication System</h2>
+</div>
+<hr>
+<br/>
+
+<div class="ui grid">
+  <div class="eight wide column">
+  <button class="ui fluid button" {{action "studentsDataEntry"}} style="background-color: #807F83; color: #4F2683">
+    <div class="ui center aligned header" style="color: #FFFFFF">View Student Records</div>
+
+    <div>
+      <i class="massive leanpub icon"></i>
+      <!--<p>Basic information</p>
+      <p>Admission and registration information</p>
+      <p>Advanced standings</p>
+      <p>Scholarshipsand awards</p>
+      <p>High school courses and grades</p>
+      <p>University courses and grades</p>-->
+    </div>
+  </button>
+  </div>
+  <div class="eight wide column">
+  <button class="ui fluid button" {{action "new"}} style="background-color: #807F83; color: #4F2683">
+    <div class="ui center aligned header" style="color: #FFFFFF">Add New Record</div>
+    <div> <i class="massive add user icon"></i> </div>
+  </button>
+  </div>
+  <div class="eight wide column">
+  <button class="ui fluid button" {{action "manageCode"}} style="background-color: #807F83; color: #4F2683">
+    <div class="ui center aligned header" style="color: #FFFFFF">Manage Codes</div>
+    <div><i class="massive code icon"></i></div>
+  </button>
+  </div>
+  <div class="eight wide column">
+  <button class="ui fluid button" {{action "uploadFile"}} style="background-color: #807F83; color: #4F2683">
+    <div class="ui center aligned header" style="color: #FFFFFF">Upload Document</div>
+    <div><i class="massive file text icon"></i></div>
+  </button>
+  </div>
+</div>
       {{/if}}
 
       {{#if isStudentsRecordsDataEntry}}
@@ -51,6 +102,6 @@
       {{#if isUploadShowing}}
         {{upload-file}}
       {{/if}}
-    </div>
-  </div>
+    <!--</div>
+  </div>-->
 </div>

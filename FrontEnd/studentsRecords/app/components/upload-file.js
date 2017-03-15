@@ -1,81 +1,244 @@
 import Ember from 'ember';
+/* global XLSX */ 
 
 export default Ember.Component.extend({
     
-    filename: null,
+    store: Ember.inject.service(),
+    fileName: null,
     success: false,
     genders: false,
     residencies: false,
     advStanding: false,
+    tableHeader: [],
+    tableData: null,
+    isLoading: false,
+    showTable: false,
+    genderModel: null,
+    resModel: null,
+    studentsModel: null,
+    showTitle: "Show Data Table",
+    
 
     actions: {
 
-        upload() { 
-            
-            var self = this;
-            var file = document.getElementById('file-field');
-            var fileNameSave = file.files[0].name;
-            var n = '';
+        fileImported: function(file) { 
 
-            for(var i=0; i<fileNameSave.length;i++){
-                if(fileNameSave[i] == '.'){
-                    break;
+            this.set('isLoading', true);
+            this.set('fileName', file.name);
+            //var workbook = XLSX
+            var workbook = XLSX.read(file.data, {type: 'binary'});
+
+            var row = 0;
+            var col = null;
+            var data = [];
+            var header = [];
+            var first_sheet_name = workbook.SheetNames[0];
+            //console.log(file.name);
+
+            /* Get worksheet */
+            var worksheet = workbook.Sheets[first_sheet_name];
+            var size = 0;
+            for (var cellName in worksheet) {
+                //all keys that do not begin with "!" correspond to cell addresses
+                if (cellName[0] === '!') {
+                    continue;
+                }
+            
+                row = cellName.slice(1) - 1;
+                col = cellName.charCodeAt(0) - 65;
+                data[size++] = [];
+
+                if (row === 0) {
+                    header[col] = worksheet[cellName].v;
                 } else {
-                    n += fileNameSave[i];
+                    data[row][col] = worksheet[cellName].v;
                 }
             }
-            //console.log(fileNameSave);
-            //console.log(n);
+            this.set('tableHeader', header);
+            this.set('tableData', data);
+            //console.log(data[1][0]);
+            
+            
+            if(file.name == "genders.xlsx"){
+                for (var i=1; i<3; i++){
+                    var record = this.get('store').createRecord('gender', {
+                        type: data[i][0],
+                        students: []
+                    });
+                    //console.log(record.get('type'));
+                    record.save();
+                }
+            } else if (file.name == "residencies.xlsx"){
+                for (var i=1; i<4; i++){
+                    var record = this.get('store').createRecord('residency', {
+                        name: data[i][0],
+                        students: []
+                    });
+                    //console.log(record.get('type'));
+                    record.save();
+                }
+            } else if (file.name == "students.xlsx"){
+                
+                var self = this;
+                var myStore = this.get('store');
 
-            if(file.files.length >0)
-            {   
-                switch(file.files[0].name){
-                    case 'students.xlsx':
-                        if(self.get('genders')&&self.get('residencies')&&self.get('advStanding')){
-                            self.send('send2Back', file);
-                        } else {
-                            alert('Error: Must upload dependent documents first!');
+                this.get('store').findAll('gender').then(function (genders) {
+                    self.set('genderModel', genders);
+                    //console.log(genders);
+                    self.get('store').findAll('residency').then(function (residencies) {
+                        self.set('resModel', residencies);
+                        //console.log(residencies);
+                        //console.log(self.get('genderModel'));
+                        //console.log(self.get('resModel'));
+                        var setPhoto;
+                        var setGen = self.get('genderModel');
+                        var setRes = self.get('resModel');
+                        var setGenID;
+                        var setResID;
+
+                        for (var i=1; i<101; i++){
+                            //6 columns: studentNumber, firstName, lastName, gender, DOB, residency
+
+                            for (var j=0; j<2; j++){
+                                if (data[i][3] == setGen.content[j]._data.type){
+                                    
+                                    setGenID = setGen.content[j].id;
+                                    //console.log(setGenID);
+                                }    
+                            }
+
+                            for (var j=0; j<3; j++){
+                                if (data[i][5] == setRes.content[j]._data.name){
+                                    
+                                    setResID = setRes.content[j].id;
+                                    console.log(setResID);
+                                }    
+                            }
+
+                            var res = self.get('store').peekRecord('residency', setResID);
+                            var gen = self.get('store').peekRecord('gender', setGenID);
+                            //console.log(res);
+                            //console.log(gen);
+
+                            if (data[i][3] == 'Male') {
+                                setPhoto = "assets/studentsPhotos/male.png";
+                            } else if (data[i][3] == 'Female') {
+                                setPhoto = "assets/studentsPhotos/female.png";
+                            } else {
+                                setPhoto = "assets/studentsPhotos/other.png";
+                            }
+                            
+                            var setDate = new Date(data[i][4]);
+
+                            var record = myStore.createRecord('student', {
+                                number: data[i][0],
+                                firstName: data[i][1],
+                                lastName: data[i][2],
+                                gender: gen,
+                                DOB: setDate,
+                                resInfo: res,
+                                photo: setPhoto,
+                                regComments: null,
+                                BOA: null,
+                                admissAvg: null,
+                                admissComments: null,
+                            });
+                            //console.log(record);
+                            //console.log(record.get('type'));
+                            record.save();    
                         }
-                        break;
-                    default:
-                        self.set(n, true);
-                        self.send('send2Back', file);
-                        break;
-                }
+                        
+                    });
+                });
+            } else if (file.name == "AdvancedStanding.xlsx"){
                 
-            }
-            
-            
-            
-            /*
-            //document.getElementById('file-field');
-            console.log('pressed');
-            
-            var file = document.getElementById('file-field');
-            var buffer;
+                var self = this;
+                var myStore = this.get('store');
+                var addNumList = [];
+                var addIDList = [];
+                var _break = true;
 
-            if(file.files.length) {
-                var reader = new FileReader();
+                this.get('store').query('student', {limit: 1000000, offset: 0}).then(function (student) {
+                    self.set('studentsModel', student);
+                    //console.log(student);
+                    for (var i=0;i<118;i++){
+                        if (data[i][1] == "NONE FOUND"){
+                            //console.log("NF");
+                        } else if (data[i][0] == ""){
+                            console.log("empty");
+                        } else {
+                            //console.log(studentList);
+                            //console.log(student);
+                            //console.log(student.content.length);
+                            //console.log(student.content[0]._data.number);
+                            for(var j=0; j<student.content.length; j++){
+                                if (student.content[j]._data.number == data[i][0]){
+                                    //console.log(student.content[j]._data.number);
+                                    //addNumList.push(student.content[j]._data.number);
+                                    //addIDList.push(student.content[j].id);
+                                    //console.log(addNumList);
+                                    //console.log(addIDList);
+                                    var ch = i;
+                                    do {
+                                        ch++; 
+                                        console.log(data[i][0]);
+                                        //console.log(ch);
+                                        if (data[ch][1]=="NONE FOUND"){
+                                            //console.log("next is NONE FOUND");
+                                            _break = false;
+                                            break;
+                                        } else if (data[ch][0]!=null){
+                                            //console.log("next is DIFFERENT STUDENT");
+                                            
+                                            _break = false;
+                                            break;
+                                        }
+                                        //else continue
+                                        //console.log("next is SAME STUDENT");
+                                        var standing = myStore.createRecord('adv-Standing', {
+                                            course: data[i][1],
+                                            description: data[i][2],
+                                            unit: data[i][3],
+                                            grade: data[i][4],
+                                            from: data[i][5],
+                                            students: student,
+                                        });
+                                                
+                                        standing.save().then(() => {
+                                            
+                                            myStore.query('advStanding',{student: student.content[j].id}).then(function(adv){
+                                                self.set('advStandingModel', adv);
+                                            });
+                                            //console.log(self.get('currentStudent').get('advStanding'));
+                                            //self.set('advStandingModel',student.get('advStanding'));
+                                        });
 
-                reader.onload = function(e)
-                {
-                    var data = e.target.result;
-                    var workbook = XLSX.read(data, {type: 'binary'});
-                    //document.getElementById('outputDiv').innerHTML = e.target.result;
-                    //console.log(dataView.getInt32(0).toString(16));
-                    //console.log(e.target.result);
-                };
-
-                reader.readAsArrayBuffer(file.files[0]);
-                
-                this.set('filename', file.files[0].name);
-                console.log(file.files[0]);
-                
-                
-                //reader.readAsText(file.files[0]);
-            }*/
+                                    } while (_break);
+                                    _break = true;
+                                    
+                                }                                
+                            }
+                        }
+                    }
+                });
+            }            
         },
 
+        done: function () {
+            this.set('showTable', false);
+            this.set('isLoading', false);
+        },
+        show: function () {
+            if (this.get('showTable')==true){
+                this.set('showTable', false);
+                this.set('showTitle', "Show Data Table");
+            } else {
+                this.set('showTable', true);
+                this.set('showTitle', "Hide Data Table");
+            }
+            
+        },
+/*
         send2Back(file){
             //self.set('filename', file.files[0].name);
             var formData = new FormData();
@@ -100,8 +263,6 @@ export default Ember.Component.extend({
                     console.log('upload successful!\n' + data);
                 }
             });
-        },
-
-
+        },*/
     }
 });

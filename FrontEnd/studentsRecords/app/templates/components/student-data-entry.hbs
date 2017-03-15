@@ -2,8 +2,10 @@
   <h2>Student Records Data Entry</h2>
 </div>
 
+
 <!-- Show the menu bar-->
-<div class="ui inverted menu">
+
+<div class="ui nine item inverted menu">
   <a class="item" {{action 'saveStudent'}}>
     <i class="save icon"></i>
     Save
@@ -42,6 +44,7 @@
   </a>
 </div>
 
+
 {{#if showAllStudents}}
   <!-- Note that offset is an "in" and "out" parameter !-->
  {{all-students INDEX = currentIndex notDONE = showAllStudents offset = offset studentsModel = studentsRecords total = total}}
@@ -52,14 +55,12 @@
 {{else}}
   <!-- Show data entry form -->
 
-  <div class="ui violet secondary pointing menu">
+  <div class="ui five item inverted menu" style="background-color: #4F2683; color: #ffffff">
     <div class="active item" data-tab="basics">Basic Info</div>
     <div class="item" data-tab="admiss">Admission & Registration</div>
     <div class="item" data-tab="grades">Grades</div>
     <div class="item" data-tab="awards">Awards and Scholarships</div>
     <div class="item" data-tab="danger">Danger Zone</div>
-    
-
   </div>
   <div class="ui bottom attached active tab"data-tab="basics">
     <!-- student basic information !-->
@@ -117,7 +118,7 @@
   <div class="ui tab" data-tab="admiss">
 <br>
       <div class="ui grid">
-          <div class="ui left aligned  seven wide column">
+          <div class="ui left aligned seven wide column">
               <div class="ui form">
                 <div class="field">
                     <label>Registration Comments</label>

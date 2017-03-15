@@ -21,6 +21,11 @@ export default Ember.Component.extend({
   isAddShowing: false,
   isManageCodeShowing: false,
   isUploadShowing: false,
+  H: "item active",
+  SR: "item",
+  MC: "item",
+  UD: "item",
+  CR: "item",
 
   actions: {
     home () {
@@ -30,6 +35,11 @@ export default Ember.Component.extend({
       this.set('isAddShowing', false);
       this.set('isManageCodeShowing', false);
       this.set('isUploadShowing', false);
+      this.set('H', 'item active');
+      this.set('SR', 'item');
+      this.set('MC', 'item');
+      this.set('CR', 'item');
+      this.set('UD', 'item');
     },
 
     studentsDataEntry (){
@@ -39,6 +49,11 @@ export default Ember.Component.extend({
       this.set('isAddShowing', false);
       this.set('isManageCodeShowing', false);
       this.set('isUploadShowing', false);
+      this.set('H', 'item');
+      this.set('SR', 'item active');
+      this.set('MC', 'item');
+      this.set('CR', 'item');
+      this.set('UD', 'item');
     },
 
     about (){
@@ -57,6 +72,11 @@ export default Ember.Component.extend({
       this.set('isAddShowing', true);
       this.set('isManageCodeShowing', false);
       this.set('isUploadShowing', false);
+      this.set('H', 'item');
+      this.set('SR', 'item');
+      this.set('MC', 'item');
+      this.set('CR', 'item active');
+      this.set('UD', 'item');
     },
     manageCode (){
       this.set('isHomeShowing', false);
@@ -65,6 +85,11 @@ export default Ember.Component.extend({
       this.set('isManageCodeShowing', true);
       this.set('isAddShowing', false);
       this.set('isUploadShowing', false);
+      this.set('H', 'item');
+      this.set('SR', 'item');
+      this.set('MC', 'item active');
+      this.set('CR', 'item');
+      this.set('UD', 'item');
     },
     uploadFile(){
       this.set('isHomeShowing', false);
@@ -73,6 +98,11 @@ export default Ember.Component.extend({
       this.set('isManageCodeShowing', false);
       this.set('isAddShowing', false);
       this.set('isUploadShowing', true);
+      this.set('H', 'item');
+      this.set('SR', 'item');
+      this.set('MC', 'item');
+      this.set('CR', 'item');
+      this.set('UD', 'item active');
     }
   }
 });
