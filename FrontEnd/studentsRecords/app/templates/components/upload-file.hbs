@@ -5,7 +5,10 @@
 
 
 {{#if isLoading}}
-
+<h2 style="align-content: center">File Uploaded: {{fileName}}</h2>
+  <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'show'}}>{{showTitle}}</button>
+  <button class="ui button" {{action 'done'}}> Done</button>
+    {{#if showTable}}
       <table class="ui celled table">
         <thead>
         <tr>
@@ -25,8 +28,9 @@
         {{/each}}
         </tbody>
       </table>
-      <button class="ui button" {{action 'done'}}> Done</button>
-
+      
+      {{/if}}
+      
   {{else}}
     <div>
       <button class="ui fluid button" style="background-color: #4F2683; color: #ffffff">{{#file-picker fileLoaded="fileImported" accept=".xlsx" readAs="readAsBinaryString"}}

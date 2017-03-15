@@ -4,7 +4,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
     
     store: Ember.inject.service(),
-    filename: null,
+    fileName: null,
     success: false,
     genders: false,
     residencies: false,
@@ -12,14 +12,19 @@ export default Ember.Component.extend({
     tableHeader: [],
     tableData: null,
     isLoading: false,
+    showTable: false,
     genderModel: null,
     resModel: null,
+    studentsModel: null,
+    showTitle: "Show Data Table",
+    
 
     actions: {
 
         fileImported: function(file) { 
 
             this.set('isLoading', true);
+            this.set('fileName', file.name);
             //var workbook = XLSX
             var workbook = XLSX.read(file.data, {type: 'binary'});
 
@@ -36,17 +41,17 @@ export default Ember.Component.extend({
             for (var cellName in worksheet) {
                 //all keys that do not begin with "!" correspond to cell addresses
                 if (cellName[0] === '!') {
-                continue;
+                    continue;
                 }
+            
                 row = cellName.slice(1) - 1;
                 col = cellName.charCodeAt(0) - 65;
                 data[size++] = [];
+
                 if (row === 0) {
-
-                header[col] = worksheet[cellName].v;
-
+                    header[col] = worksheet[cellName].v;
                 } else {
-                data[row][col] = worksheet[cellName].v;
+                    data[row][col] = worksheet[cellName].v;
                 }
             }
             this.set('tableHeader', header);
@@ -123,32 +128,83 @@ export default Ember.Component.extend({
                                 setPhoto = "assets/studentsPhotos/other.png";
                             }
                             
+                            var setDate = new Date(data[i][4]);
+
                             var record = myStore.createRecord('student', {
                                 number: data[i][0],
                                 firstName: data[i][1],
                                 lastName: data[i][2],
                                 gender: gen,
-                                DOB: data[i][4],
+                                DOB: setDate,
                                 resInfo: res,
-                                photo: setGen,
+                                photo: setPhoto,
                                 regComments: null,
                                 BOA: null,
                                 admissAvg: null,
                                 admissComments: null,
                             });
+                            //console.log(record);
                             //console.log(record.get('type'));
                             record.save();    
                         }
                         
                     });
                 });
-                }               
+            } else if (file.name == "AdvancedStanding.xlsx"){
+                
+                var self = this;
+                var myStore = this.get('store');
+                var addNumList = [];
+                var addIDList = [];
+                var _break = true;
+
+                this.get('store').query('student', {limit: 1000000, offset: 0}).then(function (student) {
+                    self.set('studentsModel', student);
+                    //console.log(student);
+                    for (var i=0;i<118;i++){
+                        if (data[i][1] == "NONE FOUND"){
+                            //console.log("NF");
+                        } else if (data[i][0] == ""){
+                            console.log("empty");
+                        } else {
+                            //console.log(studentList);
+                            //console.log(student);
+                            //console.log(student.content.length);
+                            //console.log(student.content[0]._data.number);
+                            for(var j=0; j<student.content.length; j++){
+                                if (student.content[j]._data.number == data[i][0]){
+                                    //console.log(student.content[j]._data.number);
+                                    //addNumList.push(student.content[j]._data.number);
+                                    //addIDList.push(student.content[j].id);
+                                    //console.log(addNumList);
+                                    //console.log(addIDList);
+                                    do {
+
+                                    } while (_break);
+                                    
+                                }                                
+                            }
+                        }
+                    }
+                });
+            }            
         },
 
         done: function () {
+            this.set('showTable', false);
             this.set('isLoading', false);
         },
-
+        show: function () {
+            if (this.get('showTable')==true){
+                this.set('showTable', false);
+                this.set('showTitle', "Show Data Table");
+            } else {
+                this.set('showTable', true);
+                this.set('showTitle', "Hide Data Table");
+            }
+            
+        },
+/*
         send2Back(file){
             //self.set('filename', file.files[0].name);
             var formData = new FormData();
@@ -173,6 +229,6 @@ export default Ember.Component.extend({
                     console.log('upload successful!\n' + data);
                 }
             });
-        },
+        },*/
     }
 });
