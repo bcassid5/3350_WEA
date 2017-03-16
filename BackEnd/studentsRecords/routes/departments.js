@@ -50,6 +50,7 @@ router.route('/:departments_id')
                 department.name = request.body.department.name;
                 department.progAdmin = request.body.department.progAdmin;
                 department.faculty = request.body.department.faculty;
+                department.program = request.body.department.program;
                 //console.log(request.body.department.students);
                 department.save(function (error) {
                     if (error) {

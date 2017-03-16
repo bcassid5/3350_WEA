@@ -39,7 +39,8 @@ export default Ember.Component.extend({
     newDeptFaculty: null,
     newDeptName: null,
     departmentModel: null,
-    
+
+    newProgDepartment: null,
 
     init() {
         this._super(...arguments);
@@ -54,7 +55,8 @@ export default Ember.Component.extend({
         this.errProgram = false;
         var self = this;
         this.newPlanList = [];
-        
+        this.newProgDepartment = "";
+
         this.get('store').findAll('residency').then(function (records) {
             self.set('residencyModel', records);
         });
@@ -102,6 +104,12 @@ export default Ember.Component.extend({
   },
 
   actions: {
+      selectDepartment(val){
+          var dept = this.get('store').peekRecord('department', val);
+          this.set('newProgDepartment',dept);
+          console.log(dept);
+          console.log(this.get('newProgDepartment'));
+      },
       updatePlan(index)
       {
           var choice = this.$("#programs").find('.'+index).find('.selectedPlan').val();
@@ -229,7 +237,9 @@ export default Ember.Component.extend({
                 var record = this.get('store').createRecord('program', {
                 name: n,
                 availablePlans: this.get('newPlanList'),
-                });
+                department: this.get('newProgDepartment'),
+            });
+            console.log(record);
                 record.save();
             }
 

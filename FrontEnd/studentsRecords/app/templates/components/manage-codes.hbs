@@ -258,9 +258,19 @@
                                         <option value={{index}}> {{planChoice.name}} </option> 
                                         
                                     {{/each}}
+                                
                                     </select>
                                 </div>
-                                <div class="ui medium header" style="color: #4F2683">Select Plans:</div>
+                                <div class = "field">
+                                    <label name="depList">Department</label>
+                                    <select name = "depListName" onchange={{action "selectDepartment" value="target.value"}}>
+                                        <option hidden>Select</option>
+                                        {{#each departmentModel as |department|}}
+                                        <option value={{department.id}}>{{department.name}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                                <div class="ui medium header" style="color: #4F2683">Selected Plans:</div>
                                 <ul>
                                 {{#each newPlanList as |newPlanChoice index|}}
                                         <li class={{index}}>{{newPlanChoice.name}}
@@ -301,6 +311,16 @@
                                 <div class ="fifteen wide field">
                                     <label>Program Name</label>{{input type = "text" class="name" placeholder="Name"  value = programChoice.name name="name"}}
                                 </div> 
+                                <div class = "field">
+                                <label name="deptList">Department</label>
+                                <select  class="selectedDepartment" name="deptList">
+                                    <option hidden>No Department</option>
+                                    {{#each departmentModel as |department|}}
+                                    <option value={{department.id}} selected={{eq department.id
+                                                                                        programChoice.department.id}}>{{department.name}} </option>
+                                    {{/each}}
+                                </select>
+                                </div>
                                 <div class = "field">
                                     <label name="list">Available Plans</label>
                                     <select onchange={{action 'updatePlan' index }} class="selectedPlan" name="list">

@@ -10,7 +10,7 @@ router.route('/')
         
 
         var program = new models.Programs(request.body.program);
-        
+        console.log(program);
         program.save(function (error) {
             if (error) response.send(error);
             response.json({program: program});
@@ -50,6 +50,8 @@ router.route('/:program_id')
                 
                 program.availablePlans = request.body.program.availablePlans;
                 
+                program.department = request.body.program.department;
+                console.log(program);
                 program.save(function (error) {
                     if (error) {
                         response.send({error: error});
