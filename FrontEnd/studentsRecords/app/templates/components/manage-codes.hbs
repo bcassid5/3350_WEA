@@ -566,22 +566,22 @@
                             </a>
                         </div>
                     </div>
-                    <div class="inline fields">
                         {{#each facultyModel as |facultyChoice index|}}
-                        {{log facultyChoice}}
+                        <div class="inline fields">
                             <div style="margin-right: 10px" class="inline field">
                                 <label style="text-align: center" >Option {{index}}:</label>
                             </div>
                             <div style="margin-right: 12px" clas="inline field">
                                 <input style="width: 300px" value={{facultyChoice.name}} type="text"  onchange = {{action 'changeFacultyName' index}} class = {{index}} >
                             </div>
-                            <div style="margin-left: 25px" class="inline field">
+                            <div style="margin-left: 30px" class="inline field">
                                 <a {{action 'removeFacultyOption' index}}> 
                                     <i class="large red minus circle icon"></i> <br/>
                                 </a>
                             </div>
+                            <br/>
+                        </div>
                         {{/each}}
-                    </div>
                 </div>
             </div>
         </div>
@@ -627,12 +627,11 @@
                             <div class="inline fields" id="HS">
                                 <div class="inline field">
                                     <br/>
-                                    <label style="text-align: center">Option</label>
-                                    <label style="text-align: center">{{indexDept}}</label>
+                                    <label style="text-align: center">Option {{indexDept}}: </label>
                                 </div>
                                 <div class="required inline field">
                                     <label>Name</label>
-                                    <input  style="width: 70px" value={{deptChoice.name}} type="text"  onchange = {{action 'changeDeptName' indexHS}} class = "name{{indexDept}}" >
+                                    <input value={{deptChoice.name}} type="text"  onchange = {{action 'changeDeptName' indexHS}} class = "name{{indexDept}}" >
                                 </div>
                                 <div class="required inline field">
                                     <label>Subject</label>
@@ -644,6 +643,7 @@
                                     </select>
                                 </div>                                
                                 <div class="inline field">
+                                    <br/>
                                     <a {{action 'removeDeptOption' index}}> 
                                         <i class="large red minus circle icon"></i> <br>
                                     </a>
