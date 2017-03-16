@@ -9,7 +9,7 @@ router.route('/')
     .post(parseUrlencoded, parseJSON, function (request, response) {
         
 
-        var department = new models.departments(request.body.department);
+        var department = new models.Departments(request.body.department);
         
         department.save(function (error) {
             if (error) response.send(error);
@@ -21,13 +21,13 @@ router.route('/')
         
         if (!Student) {
             
-            models.departments.find(function (error, departments) {
+            models.Departments.find(function (error, departments) {
                 if (error) response.send(error);
                 response.json({department: departments});
             });
         } else {
             
-            models.departments.find({"students": Student.student}, function (error, students) {
+            models.Departments.find({"students": Student.student}, function (error, students) {
                 if (error) response.send(error);
                 response.json({department: students});
             });
@@ -36,13 +36,13 @@ router.route('/')
 
 router.route('/:departments_id')
     .get(parseUrlencoded, parseJSON, function (request, response) {
-        models.departments.findById(request.params.department_id, function (error, department) {
+        models.Departments.findById(request.params.department_id, function (error, department) {
             if (error) response.send(error);
             response.json({department: department});
         })
     })
     .put(parseUrlencoded, parseJSON, function (request, response) {
-        models.departments.findById(request.params.department_id, function (error, department) {
+        models.Departments.findById(request.params.department_id, function (error, department) {
             if (error) {
                 response.send({error: error});
             }
@@ -63,7 +63,7 @@ router.route('/:departments_id')
         })
     })
     .delete(parseUrlencoded, parseJSON, function (request, response) {
-        models.departments.findByIdAndRemove(request.params.department_id,
+        models.Departments.findByIdAndRemove(request.params.department_id,
             function (error, deleted) {
                 if (!error) {
                     response.json({department: deleted});

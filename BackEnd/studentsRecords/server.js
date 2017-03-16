@@ -23,7 +23,6 @@ var termCodes = require('./routes/termCodes');
 var grades = require('./routes/grades');
 var programRecords = require('./routes/programRecords');
 var schoolTerms = require('./routes/schoolTerms');
-var programs = require('./routes/programs')
 var users = require('./routes/users');
 var passwords = require('./routes/passwords');
 var roleCodes = require('./routes/roleCodes');
@@ -31,6 +30,11 @@ var userRoles = require('./routes/usersRoles');
 var rolePermissions = require('./routes/rolePermissions');
 var logins = require('./routes/logins');
 var roots = require('./routes/roots');
+var programs = require('./routes/programs');
+var faculties = require('./routes/faculties');
+var departments = require('./routes/departments');
+var progAdmins = require('./routes/progAdmins');
+
 
 
 app.use(function (request, response, next) {
@@ -58,6 +62,9 @@ app.use('/grades',grades);
 app.use('/programRecords', programRecords);
 app.use('/schoolTerms', schoolTerms );
 app.use('/programs', programs);
+app.use('/faculties', faculties);
+app.use('/departments', departments);
+app.use('/progAdmins', progAdmins)
 
 
 app.post('/upload', function(request, response){
