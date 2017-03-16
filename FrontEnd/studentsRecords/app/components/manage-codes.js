@@ -31,6 +31,14 @@ export default Ember.Component.extend({
     err: null,
     errProgram:null,
     newPlanList: null,
+
+    /**********/
+    newFacultyChoice: null,
+    facultyModel: null,
+    newDept: null,
+    newDeptFaculty: null,
+    newDeptName: null,
+    departmentModel: null,
     
 
     init() {
@@ -41,6 +49,7 @@ export default Ember.Component.extend({
         this.newPlanChoice="";
         this.newCourse=false;
         this.newProgram=false;
+        this.newDept=false;
         this.err = false;
         this.errProgram = false;
         var self = this;
@@ -77,6 +86,15 @@ export default Ember.Component.extend({
         this.get('store').findAll('program').then(function (records) {
            self.set('programModel', records);
         });
+
+        /****************/
+        this.get('store').findAll('faculty').then(function(records){
+            self.set('facultyModel', records);
+        });
+        this.get('store').findAll('department').then(function(records){
+            self.set('departmentModel', records);
+        });
+
     },
 
     didRender(){
@@ -732,7 +750,111 @@ export default Ember.Component.extend({
             });
             record.save();
         }
-      }
+      },
+
+/*******************************************************************************/
+
+    updateFacultyChoice(val)
+      {
+        this.set('newFacultyChoice',val);
+      },
+
+      addFacultyOption(){
+        if (this.get('newFacultyChoice')!==""){
+            var record = this.get('store').createRecord('faculty', {
+                name: this.get('newGenderChoice'),
+                department: []
+            });
+            console.log(record.get('name'));
+            record.save();
+        }
+        this.set('newFacultyChoice',"");
+      },
+
+      changeFacultyName(index)
+      {
+          var self = this;
+        if((this.$('.' + index)).val()!== ""){
+            this.get('store').find('gender', this.get('genderModel').objectAt(index).get('id')).then(function(record){
+            record.set('type', (self.$('.' + index)).val());
+            record.save();
+                
+          });
+        }
+      },
+      removeFacultyOption(index){
+       this.get('store').find('faculty',this.get('facultyModel').objectAt(index).get('id')).then(function(record){
+                record.deleteRecord();
+                if(record.get('isDeleted'))
+                {
+                    record.save();
+                }
+                
+          }, function (error){
+              console.log(error);
+          });
+          console.log(index);
+      },
+
+      /***************/
+
+      newDepartmentClicked()
+      {
+          this.set('newDept', !(this.get('newDept')));         
+      },
+
+      updateDeptFaculty(val)
+      {
+        var sub = this.get('store').peekRecord('faculty', val);
+        this.set('newDeptFaculty', sub);
+      },
+
+      addDeptOption(){
+        if (this.get('newDeptName')!==""){
+            var record = this.get('store').createRecord('department', {
+                name: this.get('newDeptName'),
+                faculty: this.get('newDeptFaculty'),
+                progAdmin: []
+            });
+            record.save();
+        }
+      },
+      updateDeptName(val)
+      {
+        this.set('newDeptName',val);
+      },
+      changeDeptName(index)
+      {
+          var self = this;
+        if((this.$('.name' + index)).val()!== ""){
+            this.get('store').find('department', this.get('departmentModel').objectAt(index).get('id')).then(function(record){
+            record.set('name', (self.$('.name' + index)).val());
+            record.save();
+                
+          });
+        }
+      },
+
+      changeDeptFaculty(val)
+      {
+          /*************HOW DO WE USE THIS FUNCTION TO SAVE....**********/
+        var sub = this.get('store').peekRecord('faculty', val);
+        this.set('newDeptFaculty', sub);
+      },
+
+      removeDeptOption(index){
+       this.get('store').find('department',this.get('departmentModel').objectAt(index).get('id')).then(function(record){
+                record.deleteRecord();
+                if(record.get('isDeleted'))
+                {
+                    record.save();
+                }
+                
+          }, function (error){
+              console.log(error);
+          });
+          console.log(index);
+      },
 
   }
 });

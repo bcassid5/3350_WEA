@@ -10,11 +10,12 @@
     <div class="item" data-tab="hsCourse">High School Courses</div>
   </div>
 -->
-    <div class="ui four item inverted menu" style="background-color: #4F2683; color: #ffffff">
+    <div class="ui five item inverted menu" style="background-color: #4F2683; color: #ffffff">
         <div class="active item" data-tab="residencies">Residencies</div>
         <div class="item" data-tab="genders">Gender</div>
         <div class="item" data-tab="programCodes">Program</div>
         <div class="item" data-tab="highschool">High School</div>
+        <div class="item" data-tab="faculty">Faculty</div>
     </div>
 
     <div class="ui  active tab"data-tab="residencies">
@@ -535,3 +536,125 @@
         </div>
    </div>
    </div>
+
+   <div class="ui tab" data-tab="faculty">
+     <div class="ui three item inverted menu" style="background-color: #4F2683; color: #ffffff">
+                <div class="active violet item" data-tab="fact">Faculties</div>
+                <div class="violet item" data-tab="dept">Department</div>
+                <div class="violet item" data-tab="progAdmin">Program Administrations</div>
+                
+    </div>
+    <div class="active ui tab" data-tab="fact">
+        <div class="ui grid">
+            <div class="ui lef aligned five wide column"></div>
+            <div class="ui lef aligned seven wide column">
+                <div class="ui form">
+                    <br>
+                    <div class="fields">
+                        <div style="margin-right: 12px" class="field">
+                            <br/>
+                            <label style="text-align: center">Add</label>
+                            <label style="text-align: center">New</label>
+                        </div>
+                        <div class="required field">
+                            <label>Name</label>
+                            <input style="width: 300px" placeholder="Name" value="" type="text" onchange={{action 'updateFacultyChoice' value="target.value"}}>
+                        </div>
+                        <div class="field">
+                            <br/><br/>
+                            <a {{action 'addFacultyOption'}}> 
+                                <i class="large green add square icon"></i> <br>
+                            </a>
+                        </div>
+                        {{#each facultyModel as |facultyChoice index|}}
+                            <div class="inline field">
+                                <label>Option {{increment index}}:</label> <input value={{facultyChoice.name}} type="text"  onchange = {{action 'changeFacultyName' index}} class = {{index}} >
+                                <a {{action 'removeGenderOption' index}}> 
+                                    <i class="large red minus circle icon"></i> <br/>
+                                </a>
+                            </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui tab" data-tab="dept">
+        <div class="ui grid">
+                <div class="ui lef aligned five wide column"></div>
+                <div class="ui lef aligned five wide column">
+                    <div class="ui form">
+                        <br/>
+                        <div id="newDept" class="inline fields">
+                            <div class="field">
+                                <label>Add</label>
+                                <br/>
+                                <label>New</label>
+                            </div>
+                            <div class ="required field">
+                                <label>Name</label>
+                                <input type = "text" class="name" placeholder="Name" name = "name" onchange={{action 'updateDeptName' value="target.value"}}>
+                            </div>
+                            <div class = "required field">
+                                <label>Faculty</label>
+                                <select onchange={{action 'updateDeptFaculty' value="target.value"}} class="sub{{index}}">
+                                    <option value="" disabled selected style="display: none;">Faculty</option>
+                                    {{#each facultyModel as |facultyChoice|}}
+                                        <option value={{facultyChoice.id}}>{{facultyChoice.name}} </option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <br>
+                            <div class="field">
+                                <br/><br/>
+                                <a {{action 'addDeptOption'}}> 
+                                    <i class="large green plus square icon"></i>
+                                    <br/>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!--DOES NOT SAVE WHEN UPDATING THE FACULTY... DO WE NOT WANT THEM  HAVE THAT OPTION???-->
+
+                        {{#each departmentModel as |deptChoice indexDept|}}
+                            <div class="fields" id="HS">
+                                <div class="field">
+                                    <br/>
+                                    <label style="text-align: center">Option</label>
+                                    <label style="text-align: center">{{indexDept}}</label>
+                                </div>
+                                <div class="required field">
+                                    <label>Name</label>
+                                    <input  style="width: 70px" value={{deptChoice.name}} type="text"  onchange = {{action 'changeDeptName' indexHS}} class = "name{{indexDept}}" >
+                                </div>
+                                <div class="required field">
+                                    <label>Subject</label>
+                                    <select onchange={{action 'changeDeptFaculty' value="target.value"}}>
+                                        {{#each facultyModel as |facultyChoice|}}
+                                            <option value={{facultyChoice.id}} selected={{eq facultyChoice.id
+                                                                                                    deptChoice.faculty.id}}>{{facultyChoice.name}} </option>
+                                        {{/each}}
+                                    </select>
+                                </div>                                
+                                <div class="field">
+                                    <br/><br/>
+                                    <a {{action 'removeDeptOption' index}}> 
+                                        <i class="large red minus circle icon"></i> <br>
+                                    </a>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="ui tab" data-tab="progAdmin">
+        <div class="ui grid">
+                <div class="ui lef aligned five wide column"></div>
+                <div class="ui lef aligned seven wide column">
+                    <div class="ui form">
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
