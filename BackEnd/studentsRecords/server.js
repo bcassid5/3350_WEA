@@ -64,7 +64,14 @@ app.use('/schoolTerms', schoolTerms );
 app.use('/programs', programs);
 app.use('/faculties', faculties);
 app.use('/departments', departments);
-app.use('/progAdmins', progAdmins)
+app.use('/progAdmins', progAdmins);
+app.use('/roots', roots);
+app.use('/users', users);
+app.use('/passwords', passwords);
+app.use('/roleCodes', roleCodes);
+app.use('/userRoles', userRoles);
+app.use('/rolePermissions', rolePermissions);
+app.use('/logins', logins);
 
 
 app.post('/upload', function(request, response){
