@@ -59,7 +59,7 @@ export default Ember.Component.extend({
             }
             this.set('tableHeader', header);
             this.set('tableData', data);
-            console.log(data);
+            //console.log(data);
             
             //console.log(data.length);
             
@@ -252,11 +252,27 @@ export default Ember.Component.extend({
                     record.save();
                 }
             } else if (file.name == "HighSchoolCourseInformation.xlsx"){
-                for(var i=1; i<data.length; i++){
-                    
-                }
-            } else if (file.name == ".xlsx"){
                 
+            } else if (file.name == "UndergraduateRecordPlans.xlsx"){
+                var plans = [];
+                var add = true;
+                var self = this;
+                for(var i=1; i<data.length; i++){
+                    for(var j=0; j<plans.length; j++){
+                        if(data[i][2] == plans[j]){
+                            add = false;
+                        }
+                    }
+                    if(add){
+                        plans.push(data[i][2]);
+                        var record = this.get('store').createRecord('planCode', {
+                            name: data[i][2],
+                            programRecords: []
+                        });
+                        record.save();
+                    }
+                    add = true;
+                }
             }
 
         },

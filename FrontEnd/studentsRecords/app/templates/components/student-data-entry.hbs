@@ -62,11 +62,11 @@
     <div class="item" data-tab="awards">Awards and Scholarships</div>
     <div class="item" data-tab="danger">Danger Zone</div>
   </div>
-  <div class="ui bottom attached active tab"data-tab="basics">
+  <div class="ui bottom attached active tab" data-tab="basics">
     <!-- student basic information !-->
     <br>
     <div class="ui grid">
-      <div class="ui right aligned seven wide column">
+      <div class="ui right aligned eight wide column">
         
         <div class="ui form">
           <div class="inline field">
@@ -107,18 +107,19 @@
         </div>
       </div>
       <!-- Show student photo -->
-      <div class="ui center aligned  seven wide column segment">
+      <div class="ui center aligned five wide column segment">
           <h3> {{currentStudent.firstName}} {{currentStudent.lastName}}</h3>
           <br>
           <img  src={{studentPhoto}}>
       </div>
     </div>
-
+<br><br><br><br>
   </div>
+  
   <div class="ui tab" data-tab="admiss">
 <br>
       <div class="ui grid">
-          <div class="ui left aligned seven wide column">
+          <div class="ui right aligned eight wide column">
               <div class="ui form">
                 <div class="field">
                     <label>Registration Comments</label>
@@ -138,12 +139,13 @@
                 </div>
               </div>
           </div>
-          <div class="ui center aligned  seven wide column segment">
+          <div class="ui center aligned eight wide column segment">
               <h3> {{currentStudent.firstName}} {{currentStudent.lastName}}</h3>
               <br>
               <img  src={{studentPhoto}}>
           </div>
       </div>
+      <br><br><br><br>
   </div>
   <div class = "ui tab" data-tab = "grades">
     <div class="ui three item inverted menu" style="background-color: #4F2683; color: #ffffff">
@@ -706,3 +708,4 @@
 
 
 {{/if}}
+
