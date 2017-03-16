@@ -61,7 +61,7 @@ export default Ember.Component.extend({
             this.set('tableData', data);
             //console.log(data);
             
-            //console.log(data.length);
+            console.log(data.length);
             
             
             if(file.name == "genders.xlsx"){
@@ -273,6 +273,33 @@ export default Ember.Component.extend({
                     }
                     add = true;
                 }
+            } else if (file.name == "AdmissionAverages.xlsx"){
+                this.get('store').query('student', {limit: 1000000, offset: 0}).then(function (student) {
+                    for (var i=0;i<768;i++){
+                        var addAvg = "";
+                        console.log(student.content.length);
+                        for(var j=0; j<student.content.length; j++){
+                            
+                            if (student.content[j]._data.number == data[i][0]){
+                                var ch = i;
+                                do {
+                                    ch++; 
+                                    if(data[i][0] != null){
+                                        //console.log(data[i][0]);
+                                    }
+                                    if (data[ch][0] != null){
+                                        _break = false;
+                                    }
+                                    addAvg += data[i][1];
+                                    //var im = self.get('store').peekRecord('student', student.content[j].id);
+                                    //record.save()
+                                } while (_break);
+                                _break = true;
+                                //console.log(addAvg);                   
+                            }
+                        }
+                    }  
+                });
             }
 
         },
