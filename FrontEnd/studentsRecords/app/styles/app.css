@@ -9,7 +9,7 @@
 }
 body {
   background-color: #807F83;
-  background: url('/assets/images/bigshield.png') center fixed no-repeat;
+  background: url('/assets/images/shieldBackgroundAlt.png') center fixed no-repeat;
   background-size: cover;
   
   padding: 0;
