@@ -549,26 +549,34 @@
             <div class="ui lef aligned seven wide column">
                 <div class="ui form">
                     <br>
-                    <div class="fields">
-                        <div style="margin-right: 12px" class="field">
+                    <div class="inline fields">
+                        <div style="margin-right: 12px" class=" inline field">
                             <br/>
                             <label style="text-align: center">Add</label>
                             <label style="text-align: center">New</label>
                         </div>
-                        <div class="required field">
+                        <div class="required inline field">
                             <label>Name</label>
                             <input style="width: 300px" placeholder="Name" value="" type="text" onchange={{action 'updateFacultyChoice' value="target.value"}}>
                         </div>
-                        <div class="field">
-                            <br/><br/>
+                        <div class="inline field">
+                            <br/>
                             <a {{action 'addFacultyOption'}}> 
                                 <i class="large green add square icon"></i> <br>
                             </a>
                         </div>
+                    </div>
+                    <div class="inline fields">
                         {{#each facultyModel as |facultyChoice index|}}
-                            <div class="inline field">
-                                <label>Option {{increment index}}:</label> <input value={{facultyChoice.name}} type="text"  onchange = {{action 'changeFacultyName' index}} class = {{index}} >
-                                <a {{action 'removeGenderOption' index}}> 
+                        {{log facultyChoice}}
+                            <div style="margin-right: 10px" class="inline field">
+                                <label style="text-align: center" >Option {{index}}:</label>
+                            </div>
+                            <div style="margin-right: 12px" clas="inline field">
+                                <input style="width: 300px" value={{facultyChoice.name}} type="text"  onchange = {{action 'changeFacultyName' index}} class = {{index}} >
+                            </div>
+                            <div style="margin-left: 25px" class="inline field">
+                                <a {{action 'removeFacultyOption' index}}> 
                                     <i class="large red minus circle icon"></i> <br/>
                                 </a>
                             </div>
@@ -585,16 +593,16 @@
                     <div class="ui form">
                         <br/>
                         <div id="newDept" class="inline fields">
-                            <div class="field">
+                            <div class="inline field">
                                 <label>Add</label>
                                 <br/>
                                 <label>New</label>
                             </div>
-                            <div class ="required field">
+                            <div class ="required inline field">
                                 <label>Name</label>
                                 <input type = "text" class="name" placeholder="Name" name = "name" onchange={{action 'updateDeptName' value="target.value"}}>
                             </div>
-                            <div class = "required field">
+                            <div class = "required inline field">
                                 <label>Faculty</label>
                                 <select onchange={{action 'updateDeptFaculty' value="target.value"}} class="sub{{index}}">
                                     <option value="" disabled selected style="display: none;">Faculty</option>
@@ -604,7 +612,7 @@
                                 </select>
                             </div>
                             <br>
-                            <div class="field">
+                            <div class="inline field">
                                 <br/><br/>
                                 <a {{action 'addDeptOption'}}> 
                                     <i class="large green plus square icon"></i>
@@ -616,17 +624,17 @@
                         <!--DOES NOT SAVE WHEN UPDATING THE FACULTY... DO WE NOT WANT THEM  HAVE THAT OPTION???-->
 
                         {{#each departmentModel as |deptChoice indexDept|}}
-                            <div class="fields" id="HS">
-                                <div class="field">
+                            <div class="inline fields" id="HS">
+                                <div class="inline field">
                                     <br/>
                                     <label style="text-align: center">Option</label>
                                     <label style="text-align: center">{{indexDept}}</label>
                                 </div>
-                                <div class="required field">
+                                <div class="required inline field">
                                     <label>Name</label>
                                     <input  style="width: 70px" value={{deptChoice.name}} type="text"  onchange = {{action 'changeDeptName' indexHS}} class = "name{{indexDept}}" >
                                 </div>
-                                <div class="required field">
+                                <div class="required inline field">
                                     <label>Subject</label>
                                     <select onchange={{action 'changeDeptFaculty' value="target.value"}}>
                                         {{#each facultyModel as |facultyChoice|}}
@@ -635,8 +643,7 @@
                                         {{/each}}
                                     </select>
                                 </div>                                
-                                <div class="field">
-                                    <br/><br/>
+                                <div class="inline field">
                                     <a {{action 'removeDeptOption' index}}> 
                                         <i class="large red minus circle icon"></i> <br>
                                     </a>

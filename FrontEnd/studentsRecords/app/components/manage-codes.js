@@ -762,13 +762,12 @@ export default Ember.Component.extend({
       addFacultyOption(){
         if (this.get('newFacultyChoice')!==""){
             var record = this.get('store').createRecord('faculty', {
-                name: this.get('newGenderChoice'),
+                name: this.get('newFacultyChoice'),
                 department: []
             });
             console.log(record.get('name'));
             record.save();
         }
-        this.set('newFacultyChoice',"");
       },
 
       changeFacultyName(index)
