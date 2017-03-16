@@ -24,6 +24,13 @@ var grades = require('./routes/grades');
 var programRecords = require('./routes/programRecords');
 var schoolTerms = require('./routes/schoolTerms');
 var programs = require('./routes/programs')
+var users = require('./routes/users');
+var passwords = require('./routes/passwords');
+var roleCodes = require('./routes/roleCodes');
+var userRoles = require('./routes/usersRoles');
+var rolePermissions = require('./routes/rolePermissions');
+var logins = require('./routes/logins');
+var roots = require('./routes/roots');
 
 
 app.use(function (request, response, next) {
@@ -51,6 +58,7 @@ app.use('/grades',grades);
 app.use('/programRecords', programRecords);
 app.use('/schoolTerms', schoolTerms );
 app.use('/programs', programs);
+
 
 app.post('/upload', function(request, response){
     //console.log('entering upload route');
@@ -122,8 +130,7 @@ app.post('/upload', function(request, response){
     var MongoClient = require('mongodb').MongoClient;
     var assert = require('assert');
     var ObjectId = require('mongodb').ObjectID;
-    var url = 'mongodb://localhost/studentsRecords';
-
+    var url = 'mongodb://localhost/studentsRecords'
 
     var insertDocument = function(db, callback) {
        db.collection(name).insert(json, function(err, result) {
