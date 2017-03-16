@@ -164,6 +164,10 @@ export default Ember.Component.extend({
       self.set('genderModel', records);
     });
     
+    this.get('store').findAll('program').then(function(records){
+      self.set('programModel', records);
+    });
+
     this.get('store').findAll('courseCode').then(function(records) {
       self.set('courseCodeModel', records);
     });
