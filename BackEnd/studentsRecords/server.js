@@ -15,6 +15,13 @@ var grades = require('./routes/grades');
 var programRecords = require('./routes/programRecords');
 var schoolTerms = require('./routes/schoolTerms');
 var programs = require('./routes/programs')
+var users = require('./routes/users');
+var passwords = require('./routes/passwords');
+var roleCodes = require('./routes/roleCodes');
+var userRoles = require('./routes/usersRoles');
+var rolePermissions = require('./routes/rolePermissions');
+var logins = require('./routes/logins');
+var roots = require('./routes/roots');
 
 app.use(function (request, response, next) {
     response.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
@@ -37,7 +44,13 @@ app.use('/grades',grades);
 app.use('/programRecords', programRecords);
 app.use('/schoolTerms', schoolTerms );
 app.use('/programs', programs);
-
+app.use('/users', users);
+app.use('/passwords', passwords);
+app.use('/roleCodes', roleCodes);
+app.use('/userRoles', userRoles);
+app.use('/rolePermissions', rolePermissions);
+app.use('/logins', logins);
+app.use('/roots', roots);
 
 
 app.listen(3700, function () {

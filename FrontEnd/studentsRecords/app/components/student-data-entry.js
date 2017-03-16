@@ -211,9 +211,11 @@ export default Ember.Component.extend({
     //console.log(this.get('advStandingModel'));
     this.set('newAdv', false);
     this.set('newAwd', false);
+    
     this.set('selectedGender', this.get('currentStudent').get('gender'));
     this.set('selectedResidency', this.get('currentStudent').get('resInfo'));
-    //console.log(this.get('currentStudent').get('id'));
+    
+    
     this.set('studentPhoto', this.get('currentStudent').get('photo'));
     var date = this.get('currentStudent').get('DOB');
     var datestring = date.toISOString().substring(0, 10);

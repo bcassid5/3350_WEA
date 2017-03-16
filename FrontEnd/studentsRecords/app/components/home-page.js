@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  routing: Ember.inject.service('-routing'),
   didInsertElement() {
 //    Ember.$('.tabular.menu .item').tab();
     Ember.$(document).ready(function(){
@@ -59,6 +60,9 @@ export default Ember.Component.extend({
       this.set('isAboutShowing', false);
       this.set('isManageCodeShowing', true);
       this.set('isAddShowing', false);
-    }
+    },
+    addNewUser(){
+      this.get('routing').transitionTo('add-user');
+    },
   }
 });

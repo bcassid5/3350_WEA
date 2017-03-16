@@ -84,9 +84,9 @@
           <div class="inline field">
             <label>Gender</label>
             <select onchange={{action 'selectGender' value="target.value"}}>
+              <option value="" >Option Removed</option>
               {{#each genderModel as |genderChoice|}}
-                <option value={{genderChoice.id}} selected={{eq currentStudent.gender.id
-                                                                   genderChoice.id}}>{{genderChoice.type}} </option>
+                <option value={{genderChoice.id}} selected={{eq currentStudent.gender.id genderChoice.id}}>{{genderChoice.type}} </option>
               {{/each}}
             </select>
           </div>
@@ -96,7 +96,9 @@
           </div>
           <div class="inline field">
             <label>Residency</label>
+            
             <select onchange={{action 'selectResidency' value="target.value"}}>
+              <option value="">Option Removed</option>
               {{#each residencyModel as |residencyChoice|}}
                 <option value={{residencyChoice.id}} selected={{eq currentStudent.resInfo.id
                                                                    residencyChoice.id}}>{{residencyChoice.name}} </option>
