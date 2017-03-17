@@ -21,7 +21,7 @@ router.route('/')
         
         if (!Student) {
             
-            models.ProgramAdministrations.find(function (error, programAdministrations) {
+            models.ProgramAdministrations.find(function (error, programAdmin) {
                 if (error) response.send(error);
                 response.json({progAdmin: programAdministrations});
             });
@@ -36,7 +36,7 @@ router.route('/')
 
 router.route('/:progAdmins_id')
     .get(parseUrlencoded, parseJSON, function (request, response) {
-        models.ProgAdmins.findById(request.params.progAdmin_id, function (error, progAdmin) {
+        models.ProgramAdministrations.findById(request.params.progAdmin_id, function (error, progAdmin) {
             if (error) response.send(error);
             response.json({progAdmin: progAdmin});
         })
@@ -64,7 +64,9 @@ router.route('/:progAdmins_id')
         })
     })
     .delete(parseUrlencoded, parseJSON, function (request, response) {
-        models.ProgramAdministrations.findByIdAndRemove(request.params.progAdmin_id,
+        console.log('deleting department');
+        console.log(request.params);
+        models.ProgramAdministrations.findByIdAndRemove(request.params.progAdmins_id,
             function (error, deleted) {
                 if (!error) {
                     response.json({progAdmin: deleted});

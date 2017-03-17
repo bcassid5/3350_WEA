@@ -64,7 +64,9 @@ router.route('/:departments_id')
         })
     })
     .delete(parseUrlencoded, parseJSON, function (request, response) {
-        models.Departments.findByIdAndRemove(request.params.department_id,
+        console.log('deleting department');
+        console.log(request.params);
+        models.Departments.findByIdAndRemove(request.params.departments_id,
             function (error, deleted) {
                 if (!error) {
                     response.json({department: deleted});

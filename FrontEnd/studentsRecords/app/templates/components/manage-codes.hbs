@@ -654,7 +654,7 @@
                                     <input value={{deptChoice.name}} type="text"  onchange = {{action 'changeDeptName' indexHS}} class = "name{{indexDept}}" >
                                 </div>
                                 <div class="required inline field">
-                                    <label>Subject</label>
+                                    <label>Faculty</label>
                                     <select onchange={{action 'changeDeptFaculty' value="target.value"}}>
                                         {{#each facultyModel as |facultyChoice|}}
                                             <option value={{facultyChoice.id}} selected={{eq facultyChoice.id
@@ -664,7 +664,7 @@
                                 </div>                                
                                 <div class="inline field">
                                     <br/>
-                                    <a {{action 'removeDeptOption' index}}> 
+                                    <a {{action 'removeDeptOption' indexDept}}> 
                                         <i class="large red minus circle icon"></i> <br>
                                     </a>
                                 </div>
@@ -722,7 +722,7 @@
                                     <input style="width: 300px" value={{progAdminChoice.position}} type="text"  onchange = {{action 'changeProgAdminPos' index}} class = "progPos{{index}}" >
                                 </div>
                                 <div class="required inline field">
-                                    <select style="width: 130px">
+                                    <select style="width: 190px">
                                         {{#each departmentModel as |deptChoice|}}
                                             <option value={{deptChoice.id}} selected={{eq deptChoice.id
                                                                                                     progAdminChoice.department.id}}>{{deptChoice.name}} </option>

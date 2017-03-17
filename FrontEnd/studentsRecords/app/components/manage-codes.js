@@ -864,16 +864,17 @@ export default Ember.Component.extend({
 
       removeDeptOption(index){
        this.get('store').find('department',this.get('departmentModel').objectAt(index).get('id')).then(function(record){
+           console.log(record);
                 record.deleteRecord();
                 if(record.get('isDeleted'))
                 {
+                    console.log("deleted");
                     record.save();
                 }
                 
           }, function (error){
               console.log(error);
           });
-          console.log(index);
       },
 
       /*********************/
@@ -889,7 +890,7 @@ export default Ember.Component.extend({
 
       updateProgAdminDept(val)
       {
-        var sub = this.get('store').peekRecord('faculty', val);
+        var sub = this.get('store').peekRecord('department', val);
         this.set('newProgAdminDept', sub);
       },
 
