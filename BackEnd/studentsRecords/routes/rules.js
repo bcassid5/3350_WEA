@@ -9,7 +9,7 @@ router.route('/')
     .post(parseUrlencoded, parseJSON, function (request, response) {
         
 
-        var rule = new models.rules(request.body.rule);
+        var rule = new models.Rules(request.body.rule);
         
         rule.save(function (error) {
             if (error) response.send(error);
@@ -21,13 +21,13 @@ router.route('/')
         
         if (!Student) {
             
-            models.rules.find(function (error, rules) {
+            models.Rules.find(function (error, rules) {
                 if (error) response.send(error);
                 response.json({rule: rules});
             });
         } else {
             
-            models.rules.find({"students": Student.student}, function (error, students) {
+            models.Rules.find({"students": Student.student}, function (error, students) {
                 if (error) response.send(error);
                 response.json({rule: students});
             });
@@ -36,13 +36,13 @@ router.route('/')
 
 router.route('/:rules_id')
     .get(parseUrlencoded, parseJSON, function (request, response) {
-        models.rules.findById(request.params.rule_id, function (error, rule) {
+        models.Rules.findById(request.params.rule_id, function (error, rule) {
             if (error) response.send(error);
             response.json({rule: rule});
         })
     })
     .put(parseUrlencoded, parseJSON, function (request, response) {
-        models.rules.findById(request.params.rule_id, function (error, rule) {
+        models.Rules.findById(request.params.rule_id, function (error, rule) {
             if (error) {
                 response.send({error: error});
             }
@@ -62,7 +62,7 @@ router.route('/:rules_id')
         })
     })
     .delete(parseUrlencoded, parseJSON, function (request, response) {
-        models.rules.findByIdAndRemove(request.params.rule_id,
+        models.Rules.findByIdAndRemove(request.params.rule_id,
             function (error, deleted) {
                 if (!error) {
                     response.json({rule: deleted});

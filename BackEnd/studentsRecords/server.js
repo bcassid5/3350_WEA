@@ -34,7 +34,10 @@ var programs = require('./routes/programs');
 var faculties = require('./routes/faculties');
 var departments = require('./routes/departments');
 var progAdmins = require('./routes/progAdmins');
-
+var assessmentCodes = require('./routes/assessmentCodes');
+var adjudications = require('./routes/adjudications');
+var logExpresses = require('./routes/logExpress');
+var rules = require('./routes/rules')
 
 
 app.use(function (request, response, next) {
@@ -72,7 +75,10 @@ app.use('/roleCodes', roleCodes);
 app.use('/userRoles', userRoles);
 app.use('/rolePermissions', rolePermissions);
 app.use('/logins', logins);
-
+app.use('/assessmentCodes', assessmentCodes);
+app.use('/rules', rules);
+app.use('/logExpresses', logExpresses);
+app.use('/adjudications', adjudications);
 
 app.post('/upload', function(request, response){
     //console.log('entering upload route');
