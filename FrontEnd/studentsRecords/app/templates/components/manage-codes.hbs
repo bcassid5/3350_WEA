@@ -691,7 +691,7 @@
                             <input style="width: 300px" placeholder="Name" value="" type="text" onchange={{action 'updateProgAdminName' value="target.value"}}>
                         </div>
                         <div class="required inline field">
-                            <label>Name</label>
+                            <label>Position</label>
                             <input style="width: 300px" placeholder="Name" value="" type="text" onchange={{action 'updateProgAdminPosition' value="target.value"}}>
                         </div>
                         <div class = "required inline field">
@@ -712,24 +712,24 @@
                     </div>
                         {{#each progAdminModel as |progAdminChoice index|}}
                         <div class="inline fields">
-                            <div style="margin-right: 10px" class="inline field">
+                            <div class="inline field">
                                 <label style="text-align: center" >Option {{index}}:</label>
                             </div>
                             <div style="margin-right: 12px" clas="inline field">
                                 <input style="width: 300px" value={{progAdminChoice.name}} type="text"  onchange = {{action 'changeProgAdminName' index}} class = "progName{{index}}" >
                             </div>
                             <div class="required inline field">
-                                    <input value={{progAdminChoice.position}} type="text"  onchange = {{action 'changeProgAdminPos' index}} class = "progPos{{index}}" >
+                                    <input style="width: 300px" value={{progAdminChoice.position}} type="text"  onchange = {{action 'changeProgAdminPos' index}} class = "progPos{{index}}" >
                                 </div>
                                 <div class="required inline field">
-                                    <select>
+                                    <select style="width: 130px">
                                         {{#each departmentModel as |deptChoice|}}
                                             <option value={{deptChoice.id}} selected={{eq deptChoice.id
                                                                                                     progAdminChoice.department.id}}>{{deptChoice.name}} </option>
                                         {{/each}}
                                     </select>
                                 </div>
-                            <div style="margin-left: 30px" class="inline field">
+                            <div class="inline field">
                                 <a {{action 'removeProgAdminOption' index}}> 
                                     <i class="large red minus circle icon"></i> <br/>
                                 </a>

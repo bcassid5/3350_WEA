@@ -104,7 +104,7 @@ export default Ember.Component.extend({
         this.get('store').findAll('department').then(function(records){
             self.set('departmentModel', records);
         });
-        this.get('store').findAll('prog-admin').then(function(records){
+        this.get('store').findAll('progAdmin').then(function(records){
             self.set('progAdminModel', records);
         });
 
@@ -908,7 +908,7 @@ export default Ember.Component.extend({
       {
           var self = this;
         if((this.$('.progName' + index)).val()!== ""){
-            this.get('store').find('prog-admin', this.get('progAdminModel').objectAt(index).get('id')).then(function(record){
+            this.get('store').find('progAdmin', this.get('progAdminModel').objectAt(index).get('id')).then(function(record){
             record.set('name', (self.$('.progName' + index)).val());
             record.save();
                 
@@ -920,7 +920,7 @@ export default Ember.Component.extend({
       {
           var self = this;
         if((this.$('.progName' + index)).val()!== ""){
-            this.get('store').find('prog-admin', this.get('progAdminModel').objectAt(index).get('id')).then(function(record){
+            this.get('store').find('progAdmin', this.get('progAdminModel').objectAt(index).get('id')).then(function(record){
             record.set('position', (self.$('.progPos' + index)).val());
             record.save();
                 
@@ -929,7 +929,7 @@ export default Ember.Component.extend({
       },
 
       removeProgAdminOption(index){
-       this.get('store').find('prog-admin',this.get('progAdminModel').objectAt(index).get('id')).then(function(record){
+       this.get('store').find('progAdmin',this.get('progAdminModel').objectAt(index).get('id')).then(function(record){
                 record.deleteRecord();
                 if(record.get('isDeleted'))
                 {
