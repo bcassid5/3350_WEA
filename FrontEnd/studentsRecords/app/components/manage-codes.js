@@ -42,6 +42,11 @@ export default Ember.Component.extend({
 
     newProgDepartment: null,
 
+    newProgAdminName: null,
+    newProgAdminPosition: null,
+    newProgAdminDept: null,
+    progAdminModel: null,
+
     init() {
         this._super(...arguments);
         this.newResChoice="";
@@ -56,6 +61,9 @@ export default Ember.Component.extend({
         var self = this;
         this.newPlanList = [];
         this.newProgDepartment = "";
+        this.newProgAdminName="";
+        this.newDeptName="";
+        this.newProgAdminPosition="";
 
         this.get('store').findAll('residency').then(function (records) {
             self.set('residencyModel', records);
@@ -95,6 +103,9 @@ export default Ember.Component.extend({
         });
         this.get('store').findAll('department').then(function(records){
             self.set('departmentModel', records);
+        });
+        this.get('store').findAll('progAdmin').then(function(records){
+            self.set('progAdminModel', records);
         });
 
     },
@@ -853,6 +864,72 @@ export default Ember.Component.extend({
 
       removeDeptOption(index){
        this.get('store').find('department',this.get('departmentModel').objectAt(index).get('id')).then(function(record){
+                record.deleteRecord();
+                if(record.get('isDeleted'))
+                {
+                    record.save();
+                }
+                
+          }, function (error){
+              console.log(error);
+          });
+          console.log(index);
+      },
+
+      /*********************/
+      updateProgAdminName(val)
+      {
+        this.set('newProgAdminName',val);
+      },
+
+      updateProgAdminPosition(val)
+      {
+        this.set('newProgAdminPosition',val);
+      },
+
+      updateProgAdminDept(val)
+      {
+        var sub = this.get('store').peekRecord('faculty', val);
+        this.set('newProgAdminDept', sub);
+      },
+
+      addProgAdminOption(){
+        if (this.get('newProgAdminName')!==""&&this.get('newProgAdminPosition')!=""){
+            var record = this.get('store').createRecord('progAdmin', {
+                name: this.get('newProgAdminName'),
+                position: this.get('newProgAdminPosition'),
+                department: this.get('newProgAdminDept')
+            });
+            record.save();
+        }
+      },
+
+      changeProgAdminName(index)
+      {
+          var self = this;
+        if((this.$('.progName' + index)).val()!== ""){
+            this.get('store').find('progAdmin', this.get('progAdminModel').objectAt(index).get('id')).then(function(record){
+            record.set('name', (self.$('.progName' + index)).val());
+            record.save();
+                
+          });
+        }
+      },
+
+      changeProgAdminPos(index)
+      {
+          var self = this;
+        if((this.$('.progName' + index)).val()!== ""){
+            this.get('store').find('progAdmin', this.get('progAdminModel').objectAt(index).get('id')).then(function(record){
+            record.set('position', (self.$('.progPos' + index)).val());
+            record.save();
+                
+          });
+        }
+      },
+
+      removeProgAdminOption(index){
+       this.get('store').find('progAdmin',this.get('progAdminModel').objectAt(index).get('id')).then(function(record){
                 record.deleteRecord();
                 if(record.get('isDeleted'))
                 {

@@ -9,7 +9,7 @@ router.route('/')
     .post(parseUrlencoded, parseJSON, function (request, response) {
         
 
-        var adjudication = new models.adjudications(request.body.adjudication);
+        var adjudication = new models.Adjudications(request.body.adjudication);
         
         adjudication.save(function (error) {
             if (error) response.send(error);
@@ -21,13 +21,13 @@ router.route('/')
         
         if (!Student) {
             
-            models.adjudications.find(function (error, adjudications) {
+            models.Adjudications.find(function (error, adjudications) {
                 if (error) response.send(error);
                 response.json({adjudication: adjudications});
             });
         } else {
             
-            models.adjudications.find({"students": Student.student}, function (error, students) {
+            models.Adjudications.find({"students": Student.student}, function (error, students) {
                 if (error) response.send(error);
                 response.json({adjudication: students});
             });
@@ -36,13 +36,13 @@ router.route('/')
 
 router.route('/:adjudications_id')
     .get(parseUrlencoded, parseJSON, function (request, response) {
-        models.adjudications.findById(request.params.adjudication_id, function (error, adjudication) {
+        models.Adjudications.findById(request.params.adjudication_id, function (error, adjudication) {
             if (error) response.send(error);
             response.json({adjudication: adjudication});
         })
     })
     .put(parseUrlencoded, parseJSON, function (request, response) {
-        models.adjudications.findById(request.params.adjudication_id, function (error, adjudication) {
+        models.Adjudications.findById(request.params.adjudication_id, function (error, adjudication) {
             if (error) {
                 response.send({error: error});
             }
@@ -66,7 +66,7 @@ router.route('/:adjudications_id')
         })
     })
     .delete(parseUrlencoded, parseJSON, function (request, response) {
-        models.adjudications.findByIdAndRemove(request.params.adjudication_id,
+        models.Adjudications.findByIdAndRemove(request.params.adjudication_id,
             function (error, deleted) {
                 if (!error) {
                     response.json({adjudication: deleted});
