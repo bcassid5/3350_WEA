@@ -149,18 +149,22 @@
       </div>
       <br><br><br><br>
   </div>
+  
+  
   <div class = "ui tab" data-tab = "grades">
-    <div class="ui three item inverted menu" style="background-color: #4F2683; color: #ffffff">
-                <div class="active violet item" data-tab="program">Program Grades</div>
-                <div class="violet item" data-tab="advanced">Advanced Standings</div>
-                <div class="violet item" data-tab="highschool"> High School </div>
-                
-            </div>
-            
+    <div class="ui grid">
+      <div class="four wide column">
+        <div class="ui secondary vertical pointing menu">
+            <div class="active violet item" data-tab="program">Program Grades</div>
+            <div class="violet item" data-tab="advanced">Advanced Standings</div>
+            <div class="violet item" data-tab="highschool"> High School </div>
+        </div>
+      </div>
+
+     <div class="twelve wide column">       
     <div class = "ui active tab" data-tab = "program">
       <div class = "ui grid">
-        <div class="ui left aligned four wide column"></div>
-        <div class="ui left aligned seven wide column">
+        <div class="ui left aligned twelve wide column">
           <div id="terms">
             {{#each termCodeModel as |termChoice index|}}
               <div class={{index}}>
@@ -332,11 +336,8 @@
     </div>
     </div>
     <div class="ui tab" data-tab="advanced">
-        <div class="ui grid">
-              <div class="ui left aligned four wide column"></div>
-                
-              
-              <div class="ui left aligned seven wide column">
+        <div class="ui grid">              
+              <div class="ui left aligned twelve wide column">
                   <div class="ui form" id = "advStanding">
                       <br>
                       
@@ -439,8 +440,7 @@
     <!-- student high school information !-->
     <br/>
     <div class="ui grid">
-        <div class="ui left aligned four wide column"></div>
-        <div class="ui left aligned seven wide column">
+        <div class="ui left aligned twelve wide column">
           {{#each highSchoolGradeModel as |highSchoolGradeChoice index|}}
           {{#if enableHSCourseEdit}}     
             <div class="ui large header"> Edit Option: 
@@ -646,6 +646,8 @@
           <button class="ui violet button" {{action 'toggleHSCourseEdit'}}>Toggle Edit</button>
         </div>
     </div>
+    </div>
+  </div>
   </div>
   </div>
    <div class="ui tab" data-tab="awards">
