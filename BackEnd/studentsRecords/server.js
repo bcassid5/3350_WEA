@@ -37,7 +37,7 @@ var progAdmins = require('./routes/progAdmins');
 var assessmentCodes = require('./routes/assessmentCodes');
 var adjudications = require('./routes/adjudication');
 var logExpresses = require('./routes/logExpress');
-var rules = require('./routes/rules')
+var rules = require('./routes/rules');
 
 
 app.use(function (request, response, next) {

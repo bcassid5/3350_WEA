@@ -47,6 +47,19 @@ export default Ember.Component.extend({
     newProgAdminDept: null,
     progAdminModel: null,
 
+    /***************/
+    logExpModel: null,
+    newLogExpValue: null,
+    newLogExpOpr: null,
+    newLogExpParam: null,
+
+    ruleModel: null,
+    newRule: null,
+    errRule: null,
+    newRuleList: null,
+
+    codeModel: null,
+
     init() {
         this._super(...arguments);
         this.newResChoice="";
@@ -55,11 +68,14 @@ export default Ember.Component.extend({
         this.newPlanChoice="";
         this.newCourse=false;
         this.newProgram=false;
+        this.newRule=false;
         this.newDept=false;
         this.err = false;
         this.errProgram = false;
+        this.errRule=false;
         var self = this;
         this.newPlanList = [];
+        this.newRuleList=[];
         this.newProgDepartment = "";
         this.newProgAdminName="";
         this.newDeptName="";
@@ -106,6 +122,19 @@ export default Ember.Component.extend({
         });
         this.get('store').findAll('progAdmin').then(function(records){
             self.set('progAdminModel', records);
+        });
+
+        /*************/
+        this.get('store').findAll('logExpress').then(function(records){
+            self.set('logExpModel', records);
+        });
+
+        this.get('store').findAll('rule').then(function(records){
+            self.set('ruleModel', records);
+        });
+
+        this.get('store').findAll('assessmentCode').then(function(records){
+            self.set('codeModel', records);
         });
 
     },
@@ -941,6 +970,195 @@ export default Ember.Component.extend({
               console.log(error);
           });
           console.log(index);
+      },
+
+
+      /************************/
+
+      removeLogExpOption(index)
+      {
+        this.get('store').find('logExpress',this.get('logExpModel').objectAt(index).get('id')).then(function(record){
+            console.log(record);
+                record.deleteRecord();
+                if(record.get('isDeleted'))
+                {
+                    record.save();
+                }
+                
+          }, function (error){
+              console.log(error);
+          });
+      },
+
+       updateValueChoice(val)
+      {
+          this.set('newLogExpValue',val);
+      },
+
+       updateOperatorChoice(val)
+      {
+          this.set('newLogExpOpr',val);
+      },
+
+      updateParameterChoice(val)
+      {
+          this.set('newLogExpParam',val);
+      },
+
+      addLogExpOption()
+      {
+          console.log("called");
+          if (this.get('newLogExpValue')!=="" && this.get('newLogExpParam')!="" && this.get('newLogExpOpr')!=""){
+              console.log("if statement");
+            var expression =  this.get('newLogExpParam')+this.get('newLogExpOpr')+this.get('newLogExpValue');
+            console.log(expression);
+            var record = this.get('store').createRecord('logExpress', {
+                boolExpress: expression,
+                rule: []
+            });
+            console.log(record);
+            record.save();
+        }
+      },
+
+      /*************/
+
+      newRuleClicked()
+      {
+          this.set('newRule', !(this.get('newRule')));
+          this.set('errRule', false);
+          this.set('newRuleList',[]);
+      },
+
+      selectExpression(index)
+      {
+          var repeat = false;
+          for(var i =0;i<this.get('newRuleList').get('length');i++)
+          {
+              if(this.get('logExpModel').objectAt(index).get('boolExpress') == this.get('newRuleList').objectAt(i).get('boolExpress'))
+              {
+                  repeat = true;
+              }
+          }
+          if(!repeat){
+            this.get('newRuleList').pushObject(this.get('logExpModel').objectAt(index));
+            console.log(this.get('newRuleList'));
+          }
+      },
+
+      removeNewRule(index)
+      {
+          this.get('newRuleList').splice(index, 1);
+          this.$("#newRule").find('.'+index).remove();
+      },
+
+      addRuleOption()
+      {
+          var n =this.$("#newRule").find('.description').val();
+
+          console.log("HELLO");
+          console.log(this.$("#newRule").find('.description').val());
+          console.log(n);
+          
+          /*this.set("errRule", false);
+            if(n=="")
+            {
+                this.$("#newRule").form('add prompt', 'description', 'error text');
+                this.set("errRule", true);
+            }
+            else 
+            {
+                this.$("#newRule").form('remove prompt', 'description');
+            }
+            if(this.get('newRuleList').get('length')==0)
+            {   
+                this.$("#newRule").form('add prompt', 'listname', 'error text');
+                this.set("errRule", true);
+            }
+            else 
+            {
+                this.$("#newRule").form('remove prompt', 'listname');
+            }
+            if(!this.get('errRule'))
+            {
+                
+                this.set('newRule', false);
+                this.set("errRule", false);
+                var record = this.get('store').createRecord('rule', {
+                description: n,
+                logExpressions: this.get('newRuleList'),
+                assessmentCode: []
+            });
+            console.log(record);
+                record.save();
+            }*/
+      },
+
+      removeRuleOption(index)
+      {
+          this.get('store').find('rule',this.get('ruleModel').objectAt(index).get('id')).then(function(record){
+                record.deleteRecord();
+                if(record.get('isDeleted'))
+                {
+                    record.save();
+                }
+                
+          }, function (error){
+              console.log(error);
+          });
+      },
+
+      updateRuleChoice(index)
+      {
+          var e = false;
+          if(this.get('ruleModel').objectAt(index).get('description')=="")
+          {
+              this.$("#rules").find('.'+index).form('add prompt', 'name', 'error text');
+              e=true;
+          }
+          else 
+          {
+              this.$("#rules").find('.'+index).form('remove prompt', 'name');
+          }
+          if (this.get('ruleModel').objectAt(index).get('logExpressions').get('length')==0)
+          {
+              this.$("#rules").find('.'+index).form('add prompt', 'list', 'error text');
+              e=true;
+          }
+          else 
+          {
+              this.$("#rules").find('.'+index).form('remove prompt', 'list');
+          }
+          if (!e)
+          {
+              this.get('ruleModel').objectAt(index).save();
+          }
+      },
+
+      updateRule(index)
+      {
+          var choice = this.$("#rules").find('.'+index).find('.selectedRule').val();
+          var repeat= false;
+          for (var i =0; i<this.get('ruleModel').objectAt(index).get('logExpressions').get('length'); i++)
+          {
+              if (this.get('ruleModel').objectAt(choice).get('description')==this.get('ruleModel').objectAt(index).get('logExpressions').objectAt(i).get('description'))
+              {
+                  console.log("repeat");
+                  repeat=true;
+              }
+          }
+          if (!repeat)
+          {
+              this.get('ruleModel').objectAt(index).get('logExpressions').pushObject(this.get('ruleModel').objectAt(choice));
+          }
+          
+      },
+
+      removeRuleExp(ruleIndex, expIndex)
+      {
+          console.log(ruleIndex);
+          console.log(expIndex);
+          this.get('ruleModel').objectAt(ruleIndex).get('logExpressions').removeAt(expIndex);
       },
 
   }

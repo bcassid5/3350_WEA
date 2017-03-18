@@ -147,16 +147,16 @@ var progAdminSchema=mongoose.Schema(
 var logExpressSchema = mongoose.Schema(
     {
         boolExpress: String,
-        logicalLink: String,
-        parentLink: String,
-        rule:{type: mongoose.Schema.ObjectId, ref:("Rules")}
+        //logicalLink: String,
+        //parentLink: String,
+        rule:[{type: mongoose.Schema.ObjectId, ref:("Rules")}]
     }
 );
 var ruleSchema = mongoose.Schema(
     {
         description: String,
         logExpressions: [{type: mongoose.Schema.ObjectId, ref:('LogicalExpressions')}],
-        assessmentCode: {type: mongoose.Schema.ObjectId, ref:('AssessmentCodes')}
+        assessmentCode: [{type: mongoose.Schema.ObjectId, ref:('AssessmentCodes')}]
     }
 )
 var Adjudications = mongoose.model('adjudication', adjudicationSchema);

@@ -8,9 +8,8 @@ var parseJSON = bodyParser.json();
 router.route('/')
     .post(parseUrlencoded, parseJSON, function (request, response) {
         
-
         var logExpress = new models.LogicalExpressions(request.body.logExpress);
-        
+        console.log(logExpress);
         logExpress.save(function (error) {
             if (error) response.send(error);
             response.json({logExpress: logExpress});
@@ -36,20 +35,18 @@ router.route('/')
 
 router.route('/:logExpresses_id')
     .get(parseUrlencoded, parseJSON, function (request, response) {
-        models.LogicalExpressions.findById(request.params.logExpress_id, function (error, logExpress) {
+        models.LogicalExpressions.findById(request.params.logExpresses_id, function (error, logExpress) {
             if (error) response.send(error);
             response.json({logExpress: logExpress});
         })
     })
     .put(parseUrlencoded, parseJSON, function (request, response) {
-        models.LogicalExpressions.findById(request.params.logExpress_id, function (error, logExpress) {
+        models.LogicalExpressions.findById(request.params.logExpresses_id, function (error, logExpress) {
             if (error) {
                 response.send({error: error});
             }
             else {
                 logExpress.boolExpress = request.body.logExpress.boolExpress;
-                logExpress.logicalLink = request.body.logExpress.logicalLink;
-                logExpress.parentLink = request.body.logExpress.parentLink;
                 logExpress.rule = request.body.logExpress.rule;
                 logExpress.save(function (error) {
                     if (error) {
@@ -63,7 +60,7 @@ router.route('/:logExpresses_id')
         })
     })
     .delete(parseUrlencoded, parseJSON, function (request, response) {
-        models.LogicalExpressions.findByIdAndRemove(request.params.logExpress_id,
+        models.LogicalExpressions.findByIdAndRemove(request.params.logExpresses_id,
             function (error, deleted) {
                 if (!error) {
                     response.json({logExpress: deleted});
