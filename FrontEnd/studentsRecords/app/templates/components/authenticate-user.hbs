@@ -37,9 +37,13 @@
 
 {{else}}
 
-  <div class="ui one column center aligned grid">
-    <div class="column six wide form-holder">
-      <h2 class="center aligned header form-head">WE Adjudication</h2>
+  <div class="ui one column left aligned grid">
+    <div class="ui left aligned two wide column"></div>
+    <div class="middle aligned column six wide form-holder">
+      <br><br><br><br>
+      <br><br><br><br>
+      <br><br><br><br>
+      <h2 class="center aligned header form-head" style="color: #FFFFFF">WE Adjudication</h2>
       <div class="ui form">
         <div class="field">
           {{input value=name  type="text" placeholder="user name"}}
@@ -48,7 +52,7 @@
           {{input value=password  type="password" placeholder="password"}}
         </div>
         <div class="field">
-          <button class="ui button large fluid green" {{action 'login'}}>
+          <button class="ui button large fluid" style="background-color: #4F2683; color: #FFFFFF" {{action 'login'}}>
             Log In
           </button>
           <p> {{errorMessage}}</p>

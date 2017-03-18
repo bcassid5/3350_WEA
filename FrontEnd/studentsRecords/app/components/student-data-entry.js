@@ -11,6 +11,7 @@ export default Ember.Component.extend({
   termCodeModel: null,
   termModel: null,
   programModel: null,
+  studentProgramModel: null,
   gradeModel: null,
   awards: null,
   selectedResidency: null,
@@ -223,6 +224,9 @@ export default Ember.Component.extend({
     var self = this;
     self.get('store').query('termCode',{student: self.get('currentStudent').get('id')}).then(function(terms){
           self.set('termCodeModel', terms);
+          
+          self.set('studentProgramModel', self.get('store').peekAll('program-record'));
+          
           self.set('gradeModel', []);
           for(var i =0; i <self.get('termCodeModel').get('length'); i++){
            self.get('store').query('grade',{term: self.get('termCodeModel').objectAt(i).get('id')}).then(function(grades){
@@ -560,7 +564,8 @@ export default Ember.Component.extend({
     },
     toggleGradeEdit()
     {
-      console.log(this.get('gradeModel').get('length'));
+      this.rerender();
+      console.log(this.get('studentProgramModel').get('length'));
       this.set('enableGradeEdit', !(this.get('enableGradeEdit')));
     },
     newProgClicked()

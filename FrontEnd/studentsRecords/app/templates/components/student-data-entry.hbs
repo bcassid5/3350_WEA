@@ -235,16 +235,32 @@
                     {{/if}}
                   {{/if}}
                   <div class="ui medium header" >Programs:</div>
-                  {{#each termChoice.program as |programChoice|}}
+                  {{!--{{#each studentProgramModel as |programChoice1|}}
+                  {{log "program choice"}}
+                  <div class = "field">
+                        <label>Name</label> <input type="text" value = {{programChoice1.name.name}} class="program">
+                      </div>
+                  {{/each}}--}}
+                  
+                  {{#each termChoice.program as |programChoice1|}}
+                    {{#each studentProgramModel as |programChoice2|}}
+                    
+                    {{#if (eq programChoice1.id programChoice2.id)}}
                     {{log "program choice"}}
-                    {{log programChoice}}
-                    {{log "programChoice.id"}}
-                    {{log programChoice.id}}
-                    {{log "programChoice.load"}}
-                    {{log programChoice.load}}
-                    <div class = "field">
-                      <label>Name</label> <input type="text" value = {{programChoice.name.name}} class="level">
-                    </div>
+                    {{log programChoice1}}
+                    {{log "programChoice1.id"}}
+                    {{log programChoice1.id}}
+                    {{log "programChoice2.id"}}
+                    {{log programChoice2.id}}
+                    {{log "programChoice1.load"}}
+                    {{log programChoice1.load}}
+                    {{log "programChoice2.load"}}
+                    {{log programChoice2.load}}
+                      <div class = "field">
+                        <label>Name</label> <input type="text" value = {{programChoice2.name.name}} class="level">
+                      </div>
+                    {{/if}}
+                    {{/each}}
                   {{/each}}
                 </div>
                 {{#if enableGradeEdit}}
