@@ -39,7 +39,13 @@ export default Ember.Component.extend({
     newDeptFaculty: null,
     newDeptName: null,
     departmentModel: null,
-    
+
+    newProgDepartment: null,
+
+    newProgAdminName: null,
+    newProgAdminPosition: null,
+    newProgAdminDept: null,
+    progAdminModel: null,
 
     init() {
         this._super(...arguments);
@@ -54,7 +60,11 @@ export default Ember.Component.extend({
         this.errProgram = false;
         var self = this;
         this.newPlanList = [];
-        
+        this.newProgDepartment = "";
+        this.newProgAdminName="";
+        this.newDeptName="";
+        this.newProgAdminPosition="";
+
         this.get('store').findAll('residency').then(function (records) {
             self.set('residencyModel', records);
         });
@@ -94,6 +104,9 @@ export default Ember.Component.extend({
         this.get('store').findAll('department').then(function(records){
             self.set('departmentModel', records);
         });
+        this.get('store').findAll('progAdmin').then(function(records){
+            self.set('progAdminModel', records);
+        });
 
     },
 
@@ -102,6 +115,12 @@ export default Ember.Component.extend({
   },
 
   actions: {
+      selectDepartment(val){
+          var dept = this.get('store').peekRecord('department', val);
+          this.set('newProgDepartment',dept);
+          console.log(dept);
+          console.log(this.get('newProgDepartment'));
+      },
       updatePlan(index)
       {
           var choice = this.$("#programs").find('.'+index).find('.selectedPlan').val();
@@ -229,7 +248,9 @@ export default Ember.Component.extend({
                 var record = this.get('store').createRecord('program', {
                 name: n,
                 availablePlans: this.get('newPlanList'),
-                });
+                department: this.get('newProgDepartment'),
+            });
+            console.log(record);
                 record.save();
             }
 
@@ -762,13 +783,12 @@ export default Ember.Component.extend({
       addFacultyOption(){
         if (this.get('newFacultyChoice')!==""){
             var record = this.get('store').createRecord('faculty', {
-                name: this.get('newGenderChoice'),
+                name: this.get('newFacultyChoice'),
                 department: []
             });
             console.log(record.get('name'));
             record.save();
         }
-        this.set('newFacultyChoice',"");
       },
 
       changeFacultyName(index)
@@ -844,6 +864,73 @@ export default Ember.Component.extend({
 
       removeDeptOption(index){
        this.get('store').find('department',this.get('departmentModel').objectAt(index).get('id')).then(function(record){
+           console.log(record);
+                record.deleteRecord();
+                if(record.get('isDeleted'))
+                {
+                    console.log("deleted");
+                    record.save();
+                }
+                
+          }, function (error){
+              console.log(error);
+          });
+      },
+
+      /*********************/
+      updateProgAdminName(val)
+      {
+        this.set('newProgAdminName',val);
+      },
+
+      updateProgAdminPosition(val)
+      {
+        this.set('newProgAdminPosition',val);
+      },
+
+      updateProgAdminDept(val)
+      {
+        var sub = this.get('store').peekRecord('department', val);
+        this.set('newProgAdminDept', sub);
+      },
+
+      addProgAdminOption(){
+        if (this.get('newProgAdminName')!==""&&this.get('newProgAdminPosition')!=""){
+            var record = this.get('store').createRecord('progAdmin', {
+                name: this.get('newProgAdminName'),
+                position: this.get('newProgAdminPosition'),
+                department: this.get('newProgAdminDept')
+            });
+            record.save();
+        }
+      },
+
+      changeProgAdminName(index)
+      {
+          var self = this;
+        if((this.$('.progName' + index)).val()!== ""){
+            this.get('store').find('progAdmin', this.get('progAdminModel').objectAt(index).get('id')).then(function(record){
+            record.set('name', (self.$('.progName' + index)).val());
+            record.save();
+                
+          });
+        }
+      },
+
+      changeProgAdminPos(index)
+      {
+          var self = this;
+        if((this.$('.progName' + index)).val()!== ""){
+            this.get('store').find('progAdmin', this.get('progAdminModel').objectAt(index).get('id')).then(function(record){
+            record.set('position', (self.$('.progPos' + index)).val());
+            record.save();
+                
+          });
+        }
+      },
+
+      removeProgAdminOption(index){
+       this.get('store').find('progAdmin',this.get('progAdminModel').objectAt(index).get('id')).then(function(record){
                 record.deleteRecord();
                 if(record.get('isDeleted'))
                 {

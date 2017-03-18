@@ -134,6 +134,7 @@ var departmentSchema = mongoose.Schema(
         name: String,
         progAdmin: [{type: mongoose.Schema.ObjectId, ref:('ProgramAdministration')}],
         faculty: {type: mongoose.Schema.ObjectId, ref:('Faculties')},
+        program: [{type: mongoose.Schema.ObjectId, ref:('Programs')}],
     }
 );
 var progAdminSchema=mongoose.Schema(

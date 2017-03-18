@@ -61,7 +61,7 @@ export default Ember.Component.extend({
             this.set('tableData', data);
             //console.log(data);
             
-            console.log(data.length);
+            //console.log(data.length);
             
             
             if(file.name == "genders.xlsx"){
@@ -232,7 +232,7 @@ export default Ember.Component.extend({
                     record.save();
                 }
             } else if (file.name == "UndergraduateCourses.xlsx"){
-                for (var i=1; i<data.length; i++){
+                for (var i=1; i<286; i++){
                     var record = this.get('store').createRecord('courseCode', {
                         courseLetter: data[i][0],
                         courseNumber: data[i][1],
@@ -273,35 +273,310 @@ export default Ember.Component.extend({
                     }
                     add = true;
                 }
-            } else if (file.name == "AdmissionAverages.xlsx"){
+            } else if (file.name == "averages.xlsx"){
+                var self = this;
+                var _break = true;
+                var saveNum;
+                var save = true;
                 this.get('store').query('student', {limit: 1000000, offset: 0}).then(function (student) {
-                    for (var i=0;i<768;i++){
-                        var addAvg = "";
-                        console.log(student.content.length);
+                    var input = "";
+                    var ch = 0;
+                    for(var i=1; i<102;i++){
                         for(var j=0; j<student.content.length; j++){
-                            
-                            if (student.content[j]._data.number == data[i][0]){
-                                var ch = i;
-                                do {
-                                    ch++; 
-                                    if(data[i][0] != null){
-                                        //console.log(data[i][0]);
-                                    }
-                                    if (data[ch][0] != null){
-                                        _break = false;
-                                    }
-                                    addAvg += data[i][1];
-                                    //var im = self.get('store').peekRecord('student', student.content[j].id);
-                                    //record.save()
-                                } while (_break);
-                                _break = true;
-                                //console.log(addAvg);                   
+                            if (data[i][0] == student.content[j]._data.number){
+                                var updatedStudent = self.get('store').peekRecord('student', student.content[j].id);
+                                updatedStudent.set('admissAvg', data[i][1]);
+                                updatedStudent.save();
+                                console.log(updatedStudent);
                             }
                         }
-                    }  
-                });
-            }
+                        /*if (save){
+                            saveNum = data[i][0];
+                        }
 
+                        ch = i+1;
+                        console.log(data[ch][0]);
+                        console.log(data[ch][1]);
+                        if (data[ch][0] == ""){
+                            input += data[i][1];
+                            console.log(saveNum);
+                            console.log("END");
+                            for(var j=0; j<student.content.length; j++){
+                                if (saveNum == student.content[j]._data.number){
+                                    var updatedStudent = self.get('store').peekRecord('student', student.content[j].id);
+                                    updatedStudent.set('regComments', input);
+                                    updatedStudent.save();
+                                    console.log(updatedStudent);
+                                }
+                            }
+                            input = "";
+                            save = true;
+                        } else {
+                            input += data[i][1];
+                            //console.log(input);
+                            //console.log(saveNum);
+                            //console.log("LOOP");
+                            save = false;
+                        }*/
+                    }    
+                });
+            } else if (file.name == "AdmissionComments.xlsx"){
+                var self = this;
+                var _break = true;
+                var saveNum;
+                var save = true;
+                this.get('store').query('student', {limit: 1000000, offset: 0}).then(function (student) {
+                    var input = "";
+                    var ch = 0;
+                    for(var i=1; i<117;i++){
+                        if (save){
+                            saveNum = data[i][0];
+                        }         
+
+                        if(data[i][1] == "NONE FOUND"){
+                            for(var j=0; j<student.content.length; j++){
+                                if (data[i][0] == student.content[j]._data.number){
+                                    var updatedStudent = self.get('store').peekRecord('student', student.content[j].id);
+                                    updatedStudent.set('admissComments', "NONE FOUND");
+                                    updatedStudent.save();
+                                }
+                            }
+                        } else {
+                            ch = i+1;
+                            
+                            if (data[ch][1] == "NONE FOUND"){
+                                input += data[i][1];
+                                console.log(input);
+                                console.log("END");
+                                for(var j=0; j<student.content.length; j++){
+                                    if (saveNum == student.content[j]._data.number){
+                                        var updatedStudent = self.get('store').peekRecord('student', student.content[j].id);
+                                        updatedStudent.set('admissComments', input);
+                                        updatedStudent.save();
+                                        console.log(updatedStudent);
+                                    }
+                                }
+                                input = "";
+                                save = true;
+                            } else {
+                                input += data[i][1];
+                                console.log(input);
+                                console.log(saveNum);
+                                console.log("LOOP");
+                                save = false;
+                            }
+                            
+                        }
+                    }    
+                });
+                
+            } else if (file.name == "Faculties.xlsx"){
+                var record = this.get('store').createRecord('faculty', {
+                    name: data[1][0],
+                    department: [],
+                });
+                record.save();
+            } else if (file.name == "Departments.xlsx"){
+                var self = this;
+                this.get('store').findAll('faculty').then(function (faculty) {
+                    var fac = self.get('store').peekRecord('faculty', faculty.content[0].id);
+                    for (var i=1; i<5; i++){
+                        var record = self.get('store').createRecord('department', {
+                            name: data[i][0],
+                            faculty: fac,
+                            progAdmin: []
+                        });
+                        record.save();
+                    }
+                });
+                
+            } else if (file.name == "BasisOfAdmission.xlsx"){
+                var self = this;
+                var _break = true;
+                var saveNum;
+                var save = true;
+                this.get('store').query('student', {limit: 1000000, offset: 0}).then(function (student) {
+                    var input = "";
+                    var ch = 0;
+                    for(var i=1; i<107;i++){
+                        if (save){
+                            saveNum = data[i][0];
+                        }         
+
+                        if(data[i][1] == "NONE FOUND"){
+                            for(var j=0; j<student.content.length; j++){
+                                if (data[i][0] == student.content[j]._data.number){
+                                    var updatedStudent = self.get('store').peekRecord('student', student.content[j].id);
+                                    updatedStudent.set('BOA', "NONE FOUND");
+                                    updatedStudent.save();
+                                }
+                            }
+                        } else {
+                            ch = i+1;
+                            console.log(data[ch][0]);
+                            if (data[ch][0] != null){
+                                input += data[i][1];
+                                //console.log(input);
+                                //console.log("END");
+                                for(var j=0; j<student.content.length; j++){
+                                    if (saveNum == student.content[j]._data.number){
+                                        var updatedStudent = self.get('store').peekRecord('student', student.content[j].id);
+                                        updatedStudent.set('BOA', input);
+                                        updatedStudent.save();
+                                        console.log(updatedStudent);
+                                    }
+                                }
+                                input = "";
+                                save = true;
+                            } else {
+                                input += data[i][1];
+                                //console.log(input);
+                                //console.log(saveNum);
+                                //console.log("LOOP");
+                                save = false;
+                            }
+                            
+                        }
+                    }    
+                });
+            } else if (file.name == "RegistrationComments.xlsx"){
+                var self = this;
+                var _break = true;
+                var saveNum;
+                var save = true;
+                this.get('store').query('student', {limit: 1000000, offset: 0}).then(function (student) {
+                    var input = "";
+                    var ch = 0;
+                    for(var i=1; i<107;i++){
+                        if (save){
+                            saveNum = data[i][0];
+                        }         
+
+                        if(data[i][1] == "NONE FOUND"){
+                            for(var j=0; j<student.content.length; j++){
+                                if (data[i][0] == student.content[j]._data.number){
+                                    var updatedStudent = self.get('store').peekRecord('student', student.content[j].id);
+                                    updatedStudent.set('regComments', "NONE FOUND");
+                                    updatedStudent.save();
+                                }
+                            }
+                        } else {
+                            ch = i+1;
+                            console.log(data[ch][0]);
+                            if (data[ch][0] != null){
+                                input += data[i][1];
+                                for(var j=0; j<student.content.length; j++){
+                                    if (saveNum == student.content[j]._data.number){
+                                        var updatedStudent = self.get('store').peekRecord('student', student.content[j].id);
+                                        updatedStudent.set('regComments', input);
+                                        updatedStudent.save();
+                                        console.log(updatedStudent);
+                                    }
+                                }
+                                input = "";
+                                save = true;
+                            } else {
+                                input += data[i][1];
+                                save = false;
+                            }
+                            
+                        }
+                    }    
+                });
+            } else if (file.name == "scholshipsAndAwards.xlsx"){
+                var self = this;
+                var myStore = this.get('store');
+                var _break = true;
+
+                this.get('store').query('student', {limit: 1000000, offset: 0}).then(function (student) {
+                    self.set('studentsModel', student);
+                    //console.log(student);
+
+                    for (var i=0;i<108;i++){
+                        if (data[i][1] == "NONE FOUND"){
+                            //console.log("NF");
+                        } else if (data[i][0] == ""){
+                            console.log("empty");
+                        } else {
+                            for(var j=0; j<student.content.length; j++){
+                                if (student.content[j]._data.number == data[i][0]){
+                                    var ch = i;
+                                    do {
+                                        ch++; 
+                            
+                                        if (data[ch][1]=="NONE FOUND"){
+                                            _break = false;
+                                        } else if (data[ch][0]!=null){
+                                            _break = false;
+                                        }
+                                        
+                                        var im = self.get('store').peekRecord('student', student.content[j].id);
+
+                                        var record = myStore.createRecord('award', {
+                                            note: data[i][1],
+                                            students: im,
+                                        });
+                                        
+                                        record.save()
+
+                                    } while (_break);
+                                    _break = true;
+                                    
+                                }                                
+                            }
+                        }
+                    }
+                });
+                
+                
+                /*var self = this;
+                var _break = true;
+                var saveNum;
+                var save = true;
+                
+                this.get('store').query('student', {limit: 1000000, offset: 0}).then(function (student) {
+                    var ch = 0;
+                    for(var i=1; i<107;i++){
+                        if (save){
+                            saveNum = data[i][0];
+                        }    
+                        var stud = self.get('store').peekRecord('student', student.content[j].id); 
+                        if(data[i][1] == "NONE FOUND"){
+                            
+                        } else {
+                            ch = i+1;
+                            console.log(data[ch][0]);
+                            if (data[ch][0] != null){
+                                input += data[i][1];
+                                for(var j=0; j<student.content.length; j++){
+                                    if (saveNum == student.content[j]._data.number){
+                                        var award =self.get('store').createRecord('award', {
+                                            note: data[i][1],
+                                            student: stud,
+                                        });
+                                        award.save();
+                                        console.log(award);
+                                    }
+                                }
+                                save = true;
+                            } else {
+                                for(var j=0; j<student.content.length; j++){
+                                    if (saveNum == student.content[j]._data.number){
+                                        var award =self.get('store').createRecord('award', {
+                                            note: data[i][1],
+                                            student: stud,
+                                        });
+                                        award.save();
+                                        console.log(award);
+                                    }
+                                }
+                                save = false;
+                            }
+                            
+                        }
+                    }    
+                });*/
+            }
         },
 
         done: function () {

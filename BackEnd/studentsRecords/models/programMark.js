@@ -25,6 +25,7 @@ var programSchema = mongoose.Schema(
     {
         name: String,
         availablePlans: [{type: mongoose.Schema.ObjectId, ref: 'PlanCodes'}],
+        department: {type: mongoose.Schema.ObjectId, ref: 'Departments'},
     }
 );
 

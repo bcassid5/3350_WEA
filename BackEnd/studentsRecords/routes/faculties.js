@@ -4,7 +4,6 @@ var models = require('../models/studentsRecordsDB');
 var bodyParser = require('body-parser');
 var parseUrlencoded = bodyParser.urlencoded({extended: false});
 var parseJSON = bodyParser.json();
-console.log("WHAT THE FUCK?!");
 router.route('/')
     .post(parseUrlencoded, parseJSON, function (request, response) {
         

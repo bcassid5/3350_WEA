@@ -50,6 +50,7 @@ router.route('/:departments_id')
                 department.name = request.body.department.name;
                 department.progAdmin = request.body.department.progAdmin;
                 department.faculty = request.body.department.faculty;
+                department.program = request.body.department.program;
                 //console.log(request.body.department.students);
                 department.save(function (error) {
                     if (error) {
@@ -63,7 +64,9 @@ router.route('/:departments_id')
         })
     })
     .delete(parseUrlencoded, parseJSON, function (request, response) {
-        models.Departments.findByIdAndRemove(request.params.department_id,
+        console.log('deleting department');
+        console.log(request.params);
+        models.Departments.findByIdAndRemove(request.params.departments_id,
             function (error, deleted) {
                 if (!error) {
                     response.json({department: deleted});
