@@ -35,7 +35,7 @@ var faculties = require('./routes/faculties');
 var departments = require('./routes/departments');
 var progAdmins = require('./routes/progAdmins');
 var assessmentCodes = require('./routes/assessmentCodes');
-var adjudications = require('./routes/adjudications');
+var adjudications = require('./routes/adjudication');
 var logExpresses = require('./routes/logExpress');
 var rules = require('./routes/rules')
 
