@@ -1,52 +1,58 @@
 <div class="ui center aligned header">
-  <h2>Upload Database File</h2>
+  <h2>Database Management</h2>
 </div>
-<br>
+<div class="ui two item inverted menu" style="background-color: #4F2683; color: #ffffff">
+    <div class="active item" data-tab="up">Upload File</div>
+    <div class="item" data-tab="down">Export File</div>
+  </div>
 
-
-{{#if isLoading}}
-<h2 style="align-content: center">File Uploaded: {{fileName}}</h2>
-  <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'show'}}>{{showTitle}}</button>
-  <button class="ui button" {{action 'done'}}> Done</button>
-    {{#if showTable}}
-      <table class="ui celled table">
-        <thead>
-        <tr>
-          {{#each tableHeader as |header|}}
-            <th>{{header}}</th>
-          {{/each}}
-        </tr>
-        </thead>
-
-        <tbody>
-        {{#each tableData as |oneRow|}}
+<div class="ui active tab" data-tab="up">
+  <br>
+  {{#if isLoading}}
+  <h2 style="align-content: center">File Uploaded: {{fileName}}</h2>
+    <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'show'}}>{{showTitle}}</button>
+    <button class="ui button" {{action 'done'}}> Done</button>
+      {{#if showTable}}
+        <table class="ui celled table">
+          <thead>
           <tr>
-            {{#each oneRow as |oneCol|}}
-              <td>{{oneCol}}</td>
+            {{#each tableHeader as |header|}}
+              <th>{{header}}</th>
             {{/each}}
           </tr>
-        {{/each}}
-        </tbody>
-      </table>
-      
-      {{/if}}
-      
-  {{else}}
-    <div>
-      <div class="ui grid">
-        <div class="eight wide centered column">
-          <button class="ui fluid button" style="background-color: #4F2683; color: #ffffff">{{#file-picker fileLoaded="fileImported" accept=".xlsx" readAs="readAsBinaryString"}}
-            <div class="ui center aligned header" style="color: #FFFFFF">
-              Select Excel File
-            </div>
-            <i class="massive file text icon"></i>
-          {{/file-picker}}</button>
+          </thead>
+
+          <tbody>
+          {{#each tableData as |oneRow|}}
+            <tr>
+              {{#each oneRow as |oneCol|}}
+                <td>{{oneCol}}</td>
+              {{/each}}
+            </tr>
+          {{/each}}
+          </tbody>
+        </table>
+        
+        {{/if}}
+        
+    {{else}}
+      <div>
+        <div class="ui grid">
+          <div class="eight wide centered column">
+            <button class="ui fluid button" style="background-color: #4F2683; color: #ffffff">{{#file-picker fileLoaded="fileImported" accept=".xlsx" readAs="readAsBinaryString"}}
+              <div class="ui center aligned header" style="color: #FFFFFF">
+                Select Upload File
+              </div>
+              <i class="massive file text icon"></i>
+            {{/file-picker}}</button>
+          </div>
         </div>
       </div>
-    </div>
-  {{/if}}
-
-
-
-<br><br><br>
+    {{/if}}
+  <br><br><br>
+</div>
+<div class="ui tab" data-tab="down">
+  <p>*insert export here*</p>
+  <br>
+</div>
 

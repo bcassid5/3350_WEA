@@ -18,6 +18,9 @@ export default Ember.Component.extend({
     studentsModel: null,
     showTitle: "Show Data Table",
     
+    didRender() {
+        Ember.$('.menu .item').tab();
+    },
 
     actions: {
 
