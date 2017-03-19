@@ -864,11 +864,6 @@
                     </div>
                     {{/if}}
 
-                    <h4 class="ui horizontal divider header" style="color: #4F2683">
-                        <i class="angle double left icon"></i><i class="angle double right icon"></i>
-                    </h4>
-                    <br/>
-
                     {{#each codeModel as |codeChoice index|}}
                     <div class = {{index}}>
                         <h4 class="ui horizontal divider header" style="color: #4F2683">
@@ -904,7 +899,6 @@
                                 <a {{action 'removeCodeRule' index index2}}><span data-tooltip="Remove This Rule"><i class=" large red minus circle icon"></i></span></a></li>
                         {{/each}}
                         </ul>
-                        </div>
                     </div>
                     {{/each}}
                 </div>      
