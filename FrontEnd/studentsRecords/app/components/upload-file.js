@@ -251,8 +251,6 @@ export default Ember.Component.extend({
                     });
                     record.save();
                 }
-            } else if (file.name == "HighSchoolCourseInformation.xlsx"){
-                
             } else if (file.name == "UndergraduateRecordPlans.xlsx"){
                 var plans = [];
                 var add = true;
@@ -483,10 +481,11 @@ export default Ember.Component.extend({
                         }
                     }    
                 });
-            } else if (file.name == "scholshipsAndAwards.xlsx"){
+            } else if (file.name == "scholarshipsAndAwards.xlsx"){
                 var self = this;
                 var myStore = this.get('store');
                 var _break = true;
+                var end = false;
 
                 this.get('store').query('student', {limit: 1000000, offset: 0}).then(function (student) {
                     self.set('studentsModel', student);
@@ -503,79 +502,65 @@ export default Ember.Component.extend({
                                     var ch = i;
                                     do {
                                         ch++; 
-                            
+                                        console.log(ch);
+                                        console.log(data[ch][1]);
                                         if (data[ch][1]=="NONE FOUND"){
                                             _break = false;
                                         } else if (data[ch][0]!=null){
                                             _break = false;
+                                        } else if (data[ch][1]==null){
+                                            _break = false;
+                                            end = true;
                                         }
                                         
                                         var im = self.get('store').peekRecord('student', student.content[j].id);
-
+                                        console.log(im);
                                         var record = myStore.createRecord('award', {
                                             note: data[i][1],
-                                            students: im,
+                                            student: im,
                                         });
                                         
                                         record.save()
 
                                     } while (_break);
                                     _break = true;
-                                    
+                                    if (end){
+                                        break;
+                                    }
                                 }                                
                             }
                         }
                     }
                 });
+            } else if (file.name == "ProgramAdministrations.xlsx"){
                 
-                
-                /*var self = this;
-                var _break = true;
-                var saveNum;
-                var save = true;
-                
-                this.get('store').query('student', {limit: 1000000, offset: 0}).then(function (student) {
-                    var ch = 0;
-                    for(var i=1; i<107;i++){
-                        if (save){
-                            saveNum = data[i][0];
-                        }    
-                        var stud = self.get('store').peekRecord('student', student.content[j].id); 
-                        if(data[i][1] == "NONE FOUND"){
+                var self = this;
+                var thisDept;
+
+                self.get('store').findAll('department').then(function(dept){
+                    for (var i=1; i<10; i++){
+                        for(var j=0; j<4; j++){
                             
-                        } else {
-                            ch = i+1;
-                            console.log(data[ch][0]);
-                            if (data[ch][0] != null){
-                                input += data[i][1];
-                                for(var j=0; j<student.content.length; j++){
-                                    if (saveNum == student.content[j]._data.number){
-                                        var award =self.get('store').createRecord('award', {
-                                            note: data[i][1],
-                                            student: stud,
-                                        });
-                                        award.save();
-                                        console.log(award);
-                                    }
-                                }
-                                save = true;
-                            } else {
-                                for(var j=0; j<student.content.length; j++){
-                                    if (saveNum == student.content[j]._data.number){
-                                        var award =self.get('store').createRecord('award', {
-                                            note: data[i][1],
-                                            student: stud,
-                                        });
-                                        award.save();
-                                        console.log(award);
-                                    }
-                                }
-                                save = false;
+                            if (data[i][2]==dept.content[j]._data.name){
+                                thisDept = self.get('store').peekRecord('department', dept.content[j].id);
                             }
-                            
                         }
-                    }    
-                });*/
+                        var record = self.get('store').createRecord('progAdmin', {
+                            name: data[i][0],
+                            position: data[i][1],
+                            department: thisDept
+                        });
+                        record.save();
+                    }
+                });    
+            } else if (file.name == "AssessmentCodes.xlsx"){
+
+            } else if (file.name == "HighSchoolCourseInformation.xlsx"){
+                
+            } else if (file.name == "UndergraduateRecordAdjudications.xlsx"){
+                
+            } else if (file.name == "UndergraduateRecordCourses.xlsx"){
+                
             }
         },
 
