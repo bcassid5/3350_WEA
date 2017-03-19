@@ -50,7 +50,7 @@ router.route('/:assessmentCodes_id')
                 assessmentCode.code = request.body.assessmentCode.code;
                 assessmentCode.description = request.body.assessmentCode.description;
                 assessmentCode.adjudication = request.body.assessmentCode.adjudication;
-                assessmentCode.rule = request.body.rule;
+                assessmentCode.rule = request.body.assessmentCode.rule;
              //   console.log(request.body.assessmentCode.students);
                 assessmentCode.save(function (error) {
                     if (error) {

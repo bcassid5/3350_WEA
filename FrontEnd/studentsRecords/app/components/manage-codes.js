@@ -984,7 +984,6 @@ export default Ember.Component.extend({
       removeLogExpOption(index)
       {
         this.get('store').find('logExpress',this.get('logExpModel').objectAt(index).get('id')).then(function(record){
-            console.log(record);
                 record.deleteRecord();
                 if(record.get('isDeleted'))
                 {
@@ -1013,16 +1012,12 @@ export default Ember.Component.extend({
 
       addLogExpOption()
       {
-          console.log("called");
           if (this.get('newLogExpValue')!=="" && this.get('newLogExpParam')!="" && this.get('newLogExpOpr')!=""){
-              console.log("if statement");
             var expression =  this.get('newLogExpParam')+this.get('newLogExpOpr')+this.get('newLogExpValue');
-            console.log(expression);
             var record = this.get('store').createRecord('logExpress', {
                 boolExpress: expression,
                 rule: []
             });
-            console.log(record);
             record.save();
         }
       },
@@ -1048,7 +1043,6 @@ export default Ember.Component.extend({
           }
           if(!repeat){
             this.get('newRuleList').pushObject(this.get('logExpModel').objectAt(index));
-            console.log(this.get('newRuleList'));
           }
       },
 
@@ -1091,7 +1085,6 @@ export default Ember.Component.extend({
                 logExpressions: this.get('newRuleList'),
                 assessmentCode: []
             });
-            console.log(record);
                 record.save();
             }
       },
@@ -1187,7 +1180,6 @@ export default Ember.Component.extend({
           }
           if(!repeat){
             this.get('newCodeList').pushObject(this.get('ruleModel').objectAt(index));
-            console.log(this.get('newCodeList'));
           }
       },
 
@@ -1204,33 +1196,43 @@ export default Ember.Component.extend({
           var m = this.$("#newCode").find('.description').val();
           
           this.set("errCode", false);
-            if((n=="")||(m==""))
+            if(n=="")
             {
-                this.$("#newCode").form('add prompt', 'name', 'error text');
-                this.set("errProgram", true);
+                this.$("#newCode").form('add prompt', 'code', 'error text');
+                this.set("errCode", true);
             }
             else 
             {
-                this.$("#newProgram").form('remove prompt', 'name');
+                this.$("#newCode").form('remove prompt', 'code');
             }
-            if(this.get('newPlanList').get('length')==0)
+            if(m=="")
+            {
+                this.$("#newCode").form('add prompt', 'description', 'error text');
+                this.set("errCode", true);
+            }
+            else 
+            {
+                this.$("#newCode").form('remove prompt', 'description');
+            }
+            if(this.get('newCodeList').get('length')==0)
             {   
-                this.$("#newProgram").form('add prompt', 'listname', 'error text');
-                this.set("errProgram", true);
+                this.$("#newCode").form('add prompt', 'listname', 'error text');
+                this.set("errCode", true);
             }
             else 
             {
-                this.$("#newProgram").form('remove prompt', 'listname');
+                this.$("#newCode").form('remove prompt', 'listname');
             }
-            if(!this.get('errProgram'))
+            if(!this.get('errCode'))
             {
                 
-                this.set('newProgram', false);
-                this.set("errProgram", false);
-                var record = this.get('store').createRecord('program', {
-                name: n,
-                availablePlans: this.get('newPlanList'),
-                department: this.get('newProgDepartment'),
+                this.set('newCode', false);
+                this.set("errCode", false);
+                var record = this.get('store').createRecord('assessmentCode', {
+                code: n,
+                description: m,
+                rule: this.get('newCodeList'),
+                adjudication: []
             });
             console.log(record);
                 record.save();
@@ -1240,7 +1242,7 @@ export default Ember.Component.extend({
 
       removeCodeOption(index)
       {
-          this.get('store').find('program',this.get('programModel').objectAt(index).get('id')).then(function(record){
+          this.get('store').find('assessmentCode',this.get('codeModel').objectAt(index).get('id')).then(function(record){
                 record.deleteRecord();
                 if(record.get('isDeleted'))
                 {
@@ -1255,37 +1257,47 @@ export default Ember.Component.extend({
       updateCodeChoice(index)
       {
           var e = false;
-          if(this.get('programModel').objectAt(index).get('name')=="")
+          if(this.get('codeModel').objectAt(index).get('code')=="")
           {
-              this.$("#programs").find('.'+index).form('add prompt', 'name', 'error text');
+              this.$("#codes").find('.'+index).form('add prompt', 'code', 'error text');
               e=true;
           }
           else 
           {
-              this.$("#programs").find('.'+index).form('remove prompt', 'name');
+              this.$("#codes").find('.'+index).form('remove prompt', 'code');
           }
-          if (this.get('programModel').objectAt(index).get('availablePlans').get('length')==0)
+           if(this.get('codeModel').objectAt(index).get('description')=="")
           {
-              this.$("#programs").find('.'+index).form('add prompt', 'list', 'error text');
+              this.$("#codes").find('.'+index).form('add prompt', 'description', 'error text');
               e=true;
           }
           else 
           {
-              this.$("#programs").find('.'+index).form('remove prompt', 'list');
+              this.$("#codes").find('.'+index).form('remove prompt', 'description');
+          }
+          if (this.get('codeModel').objectAt(index).get('rule').get('length')==0)
+          {
+              this.$("#codes").find('.'+index).form('add prompt', 'list', 'error text');
+              e=true;
+          }
+          else 
+          {
+              this.$("#codes").find('.'+index).form('remove prompt', 'list');
           }
           if (!e)
           {
-              this.get('programModel').objectAt(index).save();
+              console.log(this.get('codeModel').objectAt(index));
+              this.get('codeModel').objectAt(index).save();
           }
       },
 
        updateCode(index)
       {
-          var choice = this.$("#programs").find('.'+index).find('.selectedPlan').val();
+          var choice = this.$("#codes").find('.'+index).find('.selectedCode').val();
           var repeat= false;
-          for (var i =0; i<this.get('programModel').objectAt(index).get('availablePlans').get('length'); i++)
+          for (var i =0; i<this.get('codeModel').objectAt(index).get('rule').get('length'); i++)
           {
-              if (this.get('planModel').objectAt(choice).get('name')==this.get('programModel').objectAt(index).get('availablePlans').objectAt(i).get('name'))
+              if (this.get('ruleModel').objectAt(choice).get('description')==this.get('codeModel').objectAt(index).get('rule').objectAt(i).get('description'))
               {
                   console.log("repeat");
                   repeat=true;
@@ -1293,16 +1305,16 @@ export default Ember.Component.extend({
           }
           if (!repeat)
           {
-              this.get('programModel').objectAt(index).get('availablePlans').pushObject(this.get('planModel').objectAt(choice));
+              this.get('codeModel').objectAt(index).get('rule').pushObject(this.get('ruleModel').objectAt(choice));
           }
           
       },
 
-      removeCodeRule(programIndex, planIndex)
+      removeCodeRule(codeIndex, ruleIndex)
       {
-          console.log(programIndex);
-          console.log(planIndex);
-          this.get('programModel').objectAt(programIndex).get('availablePlans').removeAt(planIndex);
+          console.log(codeIndex);
+          console.log(ruleIndex);
+          this.get('codeModel').objectAt(codeIndex).get('rule').removeAt(ruleIndex);
       },
 
   }
