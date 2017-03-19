@@ -881,7 +881,7 @@
                         <div class="ui form">
                         <div class = "ui large header" style="color: #4F2683">Option {{increment index}}
                             <a {{action 'removeCodeOption' index}}> 
-                            <span data-tooltip="Remove This Option"><i class="red minus circle icon"></i></span> </a> <a {{action 'updateCodehoice' index}}> 
+                            <span data-tooltip="Remove This Option"><i class="red minus circle icon"></i></span> </a> <a {{action 'updateCodeChoice' index}}> 
                             <span data-tooltip="Save Changes to Option"><i class=" save icon" ></i></span></a> 
                         </div>
                         <div class ="fifteen wide field">
@@ -891,6 +891,7 @@
                             <label>Description</label>{{input type = "text" class="description" placeholder="Description"  value = codeChoice.description name="description"}}
                         </div>
                         </div>
+                        <br/>
                         <div class = "field">
                             <label name="list">Available Rules</label>
                             <select onchange={{action 'updateCode' index }} class="selectedCode" name="list">
