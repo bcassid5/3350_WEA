@@ -984,7 +984,6 @@ export default Ember.Component.extend({
       removeLogExpOption(index)
       {
         this.get('store').find('logExpress',this.get('logExpModel').objectAt(index).get('id')).then(function(record){
-            console.log(record);
                 record.deleteRecord();
                 if(record.get('isDeleted'))
                 {
@@ -1013,16 +1012,12 @@ export default Ember.Component.extend({
 
       addLogExpOption()
       {
-          console.log("called");
           if (this.get('newLogExpValue')!=="" && this.get('newLogExpParam')!="" && this.get('newLogExpOpr')!=""){
-              console.log("if statement");
             var expression =  this.get('newLogExpParam')+this.get('newLogExpOpr')+this.get('newLogExpValue');
-            console.log(expression);
             var record = this.get('store').createRecord('logExpress', {
                 boolExpress: expression,
                 rule: []
             });
-            console.log(record);
             record.save();
         }
       },
@@ -1048,7 +1043,6 @@ export default Ember.Component.extend({
           }
           if(!repeat){
             this.get('newRuleList').pushObject(this.get('logExpModel').objectAt(index));
-            console.log(this.get('newRuleList'));
           }
       },
 
@@ -1091,7 +1085,6 @@ export default Ember.Component.extend({
                 logExpressions: this.get('newRuleList'),
                 assessmentCode: []
             });
-            console.log(record);
                 record.save();
             }
       },
@@ -1187,7 +1180,6 @@ export default Ember.Component.extend({
           }
           if(!repeat){
             this.get('newCodeList').pushObject(this.get('ruleModel').objectAt(index));
-            console.log(this.get('newCodeList'));
           }
       },
 
@@ -1302,7 +1294,6 @@ export default Ember.Component.extend({
        updateCode(index)
       {
           var choice = this.$("#codes").find('.'+index).find('.selectedCode').val();
-          console.log(choice);
           var repeat= false;
           for (var i =0; i<this.get('codeModel').objectAt(index).get('rule').get('length'); i++)
           {
