@@ -36,13 +36,13 @@ router.route('/')
 
 router.route('/:rules_id')
     .get(parseUrlencoded, parseJSON, function (request, response) {
-        models.Rules.findById(request.params.rule_id, function (error, rule) {
+        models.Rules.findById(request.params.rules_id, function (error, rule) {
             if (error) response.send(error);
             response.json({rule: rule});
         })
     })
     .put(parseUrlencoded, parseJSON, function (request, response) {
-        models.Rules.findById(request.params.rule_id, function (error, rule) {
+        models.Rules.findById(request.params.rules_id, function (error, rule) {
             if (error) {
                 response.send({error: error});
             }
@@ -62,7 +62,7 @@ router.route('/:rules_id')
         })
     })
     .delete(parseUrlencoded, parseJSON, function (request, response) {
-        models.Rules.findByIdAndRemove(request.params.rule_id,
+        models.Rules.findByIdAndRemove(request.params.rules_id,
             function (error, deleted) {
                 if (!error) {
                     response.json({rule: deleted});

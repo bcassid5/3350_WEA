@@ -59,6 +59,9 @@ export default Ember.Component.extend({
     newRuleList: null,
 
     codeModel: null,
+    newCode: null,
+    errCode: null,
+    newCodeList: null,
 
     init() {
         this._super(...arguments);
@@ -68,13 +71,16 @@ export default Ember.Component.extend({
         this.newPlanChoice="";
         this.newCourse=false;
         this.newProgram=false;
+        this.newCode=false;
         this.newRule=false;
         this.newDept=false;
         this.err = false;
         this.errProgram = false;
+        this.errCode=false;
         this.errRule=false;
         var self = this;
         this.newPlanList = [];
+        this.newCodeList=[];
         this.newRuleList=[];
         this.newProgDepartment = "";
         this.newProgAdminName="";
@@ -1055,12 +1061,8 @@ export default Ember.Component.extend({
       addRuleOption()
       {
           var n =this.$("#newRule").find('.description').val();
-
-          console.log("HELLO");
-          console.log(this.$("#newRule").find('.description').val());
-          console.log(n);
           
-          /*this.set("errRule", false);
+          this.set("errRule", false);
             if(n=="")
             {
                 this.$("#newRule").form('add prompt', 'description', 'error text');
@@ -1091,7 +1093,7 @@ export default Ember.Component.extend({
             });
             console.log(record);
                 record.save();
-            }*/
+            }
       },
 
       removeRuleOption(index)
@@ -1138,10 +1140,12 @@ export default Ember.Component.extend({
       updateRule(index)
       {
           var choice = this.$("#rules").find('.'+index).find('.selectedRule').val();
+
+
           var repeat= false;
           for (var i =0; i<this.get('ruleModel').objectAt(index).get('logExpressions').get('length'); i++)
           {
-              if (this.get('ruleModel').objectAt(choice).get('description')==this.get('ruleModel').objectAt(index).get('logExpressions').objectAt(i).get('description'))
+              if (this.get('logExpModel').objectAt(choice).get('boolExpress')==this.get('ruleModel').objectAt(index).get('logExpressions').objectAt(i).get('boolExpress'))
               {
                   console.log("repeat");
                   repeat=true;
@@ -1149,7 +1153,7 @@ export default Ember.Component.extend({
           }
           if (!repeat)
           {
-              this.get('ruleModel').objectAt(index).get('logExpressions').pushObject(this.get('ruleModel').objectAt(choice));
+              this.get('ruleModel').objectAt(index).get('logExpressions').pushObject(this.get('logExpModel').objectAt(choice));
           }
           
       },
@@ -1159,6 +1163,146 @@ export default Ember.Component.extend({
           console.log(ruleIndex);
           console.log(expIndex);
           this.get('ruleModel').objectAt(ruleIndex).get('logExpressions').removeAt(expIndex);
+      },
+
+      /****************************/
+
+      newCodeClicked()
+      {
+          this.set('newCode', !(this.get('newCode')));
+          this.set('errCode', false);
+          this.set('newCodeList',[]);
+          
+      },
+
+      selectRule(index)
+      {
+          var repeat = false;
+          for(var i =0;i<this.get('newCodeList').get('length');i++)
+          {
+              if(this.get('ruleModel').objectAt(index).get('description') == this.get('newCodeList').objectAt(i).get('description'))
+              {
+                  repeat = true;
+              }
+          }
+          if(!repeat){
+            this.get('newCodeList').pushObject(this.get('ruleModel').objectAt(index));
+            console.log(this.get('newCodeList'));
+          }
+      },
+
+      removeNewCode(index)
+      {
+          
+          this.get('newCodeList').splice(index, 1);
+          this.$("#newCode").find('.'+index).remove();
+      },
+
+      addCodeOption()
+      {
+          var n =this.$("#newCode").find('.code').val();
+          var m = this.$("#newCode").find('.description').val();
+          
+          this.set("errCode", false);
+            if((n=="")||(m==""))
+            {
+                this.$("#newCode").form('add prompt', 'name', 'error text');
+                this.set("errProgram", true);
+            }
+            else 
+            {
+                this.$("#newProgram").form('remove prompt', 'name');
+            }
+            if(this.get('newPlanList').get('length')==0)
+            {   
+                this.$("#newProgram").form('add prompt', 'listname', 'error text');
+                this.set("errProgram", true);
+            }
+            else 
+            {
+                this.$("#newProgram").form('remove prompt', 'listname');
+            }
+            if(!this.get('errProgram'))
+            {
+                
+                this.set('newProgram', false);
+                this.set("errProgram", false);
+                var record = this.get('store').createRecord('program', {
+                name: n,
+                availablePlans: this.get('newPlanList'),
+                department: this.get('newProgDepartment'),
+            });
+            console.log(record);
+                record.save();
+            }
+
+      },
+
+      removeCodeOption(index)
+      {
+          this.get('store').find('program',this.get('programModel').objectAt(index).get('id')).then(function(record){
+                record.deleteRecord();
+                if(record.get('isDeleted'))
+                {
+                    record.save();
+                }
+                
+          }, function (error){
+              console.log(error);
+          });
+      },
+
+      updateCodeChoice(index)
+      {
+          var e = false;
+          if(this.get('programModel').objectAt(index).get('name')=="")
+          {
+              this.$("#programs").find('.'+index).form('add prompt', 'name', 'error text');
+              e=true;
+          }
+          else 
+          {
+              this.$("#programs").find('.'+index).form('remove prompt', 'name');
+          }
+          if (this.get('programModel').objectAt(index).get('availablePlans').get('length')==0)
+          {
+              this.$("#programs").find('.'+index).form('add prompt', 'list', 'error text');
+              e=true;
+          }
+          else 
+          {
+              this.$("#programs").find('.'+index).form('remove prompt', 'list');
+          }
+          if (!e)
+          {
+              this.get('programModel').objectAt(index).save();
+          }
+      },
+
+       updateCode(index)
+      {
+          var choice = this.$("#programs").find('.'+index).find('.selectedPlan').val();
+          var repeat= false;
+          for (var i =0; i<this.get('programModel').objectAt(index).get('availablePlans').get('length'); i++)
+          {
+              if (this.get('planModel').objectAt(choice).get('name')==this.get('programModel').objectAt(index).get('availablePlans').objectAt(i).get('name'))
+              {
+                  console.log("repeat");
+                  repeat=true;
+              }
+          }
+          if (!repeat)
+          {
+              this.get('programModel').objectAt(index).get('availablePlans').pushObject(this.get('planModel').objectAt(choice));
+          }
+          
+      },
+
+      removeCodeRule(programIndex, planIndex)
+      {
+          console.log(programIndex);
+          console.log(planIndex);
+          this.get('programModel').objectAt(programIndex).get('availablePlans').removeAt(planIndex);
       },
 
   }

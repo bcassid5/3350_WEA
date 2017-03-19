@@ -125,7 +125,7 @@ var assessmentCodeSchema=mongoose.Schema(
     {
         code: String,
         description: String,
-        adjudication: {type: mongoose.Schema.ObjectId, ref:('Adjudications')},
+        adjudication: [{type: mongoose.Schema.ObjectId, ref:('Adjudications')}],
         rule: [{type: mongoose.Schema.ObjectId, ref:('Rules')}]
     }
 );

@@ -36,13 +36,13 @@ router.route('/')
 
 router.route('/:assessmentCodes_id')
     .get(parseUrlencoded, parseJSON, function (request, response) {
-        models.AssessmentCodes.findById(request.params.assessmentCode_id, function (error, assessmentCode) {
+        models.AssessmentCodes.findById(request.params.assessmentCodes_id, function (error, assessmentCode) {
             if (error) response.send(error);
             response.json({assessmentCode: assessmentCode});
         })
     })
     .put(parseUrlencoded, parseJSON, function (request, response) {
-        models.AssessmentCodes.findById(request.params.assessmentCode_id, function (error, assessmentCode) {
+        models.AssessmentCodes.findById(request.params.assessmentCodes_id, function (error, assessmentCode) {
             if (error) {
                 response.send({error: error});
             }
@@ -64,7 +64,7 @@ router.route('/:assessmentCodes_id')
         })
     })
     .delete(parseUrlencoded, parseJSON, function (request, response) {
-        models.AssessmentCodes.findByIdAndRemove(request.params.assessmentCode_id,
+        models.AssessmentCodes.findByIdAndRemove(request.params.assessmentCodes_id,
             function (error, deleted) {
                 if (!error) {
                     response.json({assessmentCode: deleted});

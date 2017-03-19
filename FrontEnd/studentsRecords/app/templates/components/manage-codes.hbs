@@ -808,7 +808,108 @@
         </div>
     </div>
     <div class="ui tab" data-tab="codes">
+        <div class = "ui grid">
+            <div class="ui center aligned four wide column"></div>
+            <div class="ui left aligned seven wide column">
+                <div class = "ui form" id = "codes">
+                    <br/>
+                    <a {{action 'newCodeClicked'}}>
+                        <i class="large green add square icon"></i>Add New Assesment Code
+                        </a>
+                    <br>
+                    {{#if newCode}}
+                    <br>
+                    <div id="newCode">
+                        <div class = "ui form error">
+                        
+                        <div class ="required fifteen wide field">
+                            <label>Code</label><input type = "text" class="code" placeholder="Code" name = "code">
+                        </div>
+                        <div class ="required fifteen wide field">
+                            <label>Description</label><input type = "text" class="description" placeholder="Description" name = "description">
+                        </div>
+                        <div class = "field">
+                            <label name="list">Available Rules</label>
+                            <select onchange={{action 'selectRule' value="target.value"}} name = "listname">
+                                <option hidden>Select</option>
+                            {{#each ruleModel as |ruleChoice index|}}
+                                <option value={{index}}> {{ruleChoice.description}} </option> 
+                                
+                            {{/each}}
+                        
+                            </select>
+                        </div>
+                        <div class="ui medium header" style="color: #4F2683">Selected Plans:</div>
+                        <ul>
+                        {{#each newCodeList as |newCodeChoice index|}}
+                                <li class={{index}}>{{newCodeChoice.description}}
+                                <a {{action 'removeNewCode' index}}><span data-tooltip="Remove This Rule"><i class=" large red minus circle icon"></i></span></a></li>
+                        {{/each}}
+                        </ul>
+                        <br>
+                        <button class="ui violet button" {{action 'addCodeOption'}} >
+                            Add 
+                        </button>
+                        <button class="ui button" {{action 'newCodeClicked'}}>
+                            Cancel
+                        </button>
+                        {{#if errProgram}}
+                        
+                        <div class="ui error message">
+                            <div class="header">Missing Fields</div>
+                            <p>Please make sure all required fields are filled and at least one plan selected.</p>
+                        </div>
+                        {{/if}}
+                        </div>
+                    </div>
+                    {{/if}}
 
+                    <h4 class="ui horizontal divider header" style="color: #4F2683">
+                        <i class="angle double left icon"></i><i class="angle double right icon"></i>
+                    </h4>
+                    <br/>
+
+                    {{#each codeModel as |codeChoice index|}}
+                    <div class = {{index}}>
+                        <h4 class="ui horizontal divider header" style="color: #4F2683">
+                            <i class="angle double left icon"></i><i class="angle double right icon"></i>
+                        </h4>
+                        <div class="ui form">
+                        <div class = "ui large header" style="color: #4F2683">Option {{increment index}}
+                            <a {{action 'removeCodeOption' index}}> 
+                            <span data-tooltip="Remove This Option"><i class="red minus circle icon"></i></span> </a> <a {{action 'updateCodehoice' index}}> 
+                            <span data-tooltip="Save Changes to Option"><i class=" save icon" ></i></span></a> 
+                        </div>
+                        <div class ="fifteen wide field">
+                            <label>Code</label>{{input type = "text" class="code" placeholder="Code"  value = codeChoice.code name="code"}}
+                        </div> 
+                        <div class ="fifteen wide field">
+                            <label>Description</label>{{input type = "text" class="description" placeholder="Description"  value = codeChoice.description name="description"}}
+                        </div>
+                        </div>
+                        <div class = "field">
+                            <label name="list">Available Rules</label>
+                            <select onchange={{action 'updateCode' index }} class="selectedCode" name="list">
+                                <option hidden>Select</option>
+                            {{#each ruleModel as |ruleChoice index2|}}
+                                <option value={{index2}}> {{ruleChoice.description}} </option> 
+                                
+                            {{/each}}
+                            </select>
+                        </div>
+                        <div class="ui small header" style="color: #4F2683">Selected Plans:</div>
+                        <ul>
+                        {{#each codeChoice.rule as |codeRule index2|}}
+                            <li class={{index2}}>{{codeRule.description}}
+                                <a {{action 'removeCodeRule' index index2}}><span data-tooltip="Remove This Rule"><i class=" large red minus circle icon"></i></span></a></li>
+                        {{/each}}
+                        </ul>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>      
+            </div>
+        </div>
     </div>
     <div class="ui tab" data-tab="rules">
         <div class = "ui grid">
@@ -826,7 +927,7 @@
                         <div class = "ui form error">
                         
                         <div class ="required fifteen wide field">
-                            <label>Description</label><input type = "text" class="name" placeholder="Description" name = "description">
+                            <label>Description</label><input type = "text" class="description" placeholder="Description" name = "description">
                         </div>
                         <div class = "field">
                             <label name="list">Available Expressions</label>
