@@ -689,11 +689,11 @@
                         </div>
                         <div class="required inline field">
                             <label>Name</label>
-                            <input style="width: 300px" placeholder="Name" value="" type="text" onchange={{action 'updateProgAdminName' value="target.value"}}>
+                            <input placeholder="Name" value="" type="text" onchange={{action 'updateProgAdminName' value="target.value"}}>
                         </div>
                         <div class="required inline field">
                             <label>Position</label>
-                            <input style="width: 300px" placeholder="Name" value="" type="text" onchange={{action 'updateProgAdminPosition' value="target.value"}}>
+                            <input placeholder="Name" value="" type="text" onchange={{action 'updateProgAdminPosition' value="target.value"}}>
                         </div>
                         <div class = "required inline field">
                                 <label>Department</label>
@@ -717,7 +717,7 @@
                                 <label style="text-align: center" >Option {{index}}:</label>
                             </div>
                             <div style="margin-right: 12px" clas="inline field">
-                                <input style="width: 300px" value={{progAdminChoice.name}} type="text"  onchange = {{action 'changeProgAdminName' index}} class = "progName{{index}}" >
+                                <input style="width: 150px" value={{progAdminChoice.name}} type="text"  onchange = {{action 'changeProgAdminName' index}} class = "progName{{index}}" >
                             </div>
                             <div class="required inline field">
                                     <input style="width: 300px" value={{progAdminChoice.position}} type="text"  onchange = {{action 'changeProgAdminPos' index}} class = "progPos{{index}}" >
