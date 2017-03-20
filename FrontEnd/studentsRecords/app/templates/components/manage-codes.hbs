@@ -485,7 +485,7 @@
                         </div>
                         <div class="required field">
                             <label>Subject</label>
-                            <select onchange={{action 'updateCourseSubject' value="target.value"}} class="sub{{index}}">
+                            <select style="width: 150px" onchange={{action 'updateCourseSubject' value="target.value"}} class="sub{{index}}">
                                 <option value="" disabled selected style="display: none;">Subject</option>
                                 {{#each highSchoolSubjectModel as |highSchoolSubjectChoice|}}
                                     <option value={{highSchoolSubjectChoice.id}}>{{highSchoolSubjectChoice.description}} </option>
@@ -494,7 +494,7 @@
                         </div>
                         <div class="required field">
                             <label>High School</label>
-                            <select style="width: 250px" onchange={{action 'updateCourseHighSchool' value="target.value"}}>
+                            <select style="width: 300px" onchange={{action 'updateCourseHighSchool' value="target.value"}}>
                                 <option value="" disabled selected style="display: none;">High School</option>
                                 {{#each highSchoolModel as |highSchoolChoice|}}
                                     <option value={{highSchoolChoice.id}}>{{highSchoolChoice.name}} </option>
@@ -529,7 +529,7 @@
                             </div>
                             <div class="required field">
                                 <label>Subject</label>
-                                <select onchange={{action 'updateCourseSubject' value="target.value"}}>
+                                <select style="width: 150px" onchange={{action 'updateCourseSubject' value="target.value"}}>
                                     {{#each highSchoolSubjectModel as |highSchoolSubjectChoice|}}
                                         <option value={{highSchoolSubjectChoice.id}} selected={{eq highSchoolSubjectChoice.id
                                                                                                 highSchoolCourseChoice.subject.id}}>{{highSchoolSubjectChoice.description}} </option>
@@ -538,7 +538,7 @@
                             </div>
                             <div class="required field">
                                 <label>High School</label>
-                                <select style="width: 250px" onchange={{action 'changeCourseSchool' indexHS}} class="hs{{indexHS}}">
+                                <select style="width: 300px" onchange={{action 'changeCourseSchool' indexHS}} class="hs{{indexHS}}">
                                     {{#each highSchoolModel as |highSchoolChoice|}}
                                         <option value={{highSchoolChoice.id}} selected={{eq highSchoolChoice.id
                                                                                         highSchoolCourseChoice.highschool.id}}>{{highSchoolChoice.name}} </option>
@@ -578,11 +578,11 @@
                 <div class="ui form">
                     <br>
                     <div class="inline fields">
-                        <div style="margin-right: 12px" class=" inline field">
+                        <div style="margin-right: 12px" class="field">
                             <br/>
                             <label style="text-align: center">Add New</label>
                         </div>
-                        <div class="required inline field">
+                        <div class="required field">
                             <label>Name</label>
                             <input style="width: 300px" placeholder="Name" value="" type="text" onchange={{action 'updateFacultyChoice' value="target.value"}}>
                         </div>
@@ -689,15 +689,15 @@
                         </div>
                         <div class="required inline field">
                             <label>Name</label>
-                            <input placeholder="Name" value="" type="text" onchange={{action 'updateProgAdminName' value="target.value"}}>
+                            <input style="width: 150px" placeholder="Name" value="" type="text" onchange={{action 'updateProgAdminName' value="target.value"}}>
                         </div>
                         <div class="required inline field">
                             <label>Position</label>
-                            <input placeholder="Name" value="" type="text" onchange={{action 'updateProgAdminPosition' value="target.value"}}>
+                            <input style="width: 300px" placeholder="Name" value="" type="text" onchange={{action 'updateProgAdminPosition' value="target.value"}}>
                         </div>
-                        <div class = "required inline field">
+                        <div class= "required inline field">
                                 <label>Department</label>
-                                <select onchange={{action 'updateProgAdminDept' value="target.value"}} class="sub{{index}}">
+                                <select style="width: 190px" onchange={{action 'updateProgAdminDept' value="target.value"}} class="sub{{index}}">
                                     <option value="" disabled selected style="display: none;">Department</option>
                                     {{#each departmentModel as |deptChoice|}}
                                         <option value={{deptChoice.id}}>{{deptChoice.name}} </option>
@@ -941,7 +941,7 @@
                                 {{/each}}
                             </select>
                         </div>
-                        <div class="ui medium header" style="color: #4F2683">Selected Plans:</div>
+                        <div class="ui medium header" style="color: #4F2683">Selected Rules:</div>
                         <ul>
                         {{#each newRuleList as |newRuleChoice index|}}
                                 <li class={{index}}>{{newRuleChoice.boolExpress}}
@@ -992,7 +992,7 @@
                                 {{/each}}
                                 </select>
                             </div>
-                            <div class="ui small header" style="color: #4F2683">Selected Plans:</div>
+                            <div class="ui small header" style="color: #4F2683">Selected Rules:</div>
                             <ul>
                             {{#each ruleChoice.logExpressions as |ruleExp index2|}}
                                 <li class={{index2}}>{{ruleExp.boolExpress}}
