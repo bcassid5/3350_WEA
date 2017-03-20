@@ -11,7 +11,30 @@ export default Ember.Component.extend({
       });
     });
   },
-
+  USP01IsPermitted: Ember.computed(function(){ //Manage system roles
+    var authentication = this.get('oudaAuth');
+    if (authentication.getName === "Root") {
+      return true;
+    } else {
+      return (authentication.get('userCList').indexOf("USP01") >= 0);
+    }
+  }),
+  MSC02IsPermitted: Ember.computed(function(){ //Manage system roles
+    var authentication = this.get('oudaAuth');
+    if (authentication.getName === "Root") {
+      return true;
+    } else {
+      return (authentication.get('userCList').indexOf("MSC02") >= 0);
+    }
+  }),
+  ISR01IsPermitted: Ember.computed(function(){ //Manage system roles
+    var authentication = this.get('oudaAuth');
+    if (authentication.getName === "Root") {
+      return true;
+    } else {
+      return (authentication.get('userCList').indexOf("ISR01") >= 0);
+    }
+  }),
 
 
 

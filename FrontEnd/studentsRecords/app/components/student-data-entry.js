@@ -82,7 +82,14 @@ export default Ember.Component.extend({
   newGradeCourse: null,
   newGradeIndex: null,
 
-    
+  USP01IsPermitted: Ember.computed(function(){ //Manage system roles
+    var authentication = this.get('oudaAuth');
+    if (authentication.getName === "Root") {
+      return true;
+    } else {
+      return (authentication.get('userCList').indexOf("USP01") >= 0);
+    }
+  }),
   studentModel: Ember.observer('offset', function () {
     var self = this;
     this.get('store').query('student', {
@@ -343,8 +350,15 @@ export default Ember.Component.extend({
 
     toggleHSCourseEdit()
     {
-      console.log('called');
-      this.set('enableHSCourseEdit', !(this.get('enableHSCourseEdit')));
+      if(this.get('USP01IsPermitted'))
+      {
+        this.set('enableHSCourseEdit', !(this.get('enableHSCourseEdit')));
+      }
+      else{
+        Ember.$('.ui.save.modal').modal('show');
+      }
+      
+      
     },
 
     removeHSGradeOption(index)
@@ -410,6 +424,10 @@ export default Ember.Component.extend({
             Ember.$('.ui.grade.modal').modal('hide');
             });
       }
+    },
+    cancelSave()
+    {
+      Ember.$('.ui.save.modal').modal('hide');
     },
     cancelUpdateGrade()
     {
@@ -581,18 +599,37 @@ export default Ember.Component.extend({
     },
     toggleAdvEdit ()
     {
-      this.set('enableAdvEdit', !(this.get('enableAdvEdit')));
+      if(this.get('USP01IsPermitted'))
+      {
+        this.set('enableAdvEdit', !(this.get('enableAdvEdit')));
+      }
+      else{
+        Ember.$('.ui.save.modal').modal('show');
+      }
+      
     },
     toggleAwdEdit()
     {
-      this.set('enableAwdEdit', !(this.get('enableAwdEdit')));
+      if(this.get('USP01IsPermitted'))
+      {
+        this.set('enableAwdEdit', !(this.get('enableAwdEdit')));
+      }
+      else{
+        Ember.$('.ui.save.modal').modal('show');
+      }
+      
     },
     toggleGradeEdit()
     {
       
-      console.log(this.get('studentProgramModel').get('length'));
+      if(this.get('USP01IsPermitted'))
+      {
+        this.set('enableGradeEdit', !(this.get('enableGradeEdit')));
+      }
+      else{
+        Ember.$('.ui.save.modal').modal('show');
+      }
       
-      this.set('enableGradeEdit', !(this.get('enableGradeEdit')));
     },
     newProgClicked()
     {
@@ -701,27 +738,33 @@ export default Ember.Component.extend({
       
     },
     saveStudent () {
-
-      var updatedStudent = this.get('currentStudent');
-      
-      updatedStudent.set('gender', this.get('selectedGender'));
-      updatedStudent.set('DOB', new Date(this.get('selectedDate')));
-      updatedStudent.set('resInfo', this.get('selectedResidency'));
-      if(this.get('currentStudent').get('gender').get('type')=="Male"){
-        updatedStudent.set('photo', "/assets/studentsPhotos/male.png");
-        this.set('studentPhoto', "/assets/studentsPhotos/male.png");
-      }
-      else if(this.get('currentStudent').get('gender').get('type')=="Female"){
-        updatedStudent.set('photo', "/assets/studentsPhotos/female.png");
-        this.set('studentPhoto', "/assets/studentsPhotos/female.png");
-      }
-      else {
-        updatedStudent.set('photo', "/assets/studentsPhotos/other.png");
-        this.set('studentPhoto', "/assets/studentsPhotos/other.png");
-      }
-      updatedStudent.save().then(() => {
+      if(this.get('USP01IsPermitted'))
+      {
+        var updatedStudent = this.get('currentStudent');
         
-      });
+        updatedStudent.set('gender', this.get('selectedGender'));
+        updatedStudent.set('DOB', new Date(this.get('selectedDate')));
+        updatedStudent.set('resInfo', this.get('selectedResidency'));
+        if(this.get('currentStudent').get('gender').get('type')=="Male"){
+          updatedStudent.set('photo', "/assets/studentsPhotos/male.png");
+          this.set('studentPhoto', "/assets/studentsPhotos/male.png");
+        }
+        else if(this.get('currentStudent').get('gender').get('type')=="Female"){
+          updatedStudent.set('photo', "/assets/studentsPhotos/female.png");
+          this.set('studentPhoto', "/assets/studentsPhotos/female.png");
+        }
+        else {
+          updatedStudent.set('photo', "/assets/studentsPhotos/other.png");
+          this.set('studentPhoto', "/assets/studentsPhotos/other.png");
+        }
+        updatedStudent.save().then(() => {
+          
+        });
+      }
+      else{
+        console.log('here');
+        Ember.$('.ui.save.modal').modal('show');
+      }
       
     },
 
@@ -1061,6 +1104,8 @@ export default Ember.Component.extend({
       },
       
       delete(id) {
+        if(this.get('USP01IsPermitted'))
+      {
         var nextIndex = 0;
         this.set('total', this.get('total')-1);
         if (this.get('currentIndex') < this.get('lastIndex')) {
@@ -1086,6 +1131,11 @@ export default Ember.Component.extend({
         });
        
         }
+      }
+      else{
+        Ember.$('.ui.save.modal').modal('show');
+      }
+        
 
       },
 
