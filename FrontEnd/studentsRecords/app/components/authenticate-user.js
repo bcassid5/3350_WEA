@@ -7,13 +7,23 @@ export default Ember.Component.extend({
   isPasswordChanging: null,
   tempPassword: null,
   error: null,
-
-
+  self: this,
+  keyPress: function (e) {
+      
+        if (e.which === 13) {
+            Ember.$('#button').click();
+        }
+  },
+  
   errorMessage: Ember.computed ('error', function(){
     return this.get('error');
   }),
 
   actions: {
+    dosomething()
+    {
+      console.log('uo');
+    },
     login(){
       var authentication = this.get('oudaAuth');
       var self = this;

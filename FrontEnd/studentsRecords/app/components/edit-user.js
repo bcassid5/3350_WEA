@@ -13,7 +13,7 @@ export default Ember.Component.extend({
 
   didRender() {
     this._super(...arguments);
-    Ember.$('.ui.modal')
+    Ember.$('.ui.modal.auth')
       .modal({
         closable: false,
         transition: 'horizontal flip'
@@ -66,8 +66,8 @@ export default Ember.Component.extend({
           userShadow.save().then(function () {
             user.save().then(function(){
               self.set('isUserFormEditing', false);
-              Ember.$('.ui.modal').modal('hide');
-              Ember.$('.ui.modal').remove();
+              Ember.$('.ui.modal.auth').modal('hide');
+              Ember.$('.ui.modal.auth').remove();
             });
           });
 
@@ -103,8 +103,8 @@ export default Ember.Component.extend({
 
     cancel () {
       this.set('isUserFormEditing', false);
-      Ember.$('.ui.modal').modal('hide');
-      Ember.$('.ui.modal').remove();
+      Ember.$('.ui.modal.auth').modal('hide');
+      Ember.$('.ui.modal.auth').remove();
     },
 
 

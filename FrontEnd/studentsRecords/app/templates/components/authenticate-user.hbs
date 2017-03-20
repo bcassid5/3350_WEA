@@ -44,7 +44,7 @@
       <br><br><br><br>
       <br><br><br><br>
       <h2 class="center aligned header form-head" style="color: #FFFFFF">WE Adjudication</h2>
-      <div class="ui form">
+      <div class="ui form" {{action "dosomething" on="submit"}}>
         <div class="field">
           {{input value=name  type="text" placeholder="user name"}}
         </div>
@@ -52,7 +52,7 @@
           {{input value=password  type="password" placeholder="password"}}
         </div>
         <div class="field">
-          <button class="ui button large fluid" style="background-color: #4F2683; color: #FFFFFF" {{action 'login'}}>
+          <button id = "button" class="ui button large fluid" style="background-color: #4F2683; color: #FFFFFF" {{action 'login'}}>
             Log In
           </button>
           <p> {{errorMessage}}</p>

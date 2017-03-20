@@ -48,7 +48,7 @@ export default Ember.Component.extend({
   unit: null,
   from: null,
   showAddCoursePage: false,
-
+  isEditingGrade: false,
   highSchoolModel: null,
   highSchoolSubjectModel: null,
   highSchoolCourseModel: null,
@@ -63,7 +63,7 @@ export default Ember.Component.extend({
   enableAdvEdit: null,
   enableAwdEdit: null,
   enableGradeEdit: null,
-
+  allowprograms: false,
   showSubject: false,
   showDescription: false,
   showLevel: false,
@@ -77,7 +77,10 @@ export default Ember.Component.extend({
   newHSCourseGrade: "",
   newCourse: null,
   enableHSCourseEdit: false,
-  
+  newGradeMark: null,
+  newGradeNote: null,
+  newGradeCourse: null,
+  newGradeIndex: null,
 
     
   studentModel: Ember.observer('offset', function () {
@@ -225,7 +228,7 @@ export default Ember.Component.extend({
     self.get('store').query('termCode',{student: self.get('currentStudent').get('id')}).then(function(terms){
           self.set('termCodeModel', terms);
           
-          self.set('studentProgramModel', self.get('store').peekAll('program-record'));
+          
           
           self.set('gradeModel', []);
           for(var i =0; i <self.get('termCodeModel').get('length'); i++){
@@ -272,7 +275,20 @@ export default Ember.Component.extend({
   },
 
   didRender() {
-    Ember.$('.menu .item').tab();
+    var self = this;
+    
+    Ember.$('.menu .item').tab({'onVisible':function(){
+      self.set('studentProgramModel', self.get('store').peekAll('program-record'));
+      console.log('load');
+      console.log(self.get('studentProgramModel').objectAt(0).get('load'));
+      self.set('allowprograms', true);
+      
+    }});
+  },
+  loadRecord: function ()
+  {
+    console.log('yo');
+    
   },
   resetUndo(){
     this.set('undoRecords', []);
@@ -376,28 +392,37 @@ export default Ember.Component.extend({
               console.log(error);
           });
     },
-    updateGrade(termIndex, gradeIndex)
+    updateSelectedGrade()
     {
-      console.log('yo');
-      //console.log(this.$('#terms').find('.'+termIndex).find('.'+gradeIndex).find('.currentGrade').val());
+      
+      if(this.get('newGradeMark')=="")
+      {
+        this.$('#editGradeForm').form('add prompt', 'mark', 'error text');
+      }
+      else{
+        
+        this.$('#editGradeForm').form('remove prompt', 'mark');
+        var self = this;
+        this.get('store').find('grade',this.get('gradeModel').objectAt(this.get('newGradeIndex')).get('id')).then(function(record){
+            record.set('mark', self.get('newGradeMark'));
+            record.set('note', self.get('newGradeNote'))
+            record.save();
+            Ember.$('.ui.grade.modal').modal('hide');
+            });
+      }
+    },
+    cancelUpdateGrade()
+    {
+      Ember.$('.ui.grade.modal').modal('hide');
     },
     updateTheGrade(termIndex, gradeIndex)
     {
-      console.log(this.$('#terms').find('.'+termIndex).find('.'+gradeIndex).find('.currentGrade').val());
-      if(this.$('#terms').find('.'+termIndex).find('.'+gradeIndex).find('.currentGrade').val()=="")
-      {
-        this.$("#terms").find('.'+termIndex).form('add prompt', 'currentmark', 'error text');
-      }
-      else{
-        this.$("#terms").find('.'+termIndex).form('remove prompt', 'currentmark');
-        var self = this;
-        this.get('store').find('grade',this.get('gradeModel').objectAt(gradeIndex).get('id')).then(function(record){
-            record.set('mark', self.$('#terms').find('.'+termIndex).find('.'+gradeIndex).find('.currentGrade').val());
-            record.set('note', self.$('#terms').find('.'+termIndex).find('.'+gradeIndex).find('.currentNote').val())
-            record.save();
-                
-            });
-      }
+      console.log('w');
+      this.set('newGradeMark', this.get('gradeModel').objectAt(gradeIndex).get('mark'));
+      this.set('newGradeNote', this.get('gradeModel').objectAt(gradeIndex).get('note'));
+      this.set('newGradeIndex', gradeIndex);
+      this.set('newGradeCourse', this.get('gradeModel').objectAt(gradeIndex).get('course').get('courseLetter')+this.get('gradeModel').objectAt(gradeIndex).get('course').get('courseNumber'));
+      Ember.$('.ui.grade.modal').modal('show');
     },
     addGrade(index)
     {
@@ -564,8 +589,9 @@ export default Ember.Component.extend({
     },
     toggleGradeEdit()
     {
-      this.rerender();
+      
       console.log(this.get('studentProgramModel').get('length'));
+      
       this.set('enableGradeEdit', !(this.get('enableGradeEdit')));
     },
     newProgClicked()

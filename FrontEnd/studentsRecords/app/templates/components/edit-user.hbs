@@ -1,6 +1,6 @@
 {{#if  isUserFormEditing }}
   {{#if EU001IsPermitted }}
-    <div class="ui modal">
+    <div class="ui modal auth">
       <div class="header">Modify User Profile for {{userRecord.firstName}} {{userRecord.lastName}}</div>
       <div class="content">
         <div class="ui form">
@@ -60,7 +60,7 @@
       </div>
     </div>
   {{else}}
-    <div class="ui basic modal">
+    <div class="ui basic modal auth">
       <div class="ui icon header">
         <i class="protect icon"></i>
         Permission Denied
