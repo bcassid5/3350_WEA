@@ -42,6 +42,12 @@
         </a>
         <div class = "item">{{log-out}}</div>
       </div>
+
+      <a class="item" {{action "addNewUser"}} >
+        <i class="large share icon"></i>
+        Admin Portal
+      </a>
+
     </div>
   <!--</div>
   <div class="thirteen wide column ">-->
@@ -106,14 +112,59 @@
       {{/if}}
 
       {{#if isAddShowing}}
-        {{add-record}}
+        {{#if USP01IsPermitted}}
+          {{add-record}}
+        {{else}}
+          <div class="ui center aligned raised segment">
+            <div class="ui icon header">
+              <i class="protect icon"></i>
+              Permission Denied
+            </div>
+            <div>
+              <p>This feature (USP01) is not allowed for your account.</p>
+              <p>Please contact the system administrator for more information.</p>
+            </div>
+
+          </div>
+        {{/if}}
+        
       {{/if}}
       
       {{#if isManageCodeShowing}}
-        {{manage-codes}}
+      {{#if MSC02IsPermitted}}
+          {{manage-codes}}
+        {{else}}
+          <div class="ui center aligned raised segment">
+            <div class="ui icon header">
+              <i class="protect icon"></i>
+              Permission Denied
+            </div>
+            <div>
+              <p>This feature (MSC02) is not allowed for your account.</p>
+              <p>Please contact the system administrator for more information.</p>
+            </div>
+
+          </div>
+        {{/if}}
+        
       {{/if}}
       {{#if isUploadShowing}}
-        {{upload-file}}
+      {{#if ISR01IsPermitted}}
+          {{upload-file}}
+        {{else}}
+          <div class="ui center aligned raised segment">
+            <div class="ui icon header">
+              <i class="protect icon"></i>
+              Permission Denied
+            </div>
+            <div>
+              <p>This feature (ISR01) is not allowed for your account.</p>
+              <p>Please contact the system administrator for more information.</p>
+            </div>
+
+          </div>
+        {{/if}}
+        
       {{/if}}
       {{#if isAdjudShowing}}
         {{perform-adjud}}

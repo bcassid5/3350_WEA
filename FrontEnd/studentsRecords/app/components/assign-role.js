@@ -28,7 +28,7 @@ export default Ember.Component.extend({
 
   didRender() {
     this._super(...arguments);
-    Ember.$('.ui.modal')
+    Ember.$('.ui.modal.auth')
       .modal({
         closable: false,
         transition: 'horizontal flip',
@@ -63,8 +63,8 @@ export default Ember.Component.extend({
 
     done () {
       this.set('isManagingUserRole', false);
-      Ember.$('.ui.modal').modal('hide');
-      Ember.$('.ui.modal').remove();
+      Ember.$('.ui.modal.auth').modal('hide');
+      Ember.$('.ui.modal.auth').remove();
     },
 
     selectRole(role) {

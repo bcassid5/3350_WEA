@@ -1,24 +1,81 @@
 {{#if ADM01IsPermitted }}
-
-  <div class="ui grid">
-    <div class="three wide column">
-      <div class="ui violet vertical pointing menu">
-        <a class="item active" {{action "manageUsers"}}>
-          <i class="large users icon"></i>
-          Users Accounts
-        </a>
-        <a class="item" {{action "manageRoles"}}>
-          <i class="large list layout icon"></i>
-          System Roles
-        </a>
-        <a class="item " {{action "manageFeatures"}}>
-          <i class="large lock icon"></i>
-          System Features/Privileges
-        </a>
+  <div class="ui violet menu">
+      <div class="item">
+        <img src="/assets/images/UWO Stacked.png"> 
+        <div class="item" style="color: #4F2683">Western Engineering Adjudication</div>
       </div>
+      
+      <a class={{H}} {{action "home"}}>
+        <i class="large home icon"></i>
+        Admin Portal Menu
+      </a>
+      <a class={{SR}} {{action "manageUsers"}} >
+        <i class="large users icon"></i>
+        Users Accounts
+      </a>
+      <a class={{CR}} {{action "manageRoles"}} >
+        <i class="large list layout icon"></i>
+        System Roles
+      </a>
+      <a class={{MC}} {{action "manageFeatures"}} >
+        <i class="large lock icon"></i>
+        System Features/Privileges
+      </a>
+
+      <div class="right menu">
+        
+        <div class = "item">{{log-out}}</div>
+      </div>
+
+      <a class="item" {{action "exitAdmin"}} >
+        <i class="large reply icon"></i>
+        Exit Admin Portal
+      </a>
+
     </div>
-    <div class="thirteen wide column ">
+  <div class="ui grid">
+    <div class="one wide column">
+    </div>
+    <div class="fourteen wide column ">
       <div class="ui segment container">
+        {{#if isHomeShowing}}
+          <div class="ui center aligned header">
+    <h2>Western Engineering Adjudication Admin Portal</h2>
+</div>
+<hr>
+<br/>
+
+<div class="ui grid">
+  <div class="eight wide column">
+  <button class="ui fluid button" {{action "manageUsers"}} style="background-color: #4F2683; color: #FFFFFF">
+    <div class="ui center aligned header" style="color: #FFFFFF; font-size: 200%">Users Accounts</div>
+
+    <div>
+      <i class="massive users icon"></i>
+    </div>
+  </button>
+  </div>
+  <div class="eight wide column">
+    <!-- Grey Colour: #807F83 Purple Colour: #4F2683 -->
+  <button class="ui fluid button" {{action "manageRoles"}} style="background-color: #4F2683; color: #FFFFFF">
+    <div class="ui center aligned header" style="color: #FFFFFF; font-size: 200%">System Roles</div>
+    <div> <i class="massive list layout icon"></i> </div>
+  </button>
+  </div>
+  <div class="eight wide column">
+  <button class="ui fluid button" {{action "manageFeatures"}} style="background-color: #4F2683; color: #FFFFFF">
+    <div class="ui center aligned header" style="color: #FFFFFF; font-size: 200%">System Features/Privileges</div>
+    <div><i class="massive lock icon"></i></div>
+  </button>
+  </div>
+  <div class="eight wide column">
+  <button class="ui fluid button" {{action "exitAdmin"}} style="background-color: #4F2683; color: #FFFFFF">
+    <div class="ui center aligned header" style="color: #FFFFFF; font-size: 200%">Exit Admin Portal</div>
+    <div><i class="massive reply icon"></i></div>
+  </button>
+  </div>
+</div>
+        {{/if}}
         {{#if isUsersShowing}}
           <br>
           {{manage-users}}

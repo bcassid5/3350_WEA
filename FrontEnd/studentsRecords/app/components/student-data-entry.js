@@ -48,7 +48,7 @@ export default Ember.Component.extend({
   unit: null,
   from: null,
   showAddCoursePage: false,
-
+  isEditingGrade: false,
   highSchoolModel: null,
   highSchoolSubjectModel: null,
   highSchoolCourseModel: null,
@@ -63,7 +63,7 @@ export default Ember.Component.extend({
   enableAdvEdit: null,
   enableAwdEdit: null,
   enableGradeEdit: null,
-
+  allowprograms: false,
   showSubject: false,
   showDescription: false,
   showLevel: false,
@@ -77,9 +77,19 @@ export default Ember.Component.extend({
   newHSCourseGrade: "",
   newCourse: null,
   enableHSCourseEdit: false,
-  
+  newGradeMark: null,
+  newGradeNote: null,
+  newGradeCourse: null,
+  newGradeIndex: null,
 
-    
+  USP01IsPermitted: Ember.computed(function(){ //Manage system roles
+    var authentication = this.get('oudaAuth');
+    if (authentication.getName === "Root") {
+      return true;
+    } else {
+      return (authentication.get('userCList').indexOf("USP01") >= 0);
+    }
+  }),
   studentModel: Ember.observer('offset', function () {
     var self = this;
     this.get('store').query('student', {
@@ -225,7 +235,7 @@ export default Ember.Component.extend({
     self.get('store').query('termCode',{student: self.get('currentStudent').get('id')}).then(function(terms){
           self.set('termCodeModel', terms);
           
-          self.set('studentProgramModel', self.get('store').peekAll('program-record'));
+          
           
           self.set('gradeModel', []);
           for(var i =0; i <self.get('termCodeModel').get('length'); i++){
@@ -272,7 +282,20 @@ export default Ember.Component.extend({
   },
 
   didRender() {
-    Ember.$('.menu .item').tab();
+    var self = this;
+    
+    Ember.$('.menu .item').tab({'onVisible':function(){
+      self.set('studentProgramModel', self.get('store').peekAll('program-record'));
+      console.log('load');
+      console.log(self.get('studentProgramModel').objectAt(0).get('load'));
+      self.set('allowprograms', true);
+      
+    }});
+  },
+  loadRecord: function ()
+  {
+    console.log('yo');
+    
   },
   resetUndo(){
     this.set('undoRecords', []);
@@ -327,8 +350,15 @@ export default Ember.Component.extend({
 
     toggleHSCourseEdit()
     {
-      console.log('called');
-      this.set('enableHSCourseEdit', !(this.get('enableHSCourseEdit')));
+      if(this.get('USP01IsPermitted'))
+      {
+        this.set('enableHSCourseEdit', !(this.get('enableHSCourseEdit')));
+      }
+      else{
+        Ember.$('.ui.save.modal').modal('show');
+      }
+      
+      
     },
 
     removeHSGradeOption(index)
@@ -376,28 +406,41 @@ export default Ember.Component.extend({
               console.log(error);
           });
     },
-    updateGrade(termIndex, gradeIndex)
+    updateSelectedGrade()
     {
-      console.log('yo');
-      //console.log(this.$('#terms').find('.'+termIndex).find('.'+gradeIndex).find('.currentGrade').val());
+      
+      if(this.get('newGradeMark')=="")
+      {
+        this.$('#editGradeForm').form('add prompt', 'mark', 'error text');
+      }
+      else{
+        
+        this.$('#editGradeForm').form('remove prompt', 'mark');
+        var self = this;
+        this.get('store').find('grade',this.get('gradeModel').objectAt(this.get('newGradeIndex')).get('id')).then(function(record){
+            record.set('mark', self.get('newGradeMark'));
+            record.set('note', self.get('newGradeNote'))
+            record.save();
+            Ember.$('.ui.grade.modal').modal('hide');
+            });
+      }
+    },
+    cancelSave()
+    {
+      Ember.$('.ui.save.modal').modal('hide');
+    },
+    cancelUpdateGrade()
+    {
+      Ember.$('.ui.grade.modal').modal('hide');
     },
     updateTheGrade(termIndex, gradeIndex)
     {
-      console.log(this.$('#terms').find('.'+termIndex).find('.'+gradeIndex).find('.currentGrade').val());
-      if(this.$('#terms').find('.'+termIndex).find('.'+gradeIndex).find('.currentGrade').val()=="")
-      {
-        this.$("#terms").find('.'+termIndex).form('add prompt', 'currentmark', 'error text');
-      }
-      else{
-        this.$("#terms").find('.'+termIndex).form('remove prompt', 'currentmark');
-        var self = this;
-        this.get('store').find('grade',this.get('gradeModel').objectAt(gradeIndex).get('id')).then(function(record){
-            record.set('mark', self.$('#terms').find('.'+termIndex).find('.'+gradeIndex).find('.currentGrade').val());
-            record.set('note', self.$('#terms').find('.'+termIndex).find('.'+gradeIndex).find('.currentNote').val())
-            record.save();
-                
-            });
-      }
+      console.log('w');
+      this.set('newGradeMark', this.get('gradeModel').objectAt(gradeIndex).get('mark'));
+      this.set('newGradeNote', this.get('gradeModel').objectAt(gradeIndex).get('note'));
+      this.set('newGradeIndex', gradeIndex);
+      this.set('newGradeCourse', this.get('gradeModel').objectAt(gradeIndex).get('course').get('courseLetter')+this.get('gradeModel').objectAt(gradeIndex).get('course').get('courseNumber'));
+      Ember.$('.ui.grade.modal').modal('show');
     },
     addGrade(index)
     {
@@ -556,17 +599,37 @@ export default Ember.Component.extend({
     },
     toggleAdvEdit ()
     {
-      this.set('enableAdvEdit', !(this.get('enableAdvEdit')));
+      if(this.get('USP01IsPermitted'))
+      {
+        this.set('enableAdvEdit', !(this.get('enableAdvEdit')));
+      }
+      else{
+        Ember.$('.ui.save.modal').modal('show');
+      }
+      
     },
     toggleAwdEdit()
     {
-      this.set('enableAwdEdit', !(this.get('enableAwdEdit')));
+      if(this.get('USP01IsPermitted'))
+      {
+        this.set('enableAwdEdit', !(this.get('enableAwdEdit')));
+      }
+      else{
+        Ember.$('.ui.save.modal').modal('show');
+      }
+      
     },
     toggleGradeEdit()
     {
-      this.rerender();
-      console.log(this.get('studentProgramModel').get('length'));
-      this.set('enableGradeEdit', !(this.get('enableGradeEdit')));
+      
+      if(this.get('USP01IsPermitted'))
+      {
+        this.set('enableGradeEdit', !(this.get('enableGradeEdit')));
+      }
+      else{
+        Ember.$('.ui.save.modal').modal('show');
+      }
+      
     },
     newProgClicked()
     {
@@ -675,27 +738,33 @@ export default Ember.Component.extend({
       
     },
     saveStudent () {
-
-      var updatedStudent = this.get('currentStudent');
-      
-      updatedStudent.set('gender', this.get('selectedGender'));
-      updatedStudent.set('DOB', new Date(this.get('selectedDate')));
-      updatedStudent.set('resInfo', this.get('selectedResidency'));
-      if(this.get('currentStudent').get('gender').get('type')=="Male"){
-        updatedStudent.set('photo', "/assets/studentsPhotos/male.png");
-        this.set('studentPhoto', "/assets/studentsPhotos/male.png");
-      }
-      else if(this.get('currentStudent').get('gender').get('type')=="Female"){
-        updatedStudent.set('photo', "/assets/studentsPhotos/female.png");
-        this.set('studentPhoto', "/assets/studentsPhotos/female.png");
-      }
-      else {
-        updatedStudent.set('photo', "/assets/studentsPhotos/other.png");
-        this.set('studentPhoto', "/assets/studentsPhotos/other.png");
-      }
-      updatedStudent.save().then(() => {
+      if(this.get('USP01IsPermitted'))
+      {
+        var updatedStudent = this.get('currentStudent');
         
-      });
+        updatedStudent.set('gender', this.get('selectedGender'));
+        updatedStudent.set('DOB', new Date(this.get('selectedDate')));
+        updatedStudent.set('resInfo', this.get('selectedResidency'));
+        if(this.get('currentStudent').get('gender').get('type')=="Male"){
+          updatedStudent.set('photo', "/assets/studentsPhotos/male.png");
+          this.set('studentPhoto', "/assets/studentsPhotos/male.png");
+        }
+        else if(this.get('currentStudent').get('gender').get('type')=="Female"){
+          updatedStudent.set('photo', "/assets/studentsPhotos/female.png");
+          this.set('studentPhoto', "/assets/studentsPhotos/female.png");
+        }
+        else {
+          updatedStudent.set('photo', "/assets/studentsPhotos/other.png");
+          this.set('studentPhoto', "/assets/studentsPhotos/other.png");
+        }
+        updatedStudent.save().then(() => {
+          
+        });
+      }
+      else{
+        console.log('here');
+        Ember.$('.ui.save.modal').modal('show');
+      }
       
     },
 
@@ -1035,6 +1104,8 @@ export default Ember.Component.extend({
       },
       
       delete(id) {
+        if(this.get('USP01IsPermitted'))
+      {
         var nextIndex = 0;
         this.set('total', this.get('total')-1);
         if (this.get('currentIndex') < this.get('lastIndex')) {
@@ -1060,6 +1131,11 @@ export default Ember.Component.extend({
         });
        
         }
+      }
+      else{
+        Ember.$('.ui.save.modal').modal('show');
+      }
+        
 
       },
 
