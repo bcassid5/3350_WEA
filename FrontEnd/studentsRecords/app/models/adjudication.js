@@ -6,5 +6,6 @@ export default DS.Model.extend({
     termUnitPassed: DS.attr(),
     termUnitTotal: DS.attr(),
     note: DS.attr(),
-    assessmentCode: DS.hasMany("assessmentCode")
+    assessmentCode: DS.hasMany("assessmentCode"),
+    student: DS.belongsTo('student')
 });

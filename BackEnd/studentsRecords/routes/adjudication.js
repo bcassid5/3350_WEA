@@ -53,6 +53,7 @@ router.route('/:adjudications_id')
                 adjudication.termUnitTotal = request.body.adjudication.termUnitTotal;
                 adjudication.note = request.body.adjudication.note;
                 adjudication.assessmentCode = request.body.adjudication.assessmentCode;
+                adjudication.student = request.body.adjudication.student;
                // console.log(request.body.adjudication.students);
                 adjudication.save(function (error) {
                     if (error) {

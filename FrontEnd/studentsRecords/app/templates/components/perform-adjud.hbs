@@ -1,3 +1,28 @@
 <div class="ui center aligned header">
     <h2>Adjudication</h2>
 </div>
+
+<div class = "ui grid">
+    <div class="ui left aligned twelve wide column">
+        <div class = "ui form" id = "rules">
+            <br/>
+            <div id="adjudication">
+                <div class = "ui form">
+                    <div class = "field">
+                        <label name="list" style="font-size: 18px">Select the term for which adjudication is to be performed: </label>
+                        <select onchange={{action 'selectTerm' value="target.value"}} name = "listname">
+                            <option hidden>Select</option>
+                            {{#each termModel as |termChoice index|}}
+                                <option value={{index}}> {{termChoice.name}} </option>    
+                            {{/each}}
+                        </select>
+                    </div>
+                    <button class="ui violet button" {{action 'adjudicate'}} >
+                        Adjudicate
+                    </button>
+                </div>
+            </div>
+            <br/>
+        </div>      
+    </div>
+</div>

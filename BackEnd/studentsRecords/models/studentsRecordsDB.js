@@ -17,7 +17,7 @@ var studentsSchema = mongoose.Schema(
         highSchoolGrade: {type: mongoose.Schema.ObjectId, ref: 'HighSchoolGrades'},
         mark: [{type: mongoose.Schema.ObjectId, ref: 'Grades'}],
         awards: [{type: mongoose.Schema.ObjectId, ref: 'Awards'}],
-
+        adjudication: [{type: mongoose.Schema.ObjectId, ref: 'Adjudications'}]
     }
 );
 studentsSchema.plugin(mongoosePaginate);
@@ -112,7 +112,8 @@ var adjudicationSchema=mongoose.Schema(
         termUnitPassed: String,
         termUnitTotal: String,
         note: String,
-        assessmentCode: [{type: mongoose.Schema.ObjectId, ref:('AssessmentCodes')}]
+        assessmentCode: [{type: mongoose.Schema.ObjectId, ref:('AssessmentCodes')}],
+        student: {type: mongoose.Schema.ObjectId, ref:('Students')}
     }
 );
 var facultySchema=mongoose.Schema(
