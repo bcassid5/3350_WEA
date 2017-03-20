@@ -26,20 +26,22 @@
         <i class="large file text icon"></i>
         Document Management
       </a>
+      <a class={{AD}} {{action "adjud"}} >
+        <i class="large send outline icon"></i>
+        Adjudication
+      </a>
 
       <div class="right menu">
         <a class="item " {{action "about"}} >
           <i class="large user icon"></i>
           About
         </a>
+        <a class="item" {{action "addNewUser"}} >
+          <i class="large leanpub icon"></i>
+          Add Users
+        </a>
         <div class = "item">{{log-out}}</div>
       </div>
-
-      <a class="item" {{action "addNewUser"}} >
-        <i class="large leanpub icon"></i>
-        Add Users
-      </a>
-
     </div>
   <!--</div>
   <div class="thirteen wide column ">-->
@@ -86,6 +88,12 @@
     <div><i class="massive file text icon"></i></div>
   </button>
   </div>
+  <div class="sixteen wide column">
+  <button class="ui fluid button" {{action "adjud"}} style="background-color: #4F2683; color: #FFFFFF">
+    <div class="ui center aligned header" style="color: #FFFFFF; font-size: 200%">Adjudication</div>
+    <div><i class="massive send outline icon"></i></div>
+  </button>
+  </div>
 </div>
       {{/if}}
 
@@ -106,6 +114,9 @@
       {{/if}}
       {{#if isUploadShowing}}
         {{upload-file}}
+      {{/if}}
+      {{#if isAdjudShowing}}
+        {{perform-adjud}}
       {{/if}}
     <!--</div>
   </div>-->
