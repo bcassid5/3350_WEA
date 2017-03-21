@@ -770,6 +770,8 @@
                             <select style="width: 240px" onchange={{action 'updateParameterChoice' value="target.value"}}>
                                 <option hidden="hidden">Select</option>
                                 <option value='TotalAvg'>TotalAvg</option>
+                                <option value='TermUnitPassed'>TermUnitPassed</option>
+                                <option value='TermUnitTotal'>TermUnitTotal</option>
                                 {{#each courseModel as |courseChoice|}}
                                     <option value="{{courseChoice.courseLetter}}{{courseChoice.courseNumber}}">{{courseChoice.courseLetter}} {{courseChoice.courseNumber}}</option>
                                 {{/each}}
@@ -848,7 +850,7 @@
                         
                             </select>
                         </div>
-                        <div class="ui medium header" style="color: #4F2683">Selected Plans:</div>
+                        <div class="ui medium header" style="color: #4F2683">Selected Rules:</div>
                         <ul>
                         {{#each newCodeList as |newCodeChoice index|}}
                                 <li class={{index}}>{{newCodeChoice.description}}
@@ -902,7 +904,7 @@
                             {{/each}}
                             </select>
                         </div>
-                        <div class="ui small header" style="color: #4F2683">Selected Plans:</div>
+                        <div class="ui small header" style="color: #4F2683">Selected Rules:</div>
                         <ul>
                         {{#each codeChoice.rule as |codeRule index2|}}
                             <li class={{index2}}>{{codeRule.description}}
@@ -941,7 +943,7 @@
                                 {{/each}}
                             </select>
                         </div>
-                        <div class="ui medium header" style="color: #4F2683">Selected Rules:</div>
+                        <div class="ui medium header" style="color: #4F2683">Selected Expressions:</div>
                         <ul>
                         {{#each newRuleList as |newRuleChoice index|}}
                                 <li class={{index}}>{{newRuleChoice.boolExpress}}
@@ -983,7 +985,7 @@
                                 <label>Description</label>{{input type = "text" class="description" value=ruleChoice.description name="description"}}
                             </div> 
                             <div class = "field">
-                                <label name="list">Available Rules</label>
+                                <label name="list">Available Expressions</label>
                                 <select onchange={{action 'updateRule' index }} class="selectedRule" name="list">
                                     <option hidden>Select</option>
                                 {{#each logExpModel as |logExpChoice index2|}}
@@ -992,7 +994,7 @@
                                 {{/each}}
                                 </select>
                             </div>
-                            <div class="ui small header" style="color: #4F2683">Selected Rules:</div>
+                            <div class="ui small header" style="color: #4F2683">Selected Expressions:</div>
                             <ul>
                             {{#each ruleChoice.logExpressions as |ruleExp index2|}}
                                 <li class={{index2}}>{{ruleExp.boolExpress}}
