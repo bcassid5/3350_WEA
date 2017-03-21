@@ -1016,7 +1016,10 @@ export default Ember.Component.extend({
             var expression =  this.get('newLogExpParam')+this.get('newLogExpOpr')+this.get('newLogExpValue');
             var record = this.get('store').createRecord('logExpress', {
                 boolExpress: expression,
-                rule: []
+                rule: [],
+                parameter: this.get('newLogExpParam'),
+                operator: this.get('newLogExpOpr'),
+                value: this.get('newLogExpValue')
             });
             record.save();
         }

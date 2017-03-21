@@ -48,6 +48,9 @@ router.route('/:logExpresses_id')
             else {
                 logExpress.boolExpress = request.body.logExpress.boolExpress;
                 logExpress.rule = request.body.logExpress.rule;
+                logExpress.parameter=request.body.logExpress.paramter;
+                logExpress.operator=request.body.logExpress.operator;
+                logExpress.value=request.body.logExpress.value;
                 logExpress.save(function (error) {
                     if (error) {
                         response.send({error: error});

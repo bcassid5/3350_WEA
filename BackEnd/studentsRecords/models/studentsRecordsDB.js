@@ -150,7 +150,10 @@ var logExpressSchema = mongoose.Schema(
         boolExpress: String,
         //logicalLink: String,
         //parentLink: String,
-        rule:[{type: mongoose.Schema.ObjectId, ref:("Rules")}]
+        rule:[{type: mongoose.Schema.ObjectId, ref:("Rules")}],
+        parameter: String,
+        operator: String,
+        value: Number
     }
 );
 var ruleSchema = mongoose.Schema(
