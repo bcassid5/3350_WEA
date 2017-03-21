@@ -43,7 +43,7 @@
               <div class="ui center aligned header" style="color: #FFFFFF">
                 Select Upload File
               </div>
-              <i class="massive upload icon"></i>
+              <i class="massive download icon"></i>
             {{/file-picker}}</button>
           </div>
         </div>
@@ -52,7 +52,18 @@
   <br><br><br>
 </div>
 <div class="ui tab" data-tab="down">
-  <p>*insert export here*</p>
+  <div>
+    <div class="ui grid">      
+      <div class="eight wide centered column">
+        <button class="ui fluid button" style="background-color: #4F2683; color: #ffffff" {{action 'createPDF'}}>
+          <div class="ui center aligned header" style="color: #FFFFFF">
+            Download Selected File
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
   <br>
 </div>
+
 

@@ -1,5 +1,4 @@
 import Ember from 'ember';
-/* global XLSX */ 
 
 export default Ember.Component.extend({
     
@@ -259,20 +258,24 @@ export default Ember.Component.extend({
                 var add = true;
                 var self = this;
                 for(var i=1; i<data.length; i++){
-                    for(var j=0; j<plans.length; j++){
-                        if(data[i][2] == plans[j]){
-                            add = false;
+                    if (data[i][2]==null){
+                        //skip
+                    } else {
+                        for(var j=0; j<plans.length; j++){
+                            if(data[i][2] == plans[j]){
+                                add = false;
+                            }
                         }
+                        if(add){
+                            plans.push(data[i][2]);
+                            var record = this.get('store').createRecord('planCode', {
+                                name: data[i][2],
+                                programRecords: []
+                            });
+                            record.save();
+                        }
+                        add = true;
                     }
-                    if(add){
-                        plans.push(data[i][2]);
-                        var record = this.get('store').createRecord('planCode', {
-                            name: data[i][2],
-                            programRecords: []
-                        });
-                        record.save();
-                    }
-                    add = true;
                 }
             } else if (file.name == "averages.xlsx"){
                 var self = this;
@@ -559,7 +562,33 @@ export default Ember.Component.extend({
             } else if (file.name == "AssessmentCodes.xlsx"){
 
             } else if (file.name == "HighSchoolCourseInformation.xlsx"){
-                
+                var codes = [];
+                var add = true;
+                var self = this;
+                for(var i=1; i<635; i++){
+                    
+                    if(data[i][4] == null){
+
+                    } else {
+                        for(var j=0; j<codes.length; j++){
+                            if(data[i][4] == codes[j]){
+                                add = false;
+                            }
+                        }
+                        if(add){
+                            codes.push(data[i][4]);
+                            //console.log(data[i][4]);
+                            var record = this.get('store').createRecord('highschool-subject', {
+                                name: data[i][3],
+                                description: data[i][4],    
+                                course: []
+                            });
+                            record.save();
+
+                        }
+                        add = true;
+                    }
+                }
             } else if (file.name == "UndergraduateRecordAdjudications.xlsx"){
                 
             } else if (file.name == "UndergraduateRecordCourses.xlsx"){
@@ -582,31 +611,113 @@ export default Ember.Component.extend({
             }
             
         },
-/*
-        send2Back(file){
-            //self.set('filename', file.files[0].name);
-            var formData = new FormData();
-            var self = this;            
-            //console.log(file.files[0]);
-            //console.log(file.files[0].name);
-                
-            formData.append('uploads[]', file.files[0], file.files[0].name);
-            console.log(formData);
+        updateOut: function () {
+            
+        },
+        createPDF: function () {
+            /*var doc = new jsPDF('p','pt','letter');          
+        
+            var table = document.createElement("table");
 
-            $.ajax({
-                url: 'http://localhost:3700/upload',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(data){
-                    
-                    self.set('filename', file.files[0].name);
-                    self.set('success', true);
-                    
-                    console.log('upload successful!\n' + data);
+            var thead = document.createElement("thead");
+
+            var row = document.createElement("tr");
+            // To create a new column follow steps outlined in comments
+
+            var header_name = document.createElement("th");
+            var header_number = document.createElement("th");
+            //var header_NAME=document.createElement("th");
+
+            var text_name = document.createTextNode("Name"); // COLUMN NAME 
+            var text_number = document.createTextNode("Student Number"); // COLUMN NAME
+            //var text_COLUMNNAME = document.createTextNode("<NAME>")
+
+            header_name.appendChild(text_name);
+            header_number.appendChild(text_number);
+            //header_NAME.appendChild(text_COLUMNNAME);
+
+            row.appendChild(header_name);
+            row.appendChild(header_number);
+            //row.appendChild(header_NAME);
+            thead.appendChild(row);
+
+            table.appendChild(thead)
+    
+            var body=document.createElement("tbody");
+            // To create a new row follow steps in commend
+
+            var row1 = document.createElement("tr");
+            //var row_i=document.createElement("tr");
+
+            var data1_name = document.createElement("td");
+            var data1_number = document.createElement("td");
+            //var col1_cell=document.createElement("td");
+            // var col2_cell=document.createElement("td")
+
+
+            var text1_name = document.createTextNode("Ayman"); 
+            var text1_number = document.createTextNode("250 786 608");
+            //var col1_data=document.createElement("DATA");
+            // repeat above step for col2_data
+
+            data1_name.appendChild(text1_name);
+            data1_number.appendChild(text1_number);
+            //col1_cell.appendChild(col1_data);
+            // repeat above step for col2_cell
+
+            row1.appendChild(data1_name);
+            row1.appendChild(data1_number);
+            // row_i.appendChild(col1_cell)
+            // repeat above step for col2_cell
+
+            body.appendChild(row1)
+            //body.appendChild(row_i);
+
+            var margins = {
+                top: 80,
+                bottom: 60,
+                left: 40,
+                width: 522
+            };
+
+            doc.fromHTML(
+                    div, // HTML string or DOM elem ref.
+                    margins.left, // x coord
+                    margins.top, {// y coord
+                        'width': margins.width // max width of content on PDF
+                    },
+            function(dispose) {
+                // dispose: object with X, Y of the last line add to the PDF 
+                //          this allow the insertion of new lines after html
+            }, margins);*/
+
+            /*var columns = ["ID", "Name", "Country"];
+            var rows = [
+                [1, "Shaw", "Tanzania"],
+                [2, "Nelson", "Kazakhstan"],
+                [3, "Garcia", "Madagascar"],
+            ];*/
+            var doc = new jsPDF();
+            
+            this.get('store').query('student', {limit: 1000000, offset: 0}).then(function (student) {
+                var columns = ["Student Number", "First Name", "Last Name"];
+                var rows = [];
+
+                //console.log(student);
+                
+                for (var i=0; i<student.content.length; i++){
+                    rows.push([student.content[i]._data.number, student.content[i]._data.firstName, 
+                    student.content[i]._data.lastName,]);
                 }
+
+                //console.log(rows);
+
+                doc.autoTable(columns, rows);
+                doc.output("dataurlnewwindow");
             });
-        },*/
+            
+            
+            
+        },
     }
 });
