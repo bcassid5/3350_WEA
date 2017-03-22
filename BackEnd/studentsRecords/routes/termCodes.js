@@ -18,14 +18,14 @@ router.route('/')
     })
     .get(parseUrlencoded, parseJSON, function (request, response) {
         var Student = request.query;
-        if (!Student) {
-            
+        if (!Student.student) {
+            console.log("ugh");
             models.TermCodes.find(function (error, termCodes) {
                 if (error) response.send(error);
                 response.json({termCode: termCodes});
             });
         } else {
-            
+            console.log("why!?");
             models.TermCodes.find({"student": Student.student}, function (error, termCode) {
                 
                 if (error) response.send(error);

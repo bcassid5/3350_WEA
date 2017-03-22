@@ -20,7 +20,7 @@ router.route('/')
 .get(parseUrlencoded, parseJSON, function (request, response) {
         var Student = request.query;
         console.log('studen: '+ Student.student + " - " + Student.term);
-        if (!Student.schoolTerm && !Student.term) {
+        if (!Student.schoolterm && !Student.term) {
             
             models.Grades.find(function (error, grades) {
                 if (error) response.send(error);
@@ -29,7 +29,7 @@ router.route('/')
         }
         else if (Student.schoolterm)
         {
-            models.TermCodes.find({"name": Student.schoolTerm}, function(error, terms){
+            models.TermCodes.find({"name": Student.schoolterm}, function(error, terms){
                 var termArray = [];
                 for(let i =0; i<terms.length;i++)
                 {
