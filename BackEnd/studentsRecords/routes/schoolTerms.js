@@ -18,6 +18,7 @@ router.route('/')
     })
     .get(parseUrlencoded, parseJSON, function (request, response) {
         var Student = request.query;
+        
         if (!Student) {
             
             models.SchoolTerms.find(function (error, schoolTerms) {

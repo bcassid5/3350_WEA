@@ -11,7 +11,7 @@ export default Ember.Component.extend({
   termCodeModel: null,
   termModel: null,
   programModel: null,
-  studentProgramModel: null,
+  programRecordModel: null,
   gradeModel: null,
   awards: null,
   selectedResidency: null,
@@ -241,14 +241,19 @@ export default Ember.Component.extend({
           self.set('termCodeModel', terms);
           
           
-          self.set('studentProgramModel', []);
+          self.set('programRecordModel', []);
           for(var i =0; i <self.get('termCodeModel').get('length'); i++){
            self.get('store').query('program-record',{term: self.get('termCodeModel').objectAt(i).get('id')}).then(function(programs){
-            self.get('studentProgramModel').addObjects(programs);
+            self.get('programRecordModel').addObjects(programs);
+            console.log(self.get('programRecordModel').get('length'));
             });
           
           }
           self.set('gradeModel', []);
+          self.get('store').query('grade',{schoolterm: self.get('termCodeModel').objectAt(0).get('name').get('id')}).then(function(grades){
+            
+            console.log("grade length: " + grades.get('length'));
+            });
           for(var i =0; i <self.get('termCodeModel').get('length'); i++){
            self.get('store').query('grade',{term: self.get('termCodeModel').objectAt(i).get('id')}).then(function(grades){
             self.get('gradeModel').addObjects(grades);
@@ -297,7 +302,7 @@ export default Ember.Component.extend({
     
     Ember.$('.menu .item').tab({'onVisible':function(){
       
-      console.log(self.get('studentProgramModel').get('length'));
+      console.log(self.get('programRecordModel').get('length'));
       self.set('allowprograms', true);
       
     }});
@@ -403,12 +408,12 @@ export default Ember.Component.extend({
     removeProgram(termIndex, programIndex)
     {
       var self = this;
-      this.get('store').find('program-record',this.get('studentProgramModel').objectAt(programIndex).get('id')).then(function(record){
+      this.get('store').find('program-record',this.get('programRecordModel').objectAt(programIndex).get('id')).then(function(record){
                 record.deleteRecord();
                 if(record.get('isDeleted'))
                 {
                     record.save();
-                    self.get('studentProgramModel').removeAt(programIndex);
+                    self.get('programRecordModel').removeAt(programIndex);
                 }
                 
           }, function (error){
@@ -470,7 +475,7 @@ export default Ember.Component.extend({
           }
         }
         var self = this;
-        this.get('store').find('program-record',this.get('studentProgramModel').objectAt(this.get('newProgramIndex')).get('id')).then(function(record){
+        this.get('store').find('program-record',this.get('programRecordModel').objectAt(this.get('newProgramIndex')).get('id')).then(function(record){
             record.set('level', self.get('newProgramLevel'));
             record.set('load', self.get('newProgramLoad'));
             
@@ -509,16 +514,16 @@ export default Ember.Component.extend({
     {
       
       
-      this.set('newProgramLevel', this.get('studentProgramModel').objectAt(gradeIndex).get('level'));
-      this.set('newProgramLoad', this.get('studentProgramModel').objectAt(gradeIndex).get('load'));
-      this.set('newProgramStatus', this.get('studentProgramModel').objectAt(gradeIndex).get('status'));
+      this.set('newProgramLevel', this.get('programRecordModel').objectAt(gradeIndex).get('level'));
+      this.set('newProgramLoad', this.get('programRecordModel').objectAt(gradeIndex).get('load'));
+      this.set('newProgramStatus', this.get('programRecordModel').objectAt(gradeIndex).get('status'));
       this.set('newProgramPlans', []);
-      for (var i =0; i<this.get('studentProgramModel').objectAt(gradeIndex).get('plan').get('length'); i++)
+      for (var i =0; i<this.get('programRecordModel').objectAt(gradeIndex).get('plan').get('length'); i++)
       {
-        this.get('newProgramPlans').push(this.get('studentProgramModel').objectAt(gradeIndex).get('plan').objectAt(i).get('id'));
+        this.get('newProgramPlans').push(this.get('programRecordModel').objectAt(gradeIndex).get('plan').objectAt(i).get('id'));
       }
       
-      this.set('newProgramName', this.get('studentProgramModel').objectAt(gradeIndex).get('name'));
+      this.set('newProgramName', this.get('programRecordModel').objectAt(gradeIndex).get('name'));
       this.set('newProgramIndex', gradeIndex);
       Ember.$('.ui.program.modal').modal('show');
     },
@@ -636,7 +641,7 @@ export default Ember.Component.extend({
         record.save().then(() =>{
           for(var i =0; i <self.get('termCodeModel').get('length'); i++){
            self.get('store').query('program-record',{term: self.get('termCodeModel').objectAt(i).get('id')}).then(function(programs){
-            self.get('studentProgramModel').addObjects(programs);
+            self.get('programRecordModel').addObjects(programs);
           });
           }
         });

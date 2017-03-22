@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var models = require('../models/programMark');
+var models2 = require('../models/studentsRecordsDB');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 var parseUrlencoded = bodyParser.urlencoded({extended: false});
 var parseJSON = bodyParser.json();
 
@@ -18,17 +20,35 @@ router.route('/')
     })
     .get(parseUrlencoded, parseJSON, function (request, response) {
         var Student = request.query;
-        if (!Student) {
-            
+        
+        if (!Student.department) {
+            console.log('no student');
             models.Programs.find(function (error, programs) {
                 if (error) response.send(error);
                 response.json({program: programs});
             });
         } else {
-            
-            models.Programs.find({"student": Student.student}, function (error, program) {
+            console.log('whyyy');
+            models.Programs.find({"department": Student.department}, function (error, programs) {
+                console.log(programs.length);
                 if (error) response.send(error);
-                response.json({program: program});
+                var programArray = [];
+                for(let i =0; i<programs.length;i++)
+                {
+                    programArray.push(new mongoose.Types.ObjectId(programs[i].id));
+                }
+                models.ProgramRecords.find({"name":{
+                        $in: programArray
+                    }
+                }, function (error2, studentPrograms){
+                    
+                    if (error) response.send(error2);
+                    
+                        console.log('2');
+                    response.json({program: programRecords});
+                    
+                });
+                //response.json({program: program});
             });
         }
     });

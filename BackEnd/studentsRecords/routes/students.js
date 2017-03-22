@@ -1,13 +1,14 @@
 var express = require('express');
 var router = express.Router();
-var models = require('../models/studentsRecordsDB');
+var models = require('../models/programMark');
+var models2 = require('../models2/studentsRecordsDB');
 var bodyParser = require('body-parser');
 var parseUrlencoded = bodyParser.urlencoded({extended: false});
 var parseJSON = bodyParser.json();
 
 router.route('/')
     .post(parseUrlencoded, parseJSON, function (request, response) {
-        var student = new models.Students(request.body.student);
+        var student = new models2.Students(request.body.student);
         student.save(function (error) {
             if (error) response.send(error);
             response.json({student: student});
@@ -17,19 +18,20 @@ router.route('/')
         var l = parseInt(request.query.limit) ;
         var o = parseInt(request.query.offset);
         var Student = request.query.student;
+        var Department = request.query.department;
         if (!Student) {
-            //models.Students.find(function (error, students) {
+            //models2.Students.find(function (error, students) {
             //    if (error) response.send(error);
             //    response.json({student: students});
             //});
-            models.Students.paginate({}, { offset: o, limit: l },
+            models2.Students.paginate({}, { offset: o, limit: l },
                 function (error, students) {
                     if (error) response.send(error);
                     response.json({student: students.docs});
                 });
         } else {
             //        if (Student == "residency")
-            models.Students.find({"residency": request.query.residency}, function (error, students) {
+            models2.Students.find({"residency": request.query.residency}, function (error, students) {
                 if (error) response.send(error);
                 response.json({student: students});
             });
@@ -38,7 +40,7 @@ router.route('/')
 
 router.route('/:student_id')
     .get(parseUrlencoded, parseJSON, function (request, response) {
-        models.Students.findById(request.params.student_id, function (error, student) {
+        models2.Students.findById(request.params.student_id, function (error, student) {
             if (error) {
                 response.send({error: error});
             }
@@ -48,7 +50,7 @@ router.route('/:student_id')
         });
     })
     .put(parseUrlencoded, parseJSON, function (request, response) {
-        models.Students.findById(request.params.student_id, function (error, student) {
+        models2.Students.findById(request.params.student_id, function (error, student) {
             if (error) {
                 response.send({error: error});
             }
@@ -81,7 +83,7 @@ router.route('/:student_id')
         });
     })
     .delete(parseUrlencoded, parseJSON, function (request, response) {
-        models.Students.findByIdAndRemove(request.params.student_id,
+        models2.Students.findByIdAndRemove(request.params.student_id,
             function (error, deleted) {
                 if (!error) {
                     response.json({student: deleted});
