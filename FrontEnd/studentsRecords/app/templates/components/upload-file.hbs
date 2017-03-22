@@ -1,5 +1,5 @@
 <div class="ui center aligned header">
-  <h2>Database Management</h2>
+  <h2>Document Management</h2>
 </div>
 <div class="ui two item inverted menu" style="background-color: #4F2683; color: #ffffff">
     <div class="active item" data-tab="up">Upload File</div>
@@ -49,21 +49,47 @@
         </div>
       </div>
     {{/if}}
-  <br><br><br>
+  <br><br>
 </div>
 <div class="ui tab" data-tab="down">
   <div>
-    <div class="ui grid">      
+    <div class="ui grid"> 
+      <div class="eight wide right aligned column">
+        <div class= "required inline field">
+            <label>Term</label>
+            <select style="width: 190px" onchange={{action 'updateTerm' value="target.value"}} class="sub{{index}}">
+                <option value="" disabled selected style="display: none;">Term</option>
+                {{#each termModel as |termChoice|}}
+                    <option value={{termChoice.id}}>{{termChoice.name}} </option>
+                {{/each}}
+            </select>
+        </div>
+      </div>
+      <div class="eight wide left aligned column">
+        <div class= "required inline field">
+            <label>Department</label>
+            <select style="width: 190px" onchange={{action 'updateProgDept' value="target.value"}} class="sub{{index}}">
+                <option value="" disabled selected style="display: none;">Department</option>
+                {{#each departmentModel as |deptChoice|}}
+                    <option value={{deptChoice.id}}>{{deptChoice.name}} </option>
+                {{/each}}
+            </select>
+        </div>
+      </div>
       <div class="eight wide centered column">
         <button class="ui fluid button" style="background-color: #4F2683; color: #ffffff" {{action 'createPDF'}}>
           <div class="ui center aligned header" style="color: #FFFFFF">
             Download Selected File
           </div>
+          <div style="color:#FFFFFF; align-content: center">
+            <i class="massive upload icon"></i>
+          </div>
         </button>
       </div>
+      
     </div>
   </div>
-  <br>
+  <br><br>
 </div>
 
 
