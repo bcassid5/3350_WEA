@@ -416,7 +416,6 @@ export default Ember.Component.extend({
                                 self.get('studentCodes').splice(index, 1);
                             }
                         }
-                        
 
                         console.log(currentStudent);
                         console.log(this.get('studentCodes'));
