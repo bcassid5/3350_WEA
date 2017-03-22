@@ -82,6 +82,11 @@ export default Ember.Component.extend({
         this.get('store').findAll('adjudication').then(function(records){
             self.set('adjudicationModel', records);
         });
+
+        this.get('store').findAll('schoolTerm').then(function(records){
+            self.set('termCodeModel', records);
+            console.log(self.get('termCodeModel'));
+        });
     },
 
     didRender() {
@@ -101,7 +106,26 @@ export default Ember.Component.extend({
             if(this.get('adjudicationTerm')!=""){
                 this.$("#adjudication").form('remove prompt', 'listname');
 
-                for(var i=1;i<this.get('studentModel').get('length');i++){
+
+                var index=0;
+                for(var j =0; j <self.get('termCodeModel').get('length'); j++){
+                    //console.log(self.get('termCodeModel').objectAt(j).get('name'));
+                    if((self.get('termCodeModel').objectAt(j).get('name'))==(self.get('adjudicationTerm'))){
+                        console.log(j);
+                        index=j;
+                    }
+                }
+
+                console.log(index);
+                console.log(this.get('termCodeModel').objectAt(index).get('id'));
+                this.get('store').query('grade', {schoolTerm: this.get('termCodeModel').objectAt(index).get('id')}).then(function(grades){
+                    self.set('gradeModel', grades);
+                    console.log(self.get('gradeModel'));
+                });
+
+
+
+                /*for(var i=1;i<this.get('studentModel').get('length');i++){
                     var currentStudent = this.get('studentModel').objectAt(i);
                     this.get('store').query('termCode',{student: currentStudent.get('id')}).then(function(terms){
                         self.set('termCodeModel', terms);
@@ -393,7 +417,7 @@ export default Ember.Component.extend({
                         }
 
                     });
-                }
+                }*/
             } else{
                 this.$("#adjudication").form('add prompt', 'listname', 'error text');
             }

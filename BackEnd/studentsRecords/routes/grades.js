@@ -4,6 +4,7 @@ var models = require('../models/programMark');
 var bodyParser = require('body-parser');
 var parseUrlencoded = bodyParser.urlencoded({extended: false});
 var parseJSON = bodyParser.json();
+var mongoose = require("mongoose");
 
 router.route('/')
     .post(parseUrlencoded, parseJSON, function (request, response) {
@@ -16,23 +17,47 @@ router.route('/')
             response.json({grade: grade});
         });
     })
-    .get(parseUrlencoded, parseJSON, function (request, response) {
+.get(parseUrlencoded, parseJSON, function (request, response) {
         var Student = request.query;
-        if (!Student) {
+        console.log('studen: '+ Student.student + " - " + Student.term);
+        if (!Student.schoolTerm && !Student.term) {
             
             models.Grades.find(function (error, grades) {
                 if (error) response.send(error);
                 response.json({grade: grades});
             });
-        } else {
+        }
+        else if (Student.schoolterm)
+        {
+            models.TermCodes.find({"name": Student.schoolTerm}, function(error, terms){
+                var termArray = [];
+                for(let i =0; i<terms.length;i++)
+                {
+                    termArray.push(new mongoose.Types.ObjectId(terms[i].id));
+                }
+                models.Grades.find({"term":{
+                        $in: termArray
+                    }
+                }, function (error2, grades){
+                    
+                    if (error) response.send(error2);
+                    
+                    
+                    response.json({grade: grades});
+                    
+                });
+                
+            });
+        } 
+        else {
             
             models.Grades.find({"term": Student.term}, function (error, grade) {
-                console.log(grade);
+                
                 if (error) response.send(error);
                 response.json({grade: grade});
             });
         }
-    });
+});
 
 router.route('/:grade_id')
     .get(parseUrlencoded, parseJSON, function (request, response) {

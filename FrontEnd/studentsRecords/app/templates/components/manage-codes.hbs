@@ -196,13 +196,13 @@
                             </div>
                             {{/if}}
                         </div>
-                        <h4 class="ui horizontal divider header" style="color: #4F2683">
-                            <i class="angle double left icon"></i><i class="angle double right icon"></i>        
-                        </h4>
-
+                        
                             <br>
                             <div id="courseCodes">
                             {{#each courseModel as |courseChoice index|}}
+                            <h4 class="ui horizontal divider header" style="color: #4F2683">
+                                <i class="angle double left icon"></i><i class="angle double right icon"></i>        
+                            </h4>
                             <div class={{index}}>
                                 <div class="ui large header" style="color: #4F2683">Option {{increment index}}
                                     <a {{action 'removeCourseOption' index}}> 
@@ -226,10 +226,6 @@
                                         <label>Course Name</label><input value = {{courseChoice.name}}  type = "text" class="name">
                                     </div>
                                 </div>
-                                <h4 class="ui horizontal divider header" style="color: #4F2683">
-                                <i class="angle double left icon"></i><i class="angle double right icon"></i>
-                                
-                                </h4>
                             {{/each}}
                             </div>
                         </div>            
@@ -299,12 +295,13 @@
                         </div>
                         {{/if}}
 
+                        
+
+                        {{#each programModel as |programChoice index|}}
                         <h4 class="ui horizontal divider header" style="color: #4F2683">
                             <i class="angle double left icon"></i><i class="angle double right icon"></i>
                         </h4>
                         <br/>
-
-                        {{#each programModel as |programChoice index|}}
                         <div class = {{index}}>
                             <div class="ui form">
                             <div class = "ui large header" style="color: #4F2683">Option {{increment index}}
@@ -342,8 +339,6 @@
                                     <a {{action 'removeProgramPlan' index index2}}><span data-tooltip="Remove This Plan"><i class=" large red minus circle icon"></i></span></a></li>
                             {{/each}}
                             </ul>
-                            <h4 class="ui horizontal divider header" style="color: #4F2683">
-                            <i class="angle double left icon"></i><i class="angle double right icon"></i></h4>
                             </div>
                         </div>
                         {{/each}}
@@ -370,9 +365,10 @@
                 <div class="ui form">
                     <br>
                     <div class="fields">
-                        <div class="field">
+                        <div style="margin-right: 12px" class="field">
                             <br/>
-                            <label style="text-align: center">Add New</label>
+                            <label style="text-align: center">Add</label>
+                            <label style="text-align:center">New</label>
                         </div>
                         <div class="required field">
                             <label>Name</label>
@@ -393,7 +389,8 @@
                         <div class="fields">
                             <div class="field">
                                 <br/>
-                                <label style="text-align: center">Option {{index}}</label>
+                                <label style="text-align: center">Option</label>
+                                <label style="text-align: center">{{increment index}}</label>
                             </div>
                             <div class="required field">
                                 <label>Name</label> <input value={{highSchoolSubjectChoice.name}} type="text"  onchange = {{action 'changeSubjectName' highSchoolSubjectChoice.id}} class = {{highSchoolSubjectChoice.id}}>
@@ -441,7 +438,7 @@
                         <div class="field">
                             <br/>
                             <label style="text-align: center">Option</label>
-                            <label style="text-align: center">{{index}}</label>
+                            <label style="text-align: center">{{increment index}}</label>
                         </div>
                         <div class="required field">
                             <label>Name</label>
@@ -513,7 +510,7 @@
                             <div class="field">
                                 <br/>
                                 <label style="text-align: center">Option</label>
-                                <label style="text-align: center">{{indexHS}}</label>
+                                <label style="text-align: center">{{increment indexHS}}</label>
                             </div>
                             <div class="required field">
                                 <label>Level</label>
@@ -578,12 +575,12 @@
                 <div class="ui form">
                     <br>
                     <div class="inline fields">
-                        <div style="margin-right: 12px" class="field">
+                        <div style="margin-right: 12px" class="inline field">
                             <br/>
                             <label style="text-align: center">Add New</label>
                         </div>
                         <div class="required field">
-                            <label>Name</label>
+                            <label>Name</label><br/>
                             <input style="width: 300px" placeholder="Name" value="" type="text" onchange={{action 'updateFacultyChoice' value="target.value"}}>
                         </div>
                         <div class="inline field">
@@ -596,7 +593,7 @@
                         {{#each facultyModel as |facultyChoice index|}}
                         <div class="inline fields">
                             <div style="margin-right: 10px" class="inline field">
-                                <label style="text-align: center" >Option {{index}}:</label>
+                                <label style="text-align: center" >Option {{increment index}}:</label>
                             </div>
                             <div style="margin-right: 12px" clas="inline field">
                                 <input style="width: 300px" value={{facultyChoice.name}} type="text"  onchange = {{action 'changeFacultyName' index}} class = {{index}} >
@@ -623,11 +620,11 @@
                             <label style="text-align: center">Add New</label>
                             </div>
                             <div class ="required inline field">
-                                <label>Name</label>
+                                <label>Name</label><br/>
                                 <input type = "text" class="name" placeholder="Name" name = "name" onchange={{action 'updateDeptName' value="target.value"}}>
                             </div>
                             <div class = "required inline field">
-                                <label>Faculty</label>
+                                <label>Faculty</label><br/>
                                 <select onchange={{action 'updateDeptFaculty' value="target.value"}} class="sub{{index}}">
                                     <option value="" disabled selected style="display: none;">Faculty</option>
                                     {{#each facultyModel as |facultyChoice|}}
@@ -651,14 +648,14 @@
                             <div class="inline fields" id="HS">
                                 <div class="inline field">
                                     <br/>
-                                    <label style="text-align: center">Option {{indexDept}}: </label>
+                                    <label style="text-align: center">Option {{increment indexDept}}: </label>
                                 </div>
                                 <div class="required inline field">
-                                    <label>Name</label>
+                                    <label>Name</label><br/>
                                     <input value={{deptChoice.name}} type="text"  onchange = {{action 'changeDeptName' indexHS}} class = "name{{indexDept}}" >
                                 </div>
                                 <div class="required inline field">
-                                    <label>Faculty</label>
+                                    <label>Faculty</label><br/>
                                     <select onchange={{action 'changeDeptFaculty' value="target.value"}}>
                                         {{#each facultyModel as |facultyChoice|}}
                                             <option value={{facultyChoice.id}} selected={{eq facultyChoice.id
@@ -714,7 +711,7 @@
                         {{#each progAdminModel as |progAdminChoice index|}}
                         <div class="inline fields">
                             <div class="inline field">
-                                <label style="text-align: center" >Option {{index}}:</label>
+                                <label style="text-align: center" >Option {{increment index}}:</label>
                             </div>
                             <div style="margin-right: 12px" clas="inline field">
                                 <input style="width: 150px" value={{progAdminChoice.name}} type="text"  onchange = {{action 'changeProgAdminName' index}} class = "progName{{index}}" >
