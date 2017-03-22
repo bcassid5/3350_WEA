@@ -107,7 +107,7 @@ var Awards = mongoose.model('awards', awardsSchema);
 
 var adjudicationSchema=mongoose.Schema(
     {
-        date: Date,
+        date: String,
         termAVG: Number,
         termUnitPassed: String,
         termUnitTotal: String,

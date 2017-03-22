@@ -125,9 +125,9 @@ export default Ember.Component.extend({
                                         for(var x=0;x<rules.get('length');x++){
                                             var currentRule = rules.objectAt(x);
                                             var logExpressions = currentRule.get('logExpressions');
+                                            codeTest=true;
                                             for(var y=0;y<logExpressions.get('length');y++){
                                                 var currentExpression = logExpressions.objectAt(y);
-                                                console.log(currentExpression.get('boolExpress'));
                                                 if(currentExpression.get('parameter')=="TotalAvg" && currentExpression.get('operator')=="="){
                                                     if(self.get('termAvg')==currentExpression.get('value')){
                                                         if(codeTest!=false){
@@ -250,70 +250,91 @@ export default Ember.Component.extend({
                                                         codeTest=false;
                                                     }
                                                 } else{
-                                                    for(var h=0;h<self.get('courseCodeModel').get('length');h++){
-                                                        var currentCourse = self.get('courseCodeModel').objectAt(h);
-                                                        var currentCourseRef = currentCourse.get('courseLetter')+currentCourse.get('courseNumber');
-                                                        var currentcourseID = currentCourse.get('id');
-                                                        if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')=="="){
-                                                            for(var f=0;f<self.get('gradeModel').get('length');f++){
-                                                                var currentStudentGrade = self.get('gradeModel').objectAt(f);
-                                                                var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
-                                                                if(currentStudentGradeCourse==currentCourseRef && currentStudentGrade.get('mark')==currentExpression.get('value')){
-                                                                    if(codeTest!=false){
-                                                                        codeTest=true;
+                                                    var notFound=true;
+                                                    if(notFound==true){
+                                                        for(var h=0;h<self.get('courseCodeModel').get('length');h++){
+                                                            var currentCourse = self.get('courseCodeModel').objectAt(h);
+                                                            var currentCourseRef = currentCourse.get('courseLetter')+currentCourse.get('courseNumber');
+                                                            if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')=="="){
+                                                                for(var f=0;f<self.get('gradeModel').get('length');f++){
+                                                                    var currentStudentGrade = self.get('gradeModel').objectAt(f);
+                                                                    var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
+                                                                    if(currentStudentGradeCourse==currentCourseRef){
+                                                                        if(currentStudentGrade.get('mark')==currentExpression.get('value')){
+                                                                            if(codeTest!=false){
+                                                                                codeTest=true;
+                                                                                notFound=false;
+                                                                            }
+                                                                        } else{
+                                                                            codeTest=false;
+                                                                        }
                                                                     }
-                                                                } else{
-                                                                    codeTest=false;
+                                                                }
+                                                            } else if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')==">="){
+                                                                for(var f=0;f<self.get('gradeModel').get('length');f++){
+                                                                    var currentStudentGrade = self.get('gradeModel').objectAt(f);
+                                                                    var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
+                                                                    if(currentStudentGradeCourse==currentCourseRef){ 
+                                                                        if(currentStudentGrade.get('mark')>=currentExpression.get('value')){
+                                                                            if(codeTest!=false){
+                                                                                codeTest=true;
+                                                                                notFound=false;
+                                                                            }
+                                                                        } else{
+                                                                            codeTest=false;
+                                                                        }
+                                                                    }
+                                                                }
+                                                            } else if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')=="<="){
+                                                                for(var f=0;f<self.get('gradeModel').get('length');f++){
+                                                                    var currentStudentGrade = self.get('gradeModel').objectAt(f);
+                                                                    var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
+                                                                    if(currentStudentGradeCourse==currentCourseRef){
+                                                                        if(currentStudentGrade.get('mark')<=currentExpression.get('value')){
+                                                                            if(codeTest!=false){
+                                                                                codeTest=true;
+                                                                                notFound=false;
+                                                                            }
+                                                                        } else{
+                                                                            codeTest=false;
+                                                                        }
+                                                                    }
+                                                                }
+                                                            } else if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')==">"){
+                                                                for(var f=0;f<self.get('gradeModel').get('length');f++){
+                                                                    var currentStudentGrade = self.get('gradeModel').objectAt(f);
+                                                                    var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
+                                                                    if(currentStudentGradeCourse==currentCourseRef){ 
+                                                                        if (currentStudentGrade.get('mark')>currentExpression.get('value')){
+                                                                            if(codeTest!=false){
+                                                                                codeTest=true;
+                                                                                notFound=false;
+                                                                            }
+                                                                        } else{
+                                                                            codeTest=false;
+                                                                        }
+                                                                    }
+                                                                }
+                                                            } else if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')=="<"){
+                                                                for(var f=0;f<self.get('gradeModel').get('length');f++){
+                                                                    var currentStudentGrade = self.get('gradeModel').objectAt(f);
+                                                                    var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
+                                                                    if(currentStudentGradeCourse==currentCourseRef) { 
+                                                                        if(currentStudentGrade.get('mark')<currentExpression.get('value')){
+                                                                            if(codeTest!=false){
+                                                                                codeTest=true;
+                                                                                notFound=false;
+                                                                            }
+                                                                        } else{
+                                                                            codeTest=false;
+                                                                        }
+                                                                    }
                                                                 }
                                                             }
-                                                        } else if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')==">="){
-                                                            for(var f=0;f<self.get('gradeModel').get('length');f++){
-                                                                var currentStudentGrade = self.get('gradeModel').objectAt(f);
-                                                                var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
-                                                                if(currentStudentGradeCourse==currentCourseRef && currentStudentGrade.get('mark')>=currentExpression.get('value')){
-                                                                    if(codeTest!=false){
-                                                                        codeTest=true;
-                                                                    }
-                                                                } else{
-                                                                    codeTest=false;
-                                                                }
-                                                            }
-                                                        } else if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')=="<="){
-                                                            for(var f=0;f<self.get('gradeModel').get('length');f++){
-                                                                var currentStudentGrade = self.get('gradeModel').objectAt(f);
-                                                                var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
-                                                                if(currentStudentGradeCourse==currentCourseRef && currentStudentGrade.get('mark')<=currentExpression.get('value')){
-                                                                    if(codeTest!=false){
-                                                                        codeTest=true;
-                                                                    }
-                                                                } else{
-                                                                    codeTest=false;
-                                                                }
-                                                            }
-                                                        } else if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')==">"){
-                                                            for(var f=0;f<self.get('gradeModel').get('length');f++){
-                                                                var currentStudentGrade = self.get('gradeModel').objectAt(f);
-                                                                var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
-                                                                if(currentStudentGradeCourse==currentCourseRef && currentStudentGrade.get('mark')>currentExpression.get('value')){
-                                                                    if(codeTest!=false){
-                                                                        codeTest=true;
-                                                                    }
-                                                                } else{
-                                                                    codeTest=false;
-                                                                }
-                                                            }
-                                                        } else if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')=="<"){
-                                                            for(var f=0;f<self.get('gradeModel').get('length');f++){
-                                                                var currentStudentGrade = self.get('gradeModel').objectAt(f);
-                                                                var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
-                                                                if(currentStudentGradeCourse==currentCourseRef && currentStudentGrade.get('mark')<currentExpression.get('value')){
-                                                                    if(codeTest!=false){
-                                                                        codeTest=true;
-                                                                    }
-                                                                } else{
-                                                                    codeTest=false;
-                                                                }
-                                                            }
+                                                        }
+
+                                                        if(notFound==true){
+                                                            codeTest=false;
                                                         }
                                                     }
                                                 }
@@ -321,7 +342,7 @@ export default Ember.Component.extend({
                                         }
 
                                         if(codeTest==true){
-                                            self.get('studentCodes').push(self.get('store').peekRecord('assessmentCode'), currentAssessmentCode.get('id'));
+                                            self.get('studentCodes').push(self.get('store').peekRecord('assessmentCode', currentAssessmentCode.get('id')));
                                         }
 
                                     }
@@ -333,9 +354,17 @@ export default Ember.Component.extend({
                                             self.get('studentCodes').splice(index, 1);
                                         }
                                     }
-                                    console.log(self.get('studentCodes'));
 
-
+                                    var record = self.get('store').createRecord('adjudication', {
+                                        date: self.get('date'),
+                                        termAVG: self.get('termAvg'),
+                                        termUnitPassed: self.get('passedTermUnit'),
+                                        termUnitTotal: self.get('totalTermUnit'),
+                                        note: self.get('adjudicationTerm'),
+                                        assessmentCode: self.get('studentCodes'),
+                                        student: self.get('store').peekRecord('student', currentStudent.get('id'))
+                                    });
+                                    record.save();
 
 
                                     self.set('gradeModel', []);

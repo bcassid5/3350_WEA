@@ -1,7 +1,7 @@
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-    date: DS.attr("date"),
+    date: DS.attr(),
     termAVG: DS.attr("number"),
     termUnitPassed: DS.attr(),
     termUnitTotal: DS.attr(),
