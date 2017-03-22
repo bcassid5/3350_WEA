@@ -156,7 +156,7 @@ export default Ember.Component.extend({
                                     if (data[i][5] == setRes.content[j]._data.name){
                                         
                                         setResID = setRes.content[j].id;
-                                        console.log(setResID);
+                                        //console.log(setResID);
                                     }    
                                 }
 
@@ -187,6 +187,7 @@ export default Ember.Component.extend({
                                     BOA: null,
                                     admissAvg: null,
                                     admissComments: null,
+                                    //ajudication: [],
                                 });
                                 //console.log(record);
                                 //console.log(record.get('type'));
@@ -217,7 +218,7 @@ export default Ember.Component.extend({
                             if (data[i][1] == "NONE FOUND"){
                                 //console.log("NF");
                             } else if (data[i][0] == ""){
-                                console.log("empty");
+                                //console.log("empty");
                             } else {
                                 //console.log(studentList);
                                 //console.log(student);
@@ -408,8 +409,8 @@ export default Ember.Component.extend({
                                 
                                 if (data[ch][1] == "NONE FOUND"){
                                     input += data[i][1];
-                                    console.log(input);
-                                    console.log("END");
+                                    //console.log(input);
+                                    //console.log("END");
                                     for(var j=0; j<student.content.length; j++){
                                         if (saveNum == student.content[j]._data.number){
                                             var updatedStudent = self.get('store').peekRecord('student', student.content[j].id);
@@ -422,9 +423,9 @@ export default Ember.Component.extend({
                                     save = true;
                                 } else {
                                     input += data[i][1];
-                                    console.log(input);
-                                    console.log(saveNum);
-                                    console.log("LOOP");
+                                    //console.log(input);
+                                    //console.log(saveNum);
+                                    //console.log("LOOP");
                                     save = false;
                                 }
                                 
@@ -491,7 +492,7 @@ export default Ember.Component.extend({
                                 }
                             } else {
                                 ch = i+1;
-                                console.log(data[ch][0]);
+                                //console.log(data[ch][0]);
                                 if (data[ch][0] != null){
                                     input += data[i][1];
                                     //console.log(input);
@@ -501,7 +502,7 @@ export default Ember.Component.extend({
                                             var updatedStudent = self.get('store').peekRecord('student', student.content[j].id);
                                             updatedStudent.set('BOA', input);
                                             updatedStudent.save();
-                                            console.log(updatedStudent);
+                                            //console.log(updatedStudent);
                                         }
                                     }
                                     input = "";
@@ -547,7 +548,7 @@ export default Ember.Component.extend({
                                 }
                             } else {
                                 ch = i+1;
-                                console.log(data[ch][0]);
+                                //console.log(data[ch][0]);
                                 if (data[ch][0] != null){
                                     input += data[i][1];
                                     for(var j=0; j<student.content.length; j++){
@@ -555,7 +556,7 @@ export default Ember.Component.extend({
                                             var updatedStudent = self.get('store').peekRecord('student', student.content[j].id);
                                             updatedStudent.set('regComments', input);
                                             updatedStudent.save();
-                                            console.log(updatedStudent);
+                                            //console.log(updatedStudent);
                                         }
                                     }
                                     input = "";
@@ -589,15 +590,15 @@ export default Ember.Component.extend({
                             if (data[i][1] == "NONE FOUND"){
                                 //console.log("NF");
                             } else if (data[i][0] == ""){
-                                console.log("empty");
+                                //console.log("empty");
                             } else {
                                 for(var j=0; j<student.content.length; j++){
                                     if (student.content[j]._data.number == data[i][0]){
                                         var ch = i;
                                         do {
                                             ch++; 
-                                            console.log(ch);
-                                            console.log(data[ch][1]);
+                                  //          console.log(ch);
+                                    //        console.log(data[ch][1]);
                                             if (data[ch][1]=="NONE FOUND"){
                                                 _break = false;
                                             } else if (data[ch][0]!=null){
@@ -608,7 +609,7 @@ export default Ember.Component.extend({
                                             }
                                             
                                             var im = self.get('store').peekRecord('student', student.content[j].id);
-                                            console.log(im);
+                                         //   console.log(im);
                                             var record = myStore.createRecord('award', {
                                                 note: data[i][1],
                                                 student: im,

@@ -14,5 +14,5 @@ export default DS.Model.extend({
   admissComments: DS.attr(),
   advStanding: DS.hasMany('adv-standing'),
   mark: DS.hasMany('grade'),
-  ajudication: DS.hasMany('ajudication'),
+  //ajudication: DS.hasMany('ajudication'),
 });

@@ -286,8 +286,8 @@ export default Ember.Component.extend({
     
     Ember.$('.menu .item').tab({'onVisible':function(){
       self.set('studentProgramModel', self.get('store').peekAll('program-record'));
-      console.log('load');
-      console.log(self.get('studentProgramModel').objectAt(0).get('load'));
+      //console.log('load');
+      //console.log(self.get('studentProgramModel').objectAt(0).get('load'));
       self.set('allowprograms', true);
       
     }});

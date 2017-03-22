@@ -17,7 +17,7 @@ var studentsSchema = mongoose.Schema(
         highSchoolGrade: {type: mongoose.Schema.ObjectId, ref: 'HighSchoolGrades'},
         mark: [{type: mongoose.Schema.ObjectId, ref: 'Grades'}],
         awards: [{type: mongoose.Schema.ObjectId, ref: 'Awards'}],
-        adjudication: [{type: mongoose.Schema.ObjectId, ref: 'Adjudications'}]
+        //adjudication: [{type: mongoose.Schema.ObjectId, ref: 'Adjudications'}]
     }
 );
 studentsSchema.plugin(mongoosePaginate);
