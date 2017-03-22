@@ -25,7 +25,7 @@
                         </div>
                         <div class="ui violet progress" data-percent="0" id="progBar">
                         <div class="bar">
-                            
+                            <div class="progress"></div>
                         </div>
                         <div class="label">Progress of Adjudication</div>
                     </div>
@@ -59,7 +59,10 @@
                             View
                         </button>
                         {{#if showResults}}
-                            <table class="ui celled table">
+                            <button class="ui violet button" {{action 'export'}}>
+                                Export table to PDF
+                            </button>
+                            <table class="ui celled table" id="table">
                                 <thead>
                                     <tr>
                                         <th>Student</th>

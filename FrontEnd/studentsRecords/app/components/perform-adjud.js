@@ -474,6 +474,26 @@ export default Ember.Component.extend({
 
         viewAdjudication(){
             this.set('showResults', !this.get('showResults'));
+        },
+
+        export() {
+            var self = this;
+            var doc = new jsPDF();
+            //doc.text("Adjudication: " + this.get("adjudicationTermToView"), 14, 16);
+            var elem = document.getElementById("table");
+            var res = doc.autoTableHtmlToJson(elem);
+            doc.autoTable(res.columns, res.data, {
+                startY: 20, 
+                theme: 'grid',
+                headerStyles: {fillColor: [79, 38, 131]},
+                addPageContent: function(data) {
+                    doc.text("Adjudication: " + self.get("adjudicationTermToView"), 15, 15);
+                }
+            });
+            doc.output("dataurlnewwindow");
         }
     }
 });
+
+
+                    
