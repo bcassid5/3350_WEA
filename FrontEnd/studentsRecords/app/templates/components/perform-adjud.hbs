@@ -2,27 +2,90 @@
     <h2>Adjudication</h2>
 </div>
 
-<div class = "ui grid">
-    <div class="ui left aligned twelve wide column">
-        <div class = "ui form" id = "rules">
-            <br/>
-            <div id="adjudication">
-                <div class = "ui form">
-                    <div class = "field">
-                        <label name="list" style="font-size: 18px">Select the term for which adjudication is to be performed: </label>
-                        <select onchange={{action 'selectTerm' value="target.value"}} name = "listname">
-                            <option hidden>Select</option>
-                            {{#each termModel as |termChoice index|}}
-                                <option value={{index}}> {{termChoice.name}} </option>    
-                            {{/each}}
-                        </select>
+<div class="ui two item inverted menu" style="background-color: #4F2683; color: #ffffff">
+    <div class="active item" data-tab="perform">Perform</div>
+    <div class="item" data-tab="view">View</div>
+</div>
+
+<div class="ui active tab" data-tab="perform">
+    <div class = "ui grid">
+        <div class="ui left aligned twelve wide column">
+            <div class = "ui form" id = "rules">
+                <br/>
+                <div id="adjudication">
+                    <div class = "ui form">
+                        <div class = "field">
+                            <label name="list" style="font-size: 18px">Select the term for which adjudication is to be performed: </label>
+                            <select onchange={{action 'selectTerm' value="target.value"}} name = "listname">
+                                <option hidden>Select</option>
+                                {{#each termModel as |termChoice index|}}
+                                    <option value={{index}}> {{termChoice.name}} </option>    
+                                {{/each}}
+                            </select>
+                        </div>
+                        <button class="ui violet button" {{action 'adjudicate'}} >
+                            Adjudicate
+                        </button>
                     </div>
-                    <button class="ui violet button" {{action 'adjudicate'}} >
-                        Adjudicate
-                    </button>
                 </div>
-            </div>
-            <br/>
-        </div>      
+                <br/>
+            </div>      
+        </div>
+    </div>
+</div>
+<div class="ui tab" data-tab="view">
+    <div class = "ui grid">
+        <div class="ui left aligned twelve wide column">
+            <div class = "ui form" id = "rules">
+                <br/>
+                <div id="adjudicationView">
+                    <div class = "ui form">
+                        <div class = "field">
+                            <label name="list" style="font-size: 18px">Select the term for which to view adjudication results: </label>
+                            <select onchange={{action 'selectTermToView' value="target.value"}} name = "listname">
+                                <option hidden>Select</option>
+                                {{#each termModel as |termChoice index|}}
+                                    <option value={{index}}> {{termChoice.name}} </option>    
+                                {{/each}}
+                            </select>
+                        </div>
+                        <button class="ui violet button" {{action 'viewAdjudication'}} >
+                            View
+                        </button>
+                        {{#if showResults}}
+                            <table class="ui celled table">
+                                <thead>
+                                    <tr>
+                                        <th>Student</th>
+                                        <th>Term Average</th>
+                                        <th>Term Units</th>
+                                        <th>Term Units Received</th>
+                                        <th>Assessment Codes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {{#each adjudicationModel as |adjudicationChoice index2|}}
+                                        {{#if (eq adjudicationChoice.note adjudicationTermToView)}}
+                                        <tr class={{index2}}>
+                                            <td>{{adjudicationChoice.student.firstName}} {{adjudicationChoice.student.lastName}}<br/>{{adjudicationChoice.student.number}}</td>
+                                            <td>{{adjudicationChoice.termAVG}}</td>
+                                            <td>{{adjudicationChoice.termUnitTotal}}</td>
+                                            <td>{{adjudicationChoice.termUnitPassed}}</td>
+                                            <td>
+                                                {{#each adjudicationChoice.assessmentCode as |codeChoice|}}
+                                                {{codeChoice.code}}<br/>
+                                                {{/each}}
+                                            </td>
+                                        </tr>
+                                    {{/if}}
+                                {{/each}}
+                                </tbody>
+                            </table>
+                        {{/if}}
+                    </div>
+                </div>
+                <br/>
+            </div>      
+        </div>
     </div>
 </div>

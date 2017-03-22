@@ -12,8 +12,11 @@ export default Ember.Component.extend({
     logExpModel: null,    
     ruleModel: null,  
     codeModel: null,
+    adjudicationModel:null,
 
     adjudicationTerm:null,
+    adjudicationTermToView:null,
+    adjudicationStudent:null,
 
     limit:null,
     offset:null,
@@ -26,11 +29,14 @@ export default Ember.Component.extend({
     date:null,
     studentCodes:null,
 
+    showResults:null,
+
     init(){
         this._super(...arguments);
         var self = this;
 
         this.adjudicationTerm="";
+        this.adjudicationTermToView="";
         this.termAvg=0.0;
         this.gradeSum=0.0;
         this.gradeModel=[];
@@ -38,6 +44,7 @@ export default Ember.Component.extend({
         this.totalTermUnit=0;
         this.passedTermUnit=0;
         this.studentCodes=[];
+        this.showResults=false;
 
         this.get('store').findAll('schoolTerm').then(function (records) {
            self.set('termModel', records);
@@ -72,6 +79,14 @@ export default Ember.Component.extend({
         this.get('store').findAll('assessmentCode').then(function(records){
             self.set('codeModel', records);
         });
+
+        this.get('store').findAll('adjudication').then(function(records){
+            self.set('adjudicationModel', records);
+        });
+    },
+
+    didRender() {
+        Ember.$('.menu .item').tab();
     },
 
     actions: {
@@ -89,6 +104,7 @@ export default Ember.Component.extend({
 
                 for(var i=0;i<this.get('studentModel').get('length');i++){
                     var currentStudent = this.get('studentModel').objectAt(i);
+                    this.set('adjudicationStudent', this.get('store').peekRecord('student', currentStudent.get('id')));
                     this.get('store').query('termCode',{student: currentStudent.get('id')}).then(function(terms){
                         self.set('termCodeModel', terms);
                         self.set('gradeModel', []);
@@ -355,7 +371,8 @@ export default Ember.Component.extend({
                                         }
                                     }
 
-                                    var record = self.get('store').createRecord('adjudication', {
+                                    console.log(self.get('adjudicationStudent'));
+                                    /*var record = self.get('store').createRecord('adjudication', {
                                         date: self.get('date'),
                                         termAVG: self.get('termAvg'),
                                         termUnitPassed: self.get('passedTermUnit'),
@@ -364,7 +381,7 @@ export default Ember.Component.extend({
                                         assessmentCode: self.get('studentCodes'),
                                         student: self.get('store').peekRecord('student', currentStudent.get('id'))
                                     });
-                                    record.save();
+                                    record.save();*/
 
 
                                     self.set('gradeModel', []);
@@ -383,6 +400,15 @@ export default Ember.Component.extend({
             } else{
                 this.$("#adjudication").form('add prompt', 'listname', 'error text');
             }
+        },
+
+        selectTermToView(index){
+            var term = this.get('termModel').objectAt(index).get('name');
+            this.set('adjudicationTermToView', term);
+        },
+
+        viewAdjudication(){
+            this.set('showResults', !this.get('showResults'));
         }
     }
 });
