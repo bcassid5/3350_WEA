@@ -16,7 +16,6 @@ export default Ember.Component.extend({
 
     adjudicationTerm:null,
     adjudicationTermToView:null,
-    adjudicationStudent:null,
 
     limit:null,
     offset:null,
@@ -102,9 +101,8 @@ export default Ember.Component.extend({
             if(this.get('adjudicationTerm')!=""){
                 this.$("#adjudication").form('remove prompt', 'listname');
 
-                for(var i=0;i<this.get('studentModel').get('length');i++){
+                for(var i=1;i<this.get('studentModel').get('length');i++){
                     var currentStudent = this.get('studentModel').objectAt(i);
-                    this.set('adjudicationStudent', this.get('store').peekRecord('student', currentStudent.get('id')));
                     this.get('store').query('termCode',{student: currentStudent.get('id')}).then(function(terms){
                         self.set('termCodeModel', terms);
                         self.set('gradeModel', []);
@@ -371,8 +369,8 @@ export default Ember.Component.extend({
                                         }
                                     }
 
-                                    console.log(self.get('adjudicationStudent'));
-                                    /*var record = self.get('store').createRecord('adjudication', {
+                                    console.log(currentStudent);
+                                    var record = self.get('store').createRecord('adjudication', {
                                         date: self.get('date'),
                                         termAVG: self.get('termAvg'),
                                         termUnitPassed: self.get('passedTermUnit'),
@@ -381,8 +379,7 @@ export default Ember.Component.extend({
                                         assessmentCode: self.get('studentCodes'),
                                         student: self.get('store').peekRecord('student', currentStudent.get('id'))
                                     });
-                                    record.save();*/
-
+                                    record.save();
 
                                     self.set('gradeModel', []);
                                     self.set('gradeSum', 0.0);
