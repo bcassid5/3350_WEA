@@ -31,7 +31,7 @@ router.route('/')
         {
             console.log("student.department");
             models.Programs.find({"department": Student.department}, function (error, programs) {
-                console.log("program Length" + programs.length);
+                
                 if (error) response.send(error);
                 var programArray = [];
                 for(let i =0; i<programs.length;i++)
@@ -45,21 +45,21 @@ router.route('/')
                     
                     if (error) response.send(error2);
                     var termArray = [];
-                    console.log('student program length: '+studentPrograms.length) 
+                   
                     for(let j =0; j<studentPrograms.length; j++)
                     {
-                        termArray.push(studentPrograms[j].semester)
-                        console.log(studentPrograms[j].semester)
+                        termArray.push(studentPrograms[j].semester);
+                        
                     }
                     models.TermCodes.find({"_id": { $in: termArray}}, function (error3, studentTerms){
-                        console.log("student terms:" + studentTerms.length);
+                        
                         var studentArray =[];
                         for (let k =0;k<studentTerms.length;k++)
                         {
-                            studentArray.push(studentTerms[k].student)
+                            studentArray.push(studentTerms[k].student);
                         }
                         models2.Students.find({"_id": { $in: studentArray}}, function (error4, students){
-                            console.log("students:" + students[0].name);
+                            
                             
                             response.json({programRecord: studentPrograms});
                         });
@@ -72,9 +72,9 @@ router.route('/')
             });
         }
         else {
-            console.log("else");
+            
             models.ProgramRecords.find({"semester": Student.term}, function (error, programRecord) {
-                console.log("else   " + programRecord.length);
+               
                 if (error) response.send(error);
                 response.json({programRecord: programRecord});
             });

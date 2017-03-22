@@ -151,9 +151,7 @@ export default Ember.Component.extend({
         });
         this.get('store').findAll('department').then(function(records){
             self.set('departmentModel', records);
-            self.get('store').query('program-record',{department: self.get('departmentModel').objectAt(0).get('id')}).then(function(grades){
-                console.log(grades.get('length'));
-           });
+            
         });
         this.get('store').findAll('progAdmin').then(function(records){
             self.set('progAdminModel', records);

@@ -87,6 +87,7 @@ export default Ember.Component.extend({
   newProgramPlans: [],
   newProgramName: null,
   newProgramIndex: null,
+  
   USP01IsPermitted: Ember.computed(function(){ //Manage system roles
     var authentication = this.get('oudaAuth');
     if (authentication.getName === "Root") {
@@ -152,6 +153,7 @@ export default Ember.Component.extend({
 
   init() {
     this._super(...arguments);
+    
 
     this.get('store').findAll('highSchool').then(function (records) {
             self.set('highSchoolModel', records);
@@ -159,6 +161,7 @@ export default Ember.Component.extend({
 
         this.get('store').findAll('highschool-subject').then(function(records){
             self.set('highSchoolSubjectModel', records);
+            
         });
 
         this.get('store').findAll('high-school-course').then(function(records){
@@ -714,7 +717,13 @@ export default Ember.Component.extend({
     },
     toggleGradeEdit()
     {
-      
+      var self = this;
+      // this.get('store').query('student',{department: "58d2a553a3ddd62848d60587"}).then(function(grades){
+      //           console.log(grades.get('length'));
+      //           self.get('store').query('student',{program: self.get('programModel').objectAt(0).get('id')}).then(function(grades2){
+      //           console.log(grades2.get('length'));
+      //      });
+      //      });
       if(this.get('USP01IsPermitted'))
       {
         this.set('enableGradeEdit', !(this.get('enableGradeEdit')));
