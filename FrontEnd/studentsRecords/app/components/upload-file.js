@@ -5,11 +5,11 @@ export default Ember.Component.extend({
     store: Ember.inject.service(),
     fileName: null,
     success: false,
-    gen: false,
-    res: false,
-    stu: false,
-    fac: false,
-    dep: false,
+    //gen: false,
+    //res: false,
+    //stu: false,
+    //fac: false,
+    //dep: false,
     tableHeader: [],
     tableData: null,
     isLoading: false,
@@ -109,7 +109,7 @@ export default Ember.Component.extend({
                     });
                     //console.log(record.get('type'));
                     record.save();
-                    this.set('gen', true);
+                    //this.set('gen', true);
                 }
             } else if (file.name == "residencies.xlsx"){
                 for (var i=1; i<4; i++){
@@ -119,11 +119,11 @@ export default Ember.Component.extend({
                     });
                     //console.log(record.get('type'));
                     record.save();
-                    this.set('res', true);
+                    //this.set('res', true);
                 }
             } else if (file.name == "students.xlsx"){
                 
-                if (this.get('res')&&this.get('gen')){
+                //if (this.get('res')&&this.get('gen')){
                     var self = this;
                     var myStore = this.get('store');
 
@@ -196,14 +196,14 @@ export default Ember.Component.extend({
                             
                         });
                     });
-                    this.set('stu', true);
-                } else {
-                    alert('ERROR: must upload residency and gender documents first');
-                }
+                    //this.set('stu', true);
+                //} else {
+                  //  alert('ERROR: must upload residency and gender documents first');
+                //}
   
             } else if (file.name == "AdvancedStanding.xlsx"){
                 
-                if(this.get('stu')){
+               // if(this.get('stu')){
                     var self = this;
                     var myStore = this.get('store');
                     var addNumList = [];
@@ -270,9 +270,9 @@ export default Ember.Component.extend({
                             }
                         }
                     });
-                } else {
-                    alert('ERROR: must upload student document first');
-                }
+               // } else {
+                //    alert('ERROR: must upload student document first');
+               // }
 
                 
             } else if (file.name == "termcodes.xlsx") {
@@ -329,7 +329,7 @@ export default Ember.Component.extend({
                 }
             } else if (file.name == "averages.xlsx"){
                 
-                if(this.get('stu')){
+               // if(this.get('stu')){
                     var self = this;
                     var _break = true;
                     var saveNum;
@@ -376,14 +376,14 @@ export default Ember.Component.extend({
                             }*/
                         }    
                     });
-                } else {
-                    alert('ERROR: must upload student document first');
-                }
+               // } else {
+                 //   alert('ERROR: must upload student document first');
+                //}
                 
                 
             } else if (file.name == "AdmissionComments.xlsx"){
                
-                if(this.get('stu')){
+                //if(this.get('stu')){
                     var self = this;
                     var _break = true;
                     var saveNum;
@@ -432,9 +432,9 @@ export default Ember.Component.extend({
                             }
                         }    
                     });
-                } else {
-                    alert('ERROR: must upload student document first');
-                }
+              //  } else {
+               //     alert('ERROR: must upload student document first');
+                //}
                
                 
                 
@@ -444,10 +444,10 @@ export default Ember.Component.extend({
                     department: [],
                 });
                 record.save();
-                this.set('fac', true);
+                //this.set('fac', true);
             } else if (file.name == "Departments.xlsx"){
                 
-                if(this.get('fac')){
+                //if(this.get('fac')){
                     var self = this;
                     this.get('store').findAll('faculty').then(function (faculty) {
                         var fac = self.get('store').peekRecord('faculty', faculty.content[0].id);
@@ -460,16 +460,16 @@ export default Ember.Component.extend({
                             record.save();
                         }
                     });
-                    this.set('dep', true);
-                } else {
-                    alert('ERROR: must upload faculty file first');
-                }
+                  //  this.set('dep', true);
+                //} else {
+                 //   alert('ERROR: must upload faculty file first');
+               // }
 
                 
                 
             } else if (file.name == "BasisOfAdmission.xlsx"){
                 
-                if(this.get('stu')){
+                //if(this.get('stu')){
                     var self = this;
                     var _break = true;
                     var saveNum;
@@ -518,14 +518,14 @@ export default Ember.Component.extend({
                             }
                         }    
                     });
-                } else {
-                    alert('ERROR: must upload student document first');
-                }
+               // } else {
+                 //   alert('ERROR: must upload student document first');
+                //}
                 
                 
             } else if (file.name == "RegistrationComments.xlsx"){
                 
-                if(this.get('stu')){
+              //  if(this.get('stu')){
                     var self = this;
                     var _break = true;
                     var saveNum;
@@ -569,14 +569,14 @@ export default Ember.Component.extend({
                             }
                         }    
                     });
-                } else {
-                    alert('ERROR: must upload student document first');
-                }
+               // } else {
+                 //   alert('ERROR: must upload student document first');
+                //}
 
                 
             } else if (file.name == "scholarshipsAndAwards.xlsx"){
                 
-                if(this.get('stu')){
+               // if(this.get('stu')){
                     var self = this;
                     var myStore = this.get('store');
                     var _break = true;
@@ -627,14 +627,14 @@ export default Ember.Component.extend({
                             }
                         }
                     });
-                } else {
-                    alert('ERROR: must upload student document first');
-                }
+            //    } else {
+              //      alert('ERROR: must upload student document first');
+                //}
 
                 
             } else if (file.name == "ProgramAdministrations.xlsx"){
                 
-                if(this.get('dep')){
+              //  if(this.get('dep')){
                     var self = this;
                     var thisDept;
 
@@ -654,9 +654,9 @@ export default Ember.Component.extend({
                             record.save();
                         }
                     }); 
-                } else {
-                    alert('ERROR: must upload department document first');
-                }
+              //  } else {
+                //    alert('ERROR: must upload department document first');
+                //}
 
                    
             } else if (file.name == "AssessmentCodes.xlsx"){
