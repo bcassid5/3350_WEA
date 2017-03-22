@@ -93,9 +93,9 @@ export default Ember.Component.extend({
     },
 
     didRender(){
-            Ember.$('.menu .item').tab();
-            var self = this;
-            this.$('#progBar').progress('set percent', self.get("progress"));
+        Ember.$('.menu .item').tab();
+        var self = this;
+        this.$('#progBar').progress('set percent', self.get("progress"));
     },
     actions: {
 
@@ -108,7 +108,7 @@ export default Ember.Component.extend({
 
         adjudicate(){
             var self = this;
-            // for(var t=1; t<=100; t++){
+// for(var t=1; t<=100; t++){
             //     progress=t;
             //     self.$('#progBar').progress('set percent', progress);
             //}
@@ -157,293 +157,294 @@ export default Ember.Component.extend({
                     //console.log(tempTerms);
                     console.log(tempGrades);
 
+                    if(tempGrades.get('length')!=0){
                     
-                    for(var k=0;k<tempGrades.get('length');k++){
-                        var temp = 0.0;
-                        temp=self.get('gradeSum')+tempGrades.objectAt(k).get('mark');
-                        self.set('gradeSum',temp);
+                        for(var k=0;k<tempGrades.get('length');k++){
+                            var temp = 0.0;
+                            temp=self.get('gradeSum')+tempGrades.objectAt(k).get('mark');
+                            self.set('gradeSum',temp);
 
-                        var temp2 = 0;
-                        temp2=self.get('totalTermUnit')+tempGrades.objectAt(k).get('course').get('unit');
-                        self.set('totalTermUnit', temp2);
+                            var temp2 = 0;
+                            temp2=self.get('totalTermUnit')+tempGrades.objectAt(k).get('course').get('unit');
+                            self.set('totalTermUnit', temp2);
 
-                        if(tempGrades.objectAt(k).get('mark')>=50){
-                            var temp3=0;
-                            temp3=self.get('passedTermUnit')+tempGrades.objectAt(k).get('course').get('unit');
-                            self.set('passedTermUnit', temp3);
+                            if(tempGrades.objectAt(k).get('mark')>=50){
+                                var temp3=0;
+                                temp3=self.get('passedTermUnit')+tempGrades.objectAt(k).get('course').get('unit');
+                                self.set('passedTermUnit', temp3);
+                            }
                         }
-                    }
 
-                    var avg = (self.get('gradeSum'))/(tempGrades.get('length'));
-                    self.set('termAvg', avg);
+                        var avg = (self.get('gradeSum'))/(tempGrades.get('length'));
+                        self.set('termAvg', avg);
 
-                    self.set('date', Date().toString());
+                        self.set('date', Date().toString());
 
-                    var codeTest=true;
-                    for(var w=0;w<self.get('codeModel').get('length');w++){
-                        var currentAssessmentCode = self.get('codeModel').objectAt(w);
-                        var rules = currentAssessmentCode.get('rule');
-                        for(var x=0;x<rules.get('length');x++){
-                            var currentRule = rules.objectAt(x);
-                            var logExpressions = currentRule.get('logExpressions');
-                            codeTest=true;
-                            for(var y=0;y<logExpressions.get('length');y++){
-                                var currentExpression = logExpressions.objectAt(y);
-                                if(currentExpression.get('parameter')=="TotalAvg" && currentExpression.get('operator')=="="){
-                                    if(self.get('termAvg')==currentExpression.get('value')){
-                                        if(codeTest!=false){
-                                            codeTest=true;
+                        var codeTest=true;
+                        for(var w=0;w<self.get('codeModel').get('length');w++){
+                            var currentAssessmentCode = self.get('codeModel').objectAt(w);
+                            var rules = currentAssessmentCode.get('rule');
+                            for(var x=0;x<rules.get('length');x++){
+                                var currentRule = rules.objectAt(x);
+                                var logExpressions = currentRule.get('logExpressions');
+                                codeTest=true;
+                                for(var y=0;y<logExpressions.get('length');y++){
+                                    var currentExpression = logExpressions.objectAt(y);
+                                    if(currentExpression.get('parameter')=="TotalAvg" && currentExpression.get('operator')=="="){
+                                        if(self.get('termAvg')==currentExpression.get('value')){
+                                            if(codeTest!=false){
+                                                codeTest=true;
+                                            }
+                                        } else{
+                                            codeTest=false;
+                                        }
+                                    } else if(currentExpression.get('parameter')=="TotalAvg" && currentExpression.get('operator')==">="){
+                                        if(self.get('termAvg')>=currentExpression.get('value')){
+                                            if(codeTest!=false){
+                                                codeTest=true;
+                                            }
+                                        } else{
+                                            codeTest=false;
+                                        }
+                                    } else if(currentExpression.get('parameter')=="TotalAvg" && currentExpression.get('operator')=="<="){
+                                        if(self.get('termAvg')<=currentExpression.get('value')){
+                                            if(codeTest!=false){
+                                                codeTest=true;
+                                            }
+                                        } else{
+                                            codeTest=false;
+                                        }
+                                    } else if(currentExpression.get('parameter')=="TotalAvg" && currentExpression.get('operator')==">"){
+                                        if(self.get('termAvg')>currentExpression.get('value')){
+                                            if(codeTest!=false){
+                                                codeTest=true;
+                                            }
+                                        } else{
+                                            codeTest=false;
+                                        }
+                                    } else if(currentExpression.get('parameter')=="TotalAvg" && currentExpression.get('operator')=="<"){
+                                        if(self.get('termAvg')<currentExpression.get('value')){
+                                            if(codeTest!=false){
+                                                codeTest=true;
+                                            }
+                                        } else{
+                                            codeTest=false;
+                                        }
+                                    } else if(currentExpression.get('parameter')=="TermUnitPassed" && currentExpression.get('operator')=="="){
+                                        if(self.get('passedTermUnit')==currentExpression.get('value')){
+                                            if(codeTest!=false){
+                                                codeTest=true;
+                                            }
+                                        } else{
+                                            codeTest=false;
+                                        }
+                                    } else if(currentExpression.get('parameter')=="TermUnitPassed" && currentExpression.get('operator')==">="){
+                                        if(self.get('passedTermUnit')>=currentExpression.get('value')){
+                                            if(codeTest!=false){
+                                                codeTest=true;
+                                            }
+                                        } else{
+                                            codeTest=false;
+                                        }
+                                    } else if(currentExpression.get('parameter')=="TermUnitPassed" && currentExpression.get('operator')=="<="){
+                                        if(self.get('passedTermUnit')<=currentExpression.get('value')){
+                                            if(codeTest!=false){
+                                                codeTest=true;
+                                            }
+                                        } else{
+                                            codeTest=false;
+                                        }
+                                    } else if(currentExpression.get('parameter')=="TermUnitPassed" && currentExpression.get('operator')==">"){
+                                        if(self.get('passedTermUnit')>currentExpression.get('value')){
+                                            if(codeTest!=false){
+                                                codeTest=true;
+                                            }
+                                        } else{
+                                            codeTest=false;
+                                        }
+                                    } else if(currentExpression.get('parameter')=="TermUnitPassed" && currentExpression.get('operator')=="<"){
+                                        if(self.get('passedTermUnit')<currentExpression.get('value')){
+                                            if(codeTest!=false){
+                                                codeTest=true;
+                                            }
+                                        } else{
+                                            codeTest=false;
+                                        }
+                                    } else if(currentExpression.get('parameter')=="TermUnitTotal" && currentExpression.get('operator')=="="){
+                                        if(self.get('totalTermUnit')==currentExpression.get('value')){
+                                            if(codeTest!=false){
+                                                codeTest=true;
+                                            }
+                                        } else{
+                                            codeTest=false;
+                                        }
+                                    }
+                                    else if(currentExpression.get('parameter')=="TermUnitTotal" && currentExpression.get('operator')==">="){
+                                        if(self.get('totalTermUnit')>=currentExpression.get('value')){
+                                            if(codeTest!=false){
+                                                codeTest=true;
+                                            }
+                                        } else{
+                                            codeTest=false;
+                                        }
+                                    } else if(currentExpression.get('parameter')=="TermUnitTotal" && currentExpression.get('operator')=="<="){
+                                        if(self.get('totalTermUnit')<=currentExpression.get('value')){
+                                            if(codeTest!=false){
+                                                codeTest=true;
+                                            }
+                                        } else{
+                                            codeTest=false;
+                                        }
+                                    } else if(currentExpression.get('parameter')=="TermUnitTotal" && currentExpression.get('operator')==">"){
+                                        if(self.get('totalTermUnit')>currentExpression.get('value')){
+                                            if(codeTest!=false){
+                                                codeTest=true;
+                                            }
+                                        } else{
+                                            codeTest=false;
+                                        }
+                                    } else if(currentExpression.get('parameter')=="TermUnitTotal" && currentExpression.get('operator')=="<"){
+                                        if(self.get('totalTermUnit')<currentExpression.get('value')){
+                                            if(codeTest!=false){
+                                                codeTest=true;
+                                            }
+                                        } else{
+                                            codeTest=false;
                                         }
                                     } else{
-                                        codeTest=false;
-                                    }
-                                } else if(currentExpression.get('parameter')=="TotalAvg" && currentExpression.get('operator')==">="){
-                                    if(self.get('termAvg')>=currentExpression.get('value')){
-                                        if(codeTest!=false){
-                                            codeTest=true;
-                                        }
-                                    } else{
-                                        codeTest=false;
-                                    }
-                                } else if(currentExpression.get('parameter')=="TotalAvg" && currentExpression.get('operator')=="<="){
-                                    if(self.get('termAvg')<=currentExpression.get('value')){
-                                        if(codeTest!=false){
-                                            codeTest=true;
-                                        }
-                                    } else{
-                                        codeTest=false;
-                                    }
-                                } else if(currentExpression.get('parameter')=="TotalAvg" && currentExpression.get('operator')==">"){
-                                    if(self.get('termAvg')>currentExpression.get('value')){
-                                        if(codeTest!=false){
-                                            codeTest=true;
-                                        }
-                                    } else{
-                                        codeTest=false;
-                                    }
-                                } else if(currentExpression.get('parameter')=="TotalAvg" && currentExpression.get('operator')=="<"){
-                                    if(self.get('termAvg')<currentExpression.get('value')){
-                                        if(codeTest!=false){
-                                            codeTest=true;
-                                        }
-                                    } else{
-                                        codeTest=false;
-                                    }
-                                } else if(currentExpression.get('parameter')=="TermUnitPassed" && currentExpression.get('operator')=="="){
-                                    if(self.get('passedTermUnit')==currentExpression.get('value')){
-                                        if(codeTest!=false){
-                                            codeTest=true;
-                                        }
-                                    } else{
-                                        codeTest=false;
-                                    }
-                                } else if(currentExpression.get('parameter')=="TermUnitPassed" && currentExpression.get('operator')==">="){
-                                    if(self.get('passedTermUnit')>=currentExpression.get('value')){
-                                        if(codeTest!=false){
-                                            codeTest=true;
-                                        }
-                                    } else{
-                                        codeTest=false;
-                                    }
-                                } else if(currentExpression.get('parameter')=="TermUnitPassed" && currentExpression.get('operator')=="<="){
-                                    if(self.get('passedTermUnit')<=currentExpression.get('value')){
-                                        if(codeTest!=false){
-                                            codeTest=true;
-                                        }
-                                    } else{
-                                        codeTest=false;
-                                    }
-                                } else if(currentExpression.get('parameter')=="TermUnitPassed" && currentExpression.get('operator')==">"){
-                                    if(self.get('passedTermUnit')>currentExpression.get('value')){
-                                        if(codeTest!=false){
-                                            codeTest=true;
-                                        }
-                                    } else{
-                                        codeTest=false;
-                                    }
-                                } else if(currentExpression.get('parameter')=="TermUnitPassed" && currentExpression.get('operator')=="<"){
-                                    if(self.get('passedTermUnit')<currentExpression.get('value')){
-                                        if(codeTest!=false){
-                                            codeTest=true;
-                                        }
-                                    } else{
-                                        codeTest=false;
-                                    }
-                                } else if(currentExpression.get('parameter')=="TermUnitTotal" && currentExpression.get('operator')=="="){
-                                    if(self.get('totalTermUnit')==currentExpression.get('value')){
-                                        if(codeTest!=false){
-                                            codeTest=true;
-                                        }
-                                    } else{
-                                        codeTest=false;
-                                    }
-                                }
-                                else if(currentExpression.get('parameter')=="TermUnitTotal" && currentExpression.get('operator')==">="){
-                                    if(self.get('totalTermUnit')>=currentExpression.get('value')){
-                                        if(codeTest!=false){
-                                            codeTest=true;
-                                        }
-                                    } else{
-                                        codeTest=false;
-                                    }
-                                } else if(currentExpression.get('parameter')=="TermUnitTotal" && currentExpression.get('operator')=="<="){
-                                    if(self.get('totalTermUnit')<=currentExpression.get('value')){
-                                        if(codeTest!=false){
-                                            codeTest=true;
-                                        }
-                                    } else{
-                                        codeTest=false;
-                                    }
-                                } else if(currentExpression.get('parameter')=="TermUnitTotal" && currentExpression.get('operator')==">"){
-                                    if(self.get('totalTermUnit')>currentExpression.get('value')){
-                                        if(codeTest!=false){
-                                            codeTest=true;
-                                        }
-                                    } else{
-                                        codeTest=false;
-                                    }
-                                } else if(currentExpression.get('parameter')=="TermUnitTotal" && currentExpression.get('operator')=="<"){
-                                    if(self.get('totalTermUnit')<currentExpression.get('value')){
-                                        if(codeTest!=false){
-                                            codeTest=true;
-                                        }
-                                    } else{
-                                        codeTest=false;
-                                    }
-                                } else{
-                                    var notFound=true;
-                                    if(notFound==true){
-                                        for(var h=0;h<self.get('courseCodeModel').get('length');h++){
-                                            var currentCourse = self.get('courseCodeModel').objectAt(h);
-                                            var currentCourseRef = currentCourse.get('courseLetter')+currentCourse.get('courseNumber');
-                                            if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')=="="){
-                                                for(var f=0;f<tempGrades.get('length');f++){
-                                                    var currentStudentGrade = tempGrades.objectAt(f);
-                                                    var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
-                                                    if(currentStudentGradeCourse==currentCourseRef){
-                                                        if(currentStudentGrade.get('mark')==currentExpression.get('value')){
-                                                            if(codeTest!=false){
-                                                                codeTest=true;
-                                                                notFound=false;
+                                        var notFound=true;
+                                        if(notFound==true){
+                                            for(var h=0;h<self.get('courseCodeModel').get('length');h++){
+                                                var currentCourse = self.get('courseCodeModel').objectAt(h);
+                                                var currentCourseRef = currentCourse.get('courseLetter')+currentCourse.get('courseNumber');
+                                                if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')=="="){
+                                                    for(var f=0;f<tempGrades.get('length');f++){
+                                                        var currentStudentGrade = tempGrades.objectAt(f);
+                                                        var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
+                                                        if(currentStudentGradeCourse==currentCourseRef){
+                                                            if(currentStudentGrade.get('mark')==currentExpression.get('value')){
+                                                                if(codeTest!=false){
+                                                                    codeTest=true;
+                                                                    notFound=false;
+                                                                }
+                                                            } else{
+                                                                codeTest=false;
                                                             }
-                                                        } else{
-                                                            codeTest=false;
                                                         }
                                                     }
-                                                }
-                                            } else if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')==">="){
-                                                for(var f=0;f<tempGrades.get('length');f++){
-                                                    var currentStudentGrade = tempGrades.objectAt(f);
-                                                    var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
-                                                    if(currentStudentGradeCourse==currentCourseRef){ 
-                                                        if(currentStudentGrade.get('mark')>=currentExpression.get('value')){
-                                                            if(codeTest!=false){
-                                                                codeTest=true;
-                                                                notFound=false;
+                                                } else if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')==">="){
+                                                    for(var f=0;f<tempGrades.get('length');f++){
+                                                        var currentStudentGrade = tempGrades.objectAt(f);
+                                                        var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
+                                                        if(currentStudentGradeCourse==currentCourseRef){ 
+                                                            if(currentStudentGrade.get('mark')>=currentExpression.get('value')){
+                                                                if(codeTest!=false){
+                                                                    codeTest=true;
+                                                                    notFound=false;
+                                                                }
+                                                            } else{
+                                                                codeTest=false;
                                                             }
-                                                        } else{
-                                                            codeTest=false;
                                                         }
                                                     }
-                                                }
-                                            } else if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')=="<="){
-                                                for(var f=0;f<tempGrades.get('length');f++){
-                                                    var currentStudentGrade = tempGrades.objectAt(f);
-                                                    var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
-                                                    if(currentStudentGradeCourse==currentCourseRef){
-                                                        if(currentStudentGrade.get('mark')<=currentExpression.get('value')){
-                                                            if(codeTest!=false){
-                                                                codeTest=true;
-                                                                notFound=false;
+                                                } else if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')=="<="){
+                                                    for(var f=0;f<tempGrades.get('length');f++){
+                                                        var currentStudentGrade = tempGrades.objectAt(f);
+                                                        var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
+                                                        if(currentStudentGradeCourse==currentCourseRef){
+                                                            if(currentStudentGrade.get('mark')<=currentExpression.get('value')){
+                                                                if(codeTest!=false){
+                                                                    codeTest=true;
+                                                                    notFound=false;
+                                                                }
+                                                            } else{
+                                                                codeTest=false;
                                                             }
-                                                        } else{
-                                                            codeTest=false;
                                                         }
                                                     }
-                                                }
-                                            } else if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')==">"){
-                                                for(var f=0;f<tempGrades.get('length');f++){
-                                                    var currentStudentGrade = tempGrades.objectAt(f);
-                                                    var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
-                                                    if(currentStudentGradeCourse==currentCourseRef){ 
-                                                        if (currentStudentGrade.get('mark')>currentExpression.get('value')){
-                                                            if(codeTest!=false){
-                                                                codeTest=true;
-                                                                notFound=false;
+                                                } else if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')==">"){
+                                                    for(var f=0;f<tempGrades.get('length');f++){
+                                                        var currentStudentGrade = tempGrades.objectAt(f);
+                                                        var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
+                                                        if(currentStudentGradeCourse==currentCourseRef){ 
+                                                            if (currentStudentGrade.get('mark')>currentExpression.get('value')){
+                                                                if(codeTest!=false){
+                                                                    codeTest=true;
+                                                                    notFound=false;
+                                                                }
+                                                            } else{
+                                                                codeTest=false;
                                                             }
-                                                        } else{
-                                                            codeTest=false;
                                                         }
                                                     }
-                                                }
-                                            } else if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')=="<"){
-                                                for(var f=0;f<tempGrades.get('length');f++){
-                                                    var currentStudentGrade = tempGrades.objectAt(f);
-                                                    var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
-                                                    if(currentStudentGradeCourse==currentCourseRef) { 
-                                                        if(currentStudentGrade.get('mark')<currentExpression.get('value')){
-                                                            if(codeTest!=false){
-                                                                codeTest=true;
-                                                                notFound=false;
+                                                } else if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')=="<"){
+                                                    for(var f=0;f<tempGrades.get('length');f++){
+                                                        var currentStudentGrade = tempGrades.objectAt(f);
+                                                        var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
+                                                        if(currentStudentGradeCourse==currentCourseRef) { 
+                                                            if(currentStudentGrade.get('mark')<currentExpression.get('value')){
+                                                                if(codeTest!=false){
+                                                                    codeTest=true;
+                                                                    notFound=false;
+                                                                }
+                                                            } else{
+                                                                codeTest=false;
                                                             }
-                                                        } else{
-                                                            codeTest=false;
                                                         }
                                                     }
                                                 }
                                             }
-                                        }
 
-                                        if(notFound==true){
-                                            codeTest=false;
+                                            if(notFound==true){
+                                                codeTest=false;
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
 
-                        if(codeTest==true){
-                            self.get('studentCodes').push(self.get('store').peekRecord('assessmentCode', currentAssessmentCode.get('id')));
-                        }
+                            if(codeTest==true){
+                                self.get('studentCodes').push(self.get('store').peekRecord('assessmentCode', currentAssessmentCode.get('id')));
+                            }
 
+                        }
+                        
+                        var index=0;
+                        while(index!=-1){
+                            index=self.get('studentCodes').indexOf(null);
+                            if (index > -1) {
+                                self.get('studentCodes').splice(index, 1);
+                            }
+                        }
+                        
+
+                        console.log(currentStudent);
+                        console.log(this.get('studentCodes'));
+                        var record = self.get('store').createRecord('adjudication', {
+                            date: self.get('date'),
+                            termAVG: self.get('termAvg'),
+                            termUnitPassed: self.get('passedTermUnit'),
+                            termUnitTotal: self.get('totalTermUnit'),
+                            note: self.get('adjudicationTerm'),
+                            assessmentCode: self.get('studentCodes'),
+                            student: self.get('store').peekRecord('student', currentStudent.get('id'))
+                        });
+                        record.save();
                     }
-                    
-                    var index=0;
-                    while(index!=-1){
-                        index=self.get('studentCodes').indexOf(null);
-                        if (index > -1) {
-                            self.get('studentCodes').splice(index, 1);
-                        }
-                    }
-                    
 
-                    console.log(currentStudent);
-                    console.log(this.get('studentCodes'));
-                    var record = self.get('store').createRecord('adjudication', {
-                        date: self.get('date'),
-                        termAVG: self.get('termAvg'),
-                        termUnitPassed: self.get('passedTermUnit'),
-                        termUnitTotal: self.get('totalTermUnit'),
-                        note: self.get('adjudicationTerm'),
-                        assessmentCode: self.get('studentCodes'),
-                        student: self.get('store').peekRecord('student', currentStudent.get('id'))
-                    });
-                    record.save();
-                    
-
-                     console.log(self.get('totalTermUnit'));
-                     console.log(self.get('termAvg'));
-                     console.log(self.get('passedTermUnit'));
-                     console.log(self.get('date'));
+                    console.log(self.get('totalTermUnit'));
+                    console.log(self.get('termAvg'));
+                    console.log(self.get('passedTermUnit'));
+                    console.log(self.get('date'));
 
                     self.set('gradeSum', 0.0);
                     self.set('totalTermUnit', 0);
                     self.set('termAvg', 0.0);
                     self.set('passedTermUnit', 0);
                     self.set('studentCodes', []);
-
-
-
+                    
+                    
+                    
                     var incrementVal = 100/(this.get('studentModel').get('length'));
                     if(self.get('progress')<100){
                         self.set('progress', self.get('progress')+incrementVal);
@@ -473,6 +474,6 @@ export default Ember.Component.extend({
 
         viewAdjudication(){
             this.set('showResults', !this.get('showResults'));
-         }
+        }
     }
 });
