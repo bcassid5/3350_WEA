@@ -48,14 +48,14 @@ export default Ember.Component.extend({
         {
             var sub = this.get('store').peekRecord('department', val);
             this.set('newProgDepartment', sub);
-            console.log(this.get('newProgDepartment'));
+            //console.log(this.get('newProgDepartment'));
         },
 
         updateTerm(val)
         {
             var sub = this.get('store').peekRecord('schoolTerm', val);
             this.set('newTerm', sub);
-            console.log(this.get('newTerm'));
+            //console.log(this.get('newTerm'));
         },
 
         fileImported: function(file) { 
@@ -343,7 +343,7 @@ export default Ember.Component.extend({
                                     var updatedStudent = self.get('store').peekRecord('student', student.content[j].id);
                                     updatedStudent.set('admissAvg', data[i][1]);
                                     updatedStudent.save();
-                                    console.log(updatedStudent);
+                                    //console.log(updatedStudent);
                                 }
                             }
                             /*if (save){
@@ -416,7 +416,7 @@ export default Ember.Component.extend({
                                             var updatedStudent = self.get('store').peekRecord('student', student.content[j].id);
                                             updatedStudent.set('admissComments', input);
                                             updatedStudent.save();
-                                            console.log(updatedStudent);
+                                            //console.log(updatedStudent);
                                         }
                                     }
                                     input = "";

@@ -10,6 +10,10 @@
         <i class="large home icon"></i>
         Home
       </a>
+      <a class={{AD}} {{action "adjud"}} >
+        <i class="large send outline icon"></i>
+        Adjudication
+      </a>
       <a class={{SR}} {{action "studentsDataEntry"}} >
         <i class="large leanpub icon"></i>
         Records
@@ -18,17 +22,13 @@
           <i class="large add user icon"></i>
         Add Record
       </a>
-      <a class={{MC}} {{action "manageCode"}} >
-        <i class="large code icon"></i>
-        Manage Code
-      </a>
       <a class={{UD}} {{action "uploadFile"}} >
         <i class="large file text icon"></i>
         Documents
       </a>
-      <a class={{AD}} {{action "adjud"}} >
-        <i class="large send outline icon"></i>
-        Adjudication
+      <a class={{MC}} {{action "manageCode"}} >
+        <i class="large code icon"></i>
+        Manage Code
       </a>
 
       <div class="right menu">
@@ -37,18 +37,11 @@
           About
         </a>
         <a class="item" {{action "addNewUser"}} >
-          <i class="large leanpub icon"></i>
-          Add Users
-        </a>
-        <a class="item" {{action "addNewUser"}} >
         <i class="large share icon"></i>
           Admin Portal
         </a>
         <div class = "item">{{log-out}}</div>
       </div>
-
-      
-
     </div>
   <!--</div>
   <div class="thirteen wide column ">-->
@@ -61,44 +54,38 @@
 <br/>
 
 <div class="ui grid">
+  <div class="sixteen wide column">
+  <button class="ui fluid button" {{action "adjud"}} style="background-color: #4F2683; color: #FFFFFF">
+    <div class="ui center aligned header" style="color: #FFFFFF; font-size: 200%">Adjudication</div>
+    <div><i class="massive send outline icon"></i></div>
+  </button>
+  </div>
+
   <div class="eight wide column">
   <button class="ui fluid button" {{action "studentsDataEntry"}} style="background-color: #4F2683; color: #FFFFFF">
     <div class="ui center aligned header" style="color: #FFFFFF; font-size: 200%">View Student Records</div>
-
-    <div>
-      <i class="massive leanpub icon"></i>
-      <!--<p>Basic information</p>
-      <p>Admission and registration information</p>
-      <p>Advanced standings</p>
-      <p>Scholarshipsand awards</p>
-      <p>High school courses and grades</p>
-      <p>University courses and grades</p>-->
-    </div>
+    <div><i class="massive leanpub icon"></i></div>
   </button>
   </div>
+
   <div class="eight wide column">
-    <!-- Grey Colour: #807F83 Purple Colour: #4F2683 -->
   <button class="ui fluid button" {{action "new"}} style="background-color: #4F2683; color: #FFFFFF">
     <div class="ui center aligned header" style="color: #FFFFFF; font-size: 200%">Add New Record</div>
     <div> <i class="massive add user icon"></i> </div>
   </button>
   </div>
+
+  <div class="eight wide column">
+    <button class="ui fluid button" {{action "uploadFile"}} style="background-color: #4F2683; color: #FFFFFF">
+      <div class="ui center aligned header" style="color: #FFFFFF; font-size: 200%">Document Management</div>
+      <div><i class="massive file text icon"></i></div>
+    </button>
+  </div>
+
   <div class="eight wide column">
   <button class="ui fluid button" {{action "manageCode"}} style="background-color: #4F2683; color: #FFFFFF">
     <div class="ui center aligned header" style="color: #FFFFFF; font-size: 200%">Manage Codes</div>
     <div><i class="massive code icon"></i></div>
-  </button>
-  </div>
-  <div class="eight wide column">
-  <button class="ui fluid button" {{action "uploadFile"}} style="background-color: #4F2683; color: #FFFFFF">
-    <div class="ui center aligned header" style="color: #FFFFFF; font-size: 200%">Document Management</div>
-    <div><i class="massive file text icon"></i></div>
-  </button>
-  </div>
-  <div class="sixteen wide column">
-  <button class="ui fluid button" {{action "adjud"}} style="background-color: #4F2683; color: #FFFFFF">
-    <div class="ui center aligned header" style="color: #FFFFFF; font-size: 200%">Adjudication</div>
-    <div><i class="massive send outline icon"></i></div>
   </button>
   </div>
 </div>

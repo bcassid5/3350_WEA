@@ -153,8 +153,8 @@ export default Ember.Component.extend({
       selectDepartment(val){
           var dept = this.get('store').peekRecord('department', val);
           this.set('newProgDepartment',dept);
-          console.log(dept);
-          console.log(this.get('newProgDepartment'));
+          //console.log(dept);
+          //console.log(this.get('newProgDepartment'));
       },
       updatePlan(index)
       {
@@ -164,7 +164,7 @@ export default Ember.Component.extend({
           {
               if (this.get('planModel').objectAt(choice).get('name')==this.get('programModel').objectAt(index).get('availablePlans').objectAt(i).get('name'))
               {
-                  console.log("repeat");
+                  //console.log("repeat");
                   repeat=true;
               }
           }
@@ -183,8 +183,8 @@ export default Ember.Component.extend({
       },
       removeProgramPlan(programIndex, planIndex)
       {
-          console.log(programIndex);
-          console.log(planIndex);
+         // console.log(programIndex);
+          //console.log(planIndex);
           this.get('programModel').objectAt(programIndex).get('availablePlans').removeAt(planIndex);
       },
       selectPlan(index)
@@ -199,7 +199,7 @@ export default Ember.Component.extend({
           }
           if(!repeat){
             this.get('newPlanList').pushObject(this.get('planModel').objectAt(index));
-            console.log(this.get('newPlanList'));
+            //console.log(this.get('newPlanList'));
           }
       },
       newCourseClicked()
@@ -225,7 +225,7 @@ export default Ember.Component.extend({
                 }
                 
           }, function (error){
-              console.log(error);
+             // console.log(error);
           });
           
       },
@@ -249,7 +249,7 @@ export default Ember.Component.extend({
                 }
                 
           }, function (error){
-              console.log(error);
+              //console.log(error);
           });
       },
       addProgramOption()
@@ -285,7 +285,7 @@ export default Ember.Component.extend({
                 availablePlans: this.get('newPlanList'),
                 department: this.get('newProgDepartment'),
             });
-            console.log(record);
+           // console.log(record);
                 record.save();
             }
 
@@ -299,9 +299,9 @@ export default Ember.Component.extend({
                 }
                 
           }, function (error){
-              console.log(error);
+              //console.log(error);
           });
-          console.log(index);
+          //console.log(index);
       },
       addGenderOption(){
         if (this.get('newGenderChoice')!==""){
@@ -309,7 +309,7 @@ export default Ember.Component.extend({
                 type: this.get('newGenderChoice'),
                 students: []
             });
-            console.log(record.get('type'));
+            //console.log(record.get('type'));
             record.save();
         }
       },
@@ -323,7 +323,7 @@ export default Ember.Component.extend({
                 }
                 
           }, function (error){
-              console.log(error);
+              //console.log(error);
           });
       },
       addTermOption()
@@ -346,7 +346,7 @@ export default Ember.Component.extend({
                 }
                 
           }, function (error){
-              console.log(error);
+              //console.log(error);
           });
       },
       addPlanOption()
@@ -369,17 +369,17 @@ export default Ember.Component.extend({
                 }
                 
           }, function (error){
-              console.log(error);
+             // console.log(error);
           });
       },
       addCoursesOption()
       {
-          console.log("Here");
+          //console.log("Here");
         var l =this.$("#newCourse").find('.letter').val();
         var n = this.$("#newCourse").find('.number').val();
         var u =this.$("#newCourse").find('.unit').val();
         var Nname =this.$("#newCourse").find('.name').val();
-        console.log(l + " " + n + " " + u + " " + Nname);
+       // console.log(l + " " + n + " " + u + " " + Nname);
         this.set("err", false);
         if(l=="")
         {
@@ -568,12 +568,12 @@ export default Ember.Component.extend({
       {
           var searchVal = this.$("#find").find('.searchVal').val().toLowerCase();
           
-          console.log(this.get('courseModel').get('length'));
+         // console.log(this.get('courseModel').get('length'));
           for (var i=0; i<this.get('courseModel').get('length'); i++)
           {
               if(this.get('courseModel').objectAt(i).get('courseNumber').toLowerCase() == searchVal)
               {
-                  console.log(this.$("#courseCodes").find('.'+i).offset());
+                 // console.log(this.$("#courseCodes").find('.'+i).offset());
                   var offset = this.$("#courseCodes").find('.'+i).offset();
                   offset.left -=20;
                   offset.top -=20;
@@ -596,9 +596,9 @@ export default Ember.Component.extend({
                 }
                 
           }, function (error){
-              console.log(error);
+             // console.log(error);
           });
-          console.log(index);
+          //console.log(index);
       },
 
       changeSubjectName(index)
@@ -606,9 +606,9 @@ export default Ember.Component.extend({
           console.log("changeSubjectName called");
           var self = this;
         if((this.$('.' + index)).val()!== ""){
-            console.log(index);
-            console.log('hello   '+(this.$('.'+index)).val());
-            console.log('hellox2   '+(self.$('.'+index)).val());
+            //console.log(index);
+            //console.log('hello   '+(this.$('.'+index)).val());
+            //console.log('hellox2   '+(self.$('.'+index)).val());
             this.get('store').findRecord('highschool-subject', index).then(function(record){
             //this.get('store').find('highschool-subject', index).then(function(record){
                 record.set('name', (self.$('.' + index)).val());
@@ -620,7 +620,7 @@ export default Ember.Component.extend({
 
       changeSubjectDescription(index)
       {
-          console.log("changeSubjectDescription called");
+         // console.log("changeSubjectDescription called");
           var self = this;
         if((this.$('#' + index)).val()!== ""){
             this.get('store').findRecord('highschool-subject', index).then(function(record){
@@ -648,23 +648,23 @@ export default Ember.Component.extend({
                 description: this.get('newSubjectDescription'),
                 course: []
             });
-            console.log(record);
+            //console.log(record);
             record.save();
         }
       },
 
        changeHighSchoolName(index)
       {
-         console.log('Change HS Name called');
+         //console.log('Change HS Name called');
           var self = this;
-          console.log(index);
+          //console.log(index);
         if((this.$('#' + index)).val()!== ""){
             this.get('store').findRecord('highSchool', index).then(function(record){
-                console.log(record);
+               // console.log(record);
                 record.set('name', (self.$('.' + index)).val());
                 record.data.name= (self.$('.' + index)).val();
-                console.log(self.$('.'+ index).val());
-                console.log(record.get('name'));
+               // console.log(self.$('.'+ index).val());
+                //console.log(record.get('name'));
                 record.save();
 
           });
@@ -680,9 +680,9 @@ export default Ember.Component.extend({
                 }
                 
           }, function (error){
-              console.log(error);
+              //console.log(error);
           });
-          console.log(index);
+          //console.log(index);
       },
 
       updateHighSchoolName(val)
@@ -739,12 +739,12 @@ export default Ember.Component.extend({
       changeCourseSchool(index){
         var self = this;
         var hs = this.get('store').peekRecord('high-school', self.$(".hs"+index).val());
-        console.log(hs);
-        console.log(self.$(".hs"+index).val());
+        //console.log(hs);
+        //console.log(self.$(".hs"+index).val());
         this.get('store').find('high-school-course', this.get('highSchoolCourseModel').objectAt(index).get('id')).then(function(record){
-           console.log(record);
+         //  console.log(record);
            record.set('highschool', hs);
-           console.log(record);
+           //console.log(record);
            record.save();
         });
       },
@@ -758,9 +758,9 @@ export default Ember.Component.extend({
                 }
                 
           }, function (error){
-              console.log(error);
+              //console.log(error);
           });
-          console.log(index);
+          //console.log(index);
       },
 
       updateCourseLevel(val)
@@ -782,16 +782,16 @@ export default Ember.Component.extend({
       {
         var sub = this.get('store').peekRecord('highschool-subject', val);
         this.set('newCourseSubject', sub);
-        console.log("Subject" + val);
-        console.log("CourseSubject" +  this.get('newCourseSubject'));
+       // console.log("Subject" + val);
+        //console.log("CourseSubject" +  this.get('newCourseSubject'));
       },
 
       updateCourseHighSchool(val)
       {
         var hs = this.get('store').peekRecord('high-school', val);
         this.set('newCourseHighSchool', hs);
-        console.log("HS" + val);
-        console.log("CourseHS" +  this.get('newCourseHighSchool'));
+        //console.log("HS" + val);
+        //console.log("CourseHS" +  this.get('newCourseHighSchool'));
       },
 
       addCourseOption(){
@@ -821,7 +821,7 @@ export default Ember.Component.extend({
                 name: this.get('newFacultyChoice'),
                 department: []
             });
-            console.log(record.get('name'));
+            //console.log(record.get('name'));
             record.save();
         }
       },
@@ -846,9 +846,9 @@ export default Ember.Component.extend({
                 }
                 
           }, function (error){
-              console.log(error);
+              //console.log(error);
           });
-          console.log(index);
+          //console.log(index);
       },
 
       /***************/
@@ -899,16 +899,16 @@ export default Ember.Component.extend({
 
       removeDeptOption(index){
        this.get('store').find('department',this.get('departmentModel').objectAt(index).get('id')).then(function(record){
-           console.log(record);
+           //console.log(record);
                 record.deleteRecord();
                 if(record.get('isDeleted'))
                 {
-                    console.log("deleted");
+                    //console.log("deleted");
                     record.save();
                 }
                 
           }, function (error){
-              console.log(error);
+              //console.log(error);
           });
       },
 
@@ -973,9 +973,9 @@ export default Ember.Component.extend({
                 }
                 
           }, function (error){
-              console.log(error);
+              //console.log(error);
           });
-          console.log(index);
+          //console.log(index);
       },
 
 
@@ -991,7 +991,7 @@ export default Ember.Component.extend({
                 }
                 
           }, function (error){
-              console.log(error);
+              //console.log(error);
           });
       },
 
@@ -1102,7 +1102,7 @@ export default Ember.Component.extend({
                 }
                 
           }, function (error){
-              console.log(error);
+              //console.log(error);
           });
       },
 
@@ -1143,7 +1143,7 @@ export default Ember.Component.extend({
           {
               if (this.get('logExpModel').objectAt(choice).get('boolExpress')==this.get('ruleModel').objectAt(index).get('logExpressions').objectAt(i).get('boolExpress'))
               {
-                  console.log("repeat");
+                  //console.log("repeat");
                   repeat=true;
               }
           }
@@ -1156,8 +1156,8 @@ export default Ember.Component.extend({
 
       removeRuleExp(ruleIndex, expIndex)
       {
-          console.log(ruleIndex);
-          console.log(expIndex);
+          //console.log(ruleIndex);
+          //console.log(expIndex);
           this.get('ruleModel').objectAt(ruleIndex).get('logExpressions').removeAt(expIndex);
       },
 
@@ -1237,7 +1237,7 @@ export default Ember.Component.extend({
                 rule: this.get('newCodeList'),
                 adjudication: []
             });
-            console.log(record);
+            //console.log(record);
                 record.save();
             }
 
@@ -1253,7 +1253,7 @@ export default Ember.Component.extend({
                 }
                 
           }, function (error){
-              console.log(error);
+              //console.log(error);
           });
       },
 
@@ -1289,7 +1289,7 @@ export default Ember.Component.extend({
           }
           if (!e)
           {
-              console.log(this.get('codeModel').objectAt(index));
+              //console.log(this.get('codeModel').objectAt(index));
               this.get('codeModel').objectAt(index).save();
           }
       },
@@ -1302,7 +1302,7 @@ export default Ember.Component.extend({
           {
               if (this.get('ruleModel').objectAt(choice).get('description')==this.get('codeModel').objectAt(index).get('rule').objectAt(i).get('description'))
               {
-                  console.log("repeat");
+                  //console.log("repeat");
                   repeat=true;
               }
           }
@@ -1315,8 +1315,8 @@ export default Ember.Component.extend({
 
       removeCodeRule(codeIndex, ruleIndex)
       {
-          console.log(codeIndex);
-          console.log(ruleIndex);
+          //console.log(codeIndex);
+          //console.log(ruleIndex);
           this.get('codeModel').objectAt(codeIndex).get('rule').removeAt(ruleIndex);
       },
 

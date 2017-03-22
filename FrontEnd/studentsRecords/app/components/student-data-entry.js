@@ -294,7 +294,7 @@ export default Ember.Component.extend({
   },
   loadRecord: function ()
   {
-    console.log('yo');
+    //console.log('yo');
     
   },
   resetUndo(){
@@ -328,7 +328,7 @@ export default Ember.Component.extend({
 
     addCourseToRecord(idx){
 
-        console.log('adding....');
+        //console.log('adding....');
         var self = this;
         
         var myCourse = (this.get('highSchoolCourseModel')).objectAt(idx).get('id');
@@ -365,7 +365,7 @@ export default Ember.Component.extend({
     {
       
       this.get('store').find('highschool-grade',this.get('highSchoolGradeModel').objectAt(index).get('id')).then(function(record){
-              console.log(record);
+              //console.log(record);
               record.deleteRecord();
               if(record.get('isDeleted'))
               {
@@ -373,14 +373,14 @@ export default Ember.Component.extend({
               }
                 
           }, function (error){
-              console.log(error);
+              //console.log(error);
           });
     },
 
     updateHSGradeSave(index)
     {
       var n = this.$("#hsgrade"+index).find('.hsgrade').val();
-      console.log('n: '+n);
+      //console.log('n: '+n);
       
       this.get('store').find('highschool-grade',this.get('highSchoolGradeModel').objectAt(index).get('id')).then(function(record){
           
@@ -403,7 +403,7 @@ export default Ember.Component.extend({
                 }
                 
           }, function (error){
-              console.log(error);
+             // console.log(error);
           });
     },
     updateSelectedGrade()
@@ -435,7 +435,7 @@ export default Ember.Component.extend({
     },
     updateTheGrade(termIndex, gradeIndex)
     {
-      console.log('w');
+     // console.log('w');
       this.set('newGradeMark', this.get('gradeModel').objectAt(gradeIndex).get('mark'));
       this.set('newGradeNote', this.get('gradeModel').objectAt(gradeIndex).get('note'));
       this.set('newGradeIndex', gradeIndex);
@@ -444,9 +444,9 @@ export default Ember.Component.extend({
     },
     addGrade(index)
     {
-      console.log(this.$('#terms').find('.'+index).find('.mark').val());
-      console.log(this.$('#terms').find('.'+index).find('.note').val());
-      console.log(this.$('#terms').find('.'+index).find('.selectedCourse').val());
+      //console.log(this.$('#terms').find('.'+index).find('.mark').val());
+      //console.log(this.$('#terms').find('.'+index).find('.note').val());
+      //console.log(this.$('#terms').find('.'+index).find('.selectedCourse').val());
       var e = false;
       if(this.$('#terms').find('.'+index).find('.mark').val() == "")
       {
@@ -654,7 +654,7 @@ export default Ember.Component.extend({
                 }
                 
           }, function (error){
-              console.log(error);
+            //  console.log(error);
           });
     },
     removeAwdOption(index)
@@ -668,7 +668,7 @@ export default Ember.Component.extend({
                 }
                 
           }, function (error){
-              console.log(error);
+          //    console.log(error);
           });
     },
     updateAwdChoice(index)
@@ -762,7 +762,7 @@ export default Ember.Component.extend({
         });
       }
       else{
-        console.log('here');
+        //console.log('here');
         Ember.$('.ui.save.modal').modal('show');
       }
       
@@ -881,7 +881,7 @@ export default Ember.Component.extend({
       if(this.get('note') != "")
       {
         var student = this.get('currentStudent');
-        console.log(student.get('id'));
+       // console.log(student.get('id'));
         var award =this.get('store').createRecord('award', {
 
           note: this.get('note'),
@@ -953,7 +953,7 @@ export default Ember.Component.extend({
           from: this.get('from'),
           students: this.get('currentStudent'),
         });
-        console.log(this.get('currentStudent'));
+       // console.log(this.get('currentStudent'));
         var self=this;
         this.set('newAdv', false);
         standing.save().then(() => {
