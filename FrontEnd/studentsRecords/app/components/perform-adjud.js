@@ -14,7 +14,6 @@ export default Ember.Component.extend({
     codeModel: null,
 
     adjudicationTerm:null,
-
     limit:null,
     offset:null,
     pageSize:null,
@@ -26,10 +25,16 @@ export default Ember.Component.extend({
     date:null,
     studentCodes:null,
 
+    progress:null,
+
+    moveProgress: Ember.observer('progress', function(){
+        this.rerender();
+        this.$('#progBar').progress('set percent', this.get("progress"));
+  }),
+
     init(){
         this._super(...arguments);
         var self = this;
-
         this.adjudicationTerm="";
         this.termAvg=0.0;
         this.gradeSum=0.0;
@@ -38,7 +43,7 @@ export default Ember.Component.extend({
         this.totalTermUnit=0;
         this.passedTermUnit=0;
         this.studentCodes=[];
-
+        this.progress=0;
         this.get('store').findAll('schoolTerm').then(function (records) {
            self.set('termModel', records);
         });
@@ -72,21 +77,29 @@ export default Ember.Component.extend({
         this.get('store').findAll('assessmentCode').then(function(records){
             self.set('codeModel', records);
         });
-    },
 
+    },
+    didRender(){
+            var self = this;
+            this.$('#progBar').progress('set percent', self.get("progress"));
+    },
     actions: {
 
         selectTerm(index){
             var term = this.get('termModel').objectAt(index).get('name');
             this.set('adjudicationTerm', term);
+            this.set('progress', 0);
+            this.$('#progBar').progress('reset');
         },
 
         adjudicate(){
             var self = this;
-
+            // for(var t=1; t<=100; t++){
+            //     progress=t;
+            //     self.$('#progBar').progress('set percent', progress);
+            //}
             if(this.get('adjudicationTerm')!=""){
                 this.$("#adjudication").form('remove prompt', 'listname');
-
                 for(var i=0;i<this.get('studentModel').get('length');i++){
                     var currentStudent = this.get('studentModel').objectAt(i);
                     this.get('store').query('termCode',{student: currentStudent.get('id')}).then(function(terms){
@@ -379,10 +392,26 @@ export default Ember.Component.extend({
                         }
 
                     });
+
+                    var incrementVal = 100/(this.get('studentModel').get('length'));
+                    if(self.get('progress')<100){
+                        self.set('progress', self.get('progress')+incrementVal);
+                    }
+                   // this.rerender();
+                    console.log(self.get('progress'));
+                    //this.$('#progBar').progress('set percent', progress);
+                    // if(progress >= 1){
+                    //     for(var t=100000000; t>0; t--){}
+                    //     console.log(incrementVal);
+                    //     progress = 0;
+                    // }
+                    //console.log(progress);
+                  //  for(var t=1000000000; t>0; t--){}
+                    
                 }
             } else{
                 this.$("#adjudication").form('add prompt', 'listname', 'error text');
             }
-        }
+         }
     }
 });
