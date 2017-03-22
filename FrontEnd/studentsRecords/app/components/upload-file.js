@@ -580,49 +580,46 @@ export default Ember.Component.extend({
                     var self = this;
                     var myStore = this.get('store');
                     var _break = true;
-                    var end = false;
+                    var saveNum;
+                    var save = true;
+                    var stud;
 
                     this.get('store').query('student', {limit: 1000000, offset: 0}).then(function (student) {
                         self.set('studentsModel', student);
                         //console.log(student);
-
+                        var ch = 0;
                         for (var i=0;i<108;i++){
+                            
+                            if (save){
+                                saveNum = data[i][0];
+                            }  
+                            
                             if (data[i][1] == "NONE FOUND"){
                                 //console.log("NF");
-                            } else if (data[i][0] == ""){
-                                //console.log("empty");
                             } else {
-                                for(var j=0; j<student.content.length; j++){
-                                    if (student.content[j]._data.number == data[i][0]){
-                                        var ch = i;
-                                        do {
-                                            ch++; 
-                                  //          console.log(ch);
-                                    //        console.log(data[ch][1]);
-                                            if (data[ch][1]=="NONE FOUND"){
-                                                _break = false;
-                                            } else if (data[ch][0]!=null){
-                                                _break = false;
-                                            } else if (data[ch][1]==null){
-                                                _break = false;
-                                                end = true;
-                                            }
-                                            
-                                            var im = self.get('store').peekRecord('student', student.content[j].id);
-                                         //   console.log(im);
-                                            var record = myStore.createRecord('award', {
-                                                note: data[i][1],
-                                                student: im,
-                                            });
-                                            
-                                            record.save()
+                                ch = i+1;
 
-                                        } while (_break);
-                                        _break = true;
-                                        if (end){
-                                            break;
-                                        }
-                                    }                                
+                                //console.log(saveNum);
+                                
+                                for (var j=0; j<student.content.length; j++){
+                                    if(student.content[j]._data.number == saveNum){
+                                        stud = self.get('store').peekRecord('student', student.content[j].id);
+                                        break;
+                                    }
+                                }
+
+                                console.log(stud);
+
+                                var record = self.get('store').createRecord('award', {
+                                    note: data[i][1],
+                                    student: stud,
+                                });
+                                record.save();
+
+                                if(data[ch][0] == null){
+                                    save = false;
+                                } else {
+                                    save = true;
                                 }
                             }
                         }

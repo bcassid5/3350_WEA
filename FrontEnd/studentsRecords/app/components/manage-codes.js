@@ -573,7 +573,7 @@ export default Ember.Component.extend({
           {
               if(this.get('courseModel').objectAt(i).get('courseNumber').toLowerCase() == searchVal)
               {
-                 // console.log(this.$("#courseCodes").find('.'+i).offset());
+                 console.log(this.$("#courseCodes").find('.'+i).offset());
                   var offset = this.$("#courseCodes").find('.'+i).offset();
                   offset.left -=20;
                   offset.top -=20;
@@ -603,7 +603,7 @@ export default Ember.Component.extend({
 
       changeSubjectName(index)
       {
-          console.log("changeSubjectName called");
+          //console.log("changeSubjectName called");
           var self = this;
         if((this.$('.' + index)).val()!== ""){
             //console.log(index);
