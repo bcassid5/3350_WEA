@@ -23,6 +23,12 @@
                                 {{/each}}
                             </select>
                         </div>
+                        <div class="ui violet progress" data-percent="0" id="progBar">
+                        <div class="bar">
+                            
+                        </div>
+                        <div class="label">Progress of Adjudication</div>
+                    </div>
                         <button class="ui violet button" {{action 'adjudicate'}} >
                             Adjudicate
                         </button>
@@ -83,6 +89,7 @@
                             </table>
                         {{/if}}
                     </div>
+
                 </div>
                 <br/>
             </div>      
