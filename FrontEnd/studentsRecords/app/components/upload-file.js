@@ -608,7 +608,7 @@ export default Ember.Component.extend({
                                     }
                                 }
 
-                                console.log(stud);
+//                                console.log(stud);
 
                                 var record = self.get('store').createRecord('award', {
                                     note: data[i][1],
