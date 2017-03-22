@@ -797,7 +797,8 @@ export default Ember.Component.extend({
                 [2, "Nelson", "Kazakhstan"],
                 [3, "Garcia", "Madagascar"],
             ];*/
-            var doc = new jsPDF();
+            var doc = new jsPDF('p', 'pt');
+            
             
             this.get('store').query('student', {limit: 1000000, offset: 0}).then(function (student) {
                 var columns = ["Student Number", "First Name", "Last Name"];
@@ -811,8 +812,15 @@ export default Ember.Component.extend({
                 }
 
                 //console.log(rows);
-
-                doc.autoTable(columns, rows);
+                //doc.text(10, 10, "Students List");
+                //doc.autoTable(columns, rows);
+                doc.autoTable(columns, rows, {
+                    theme: 'grid',
+                    headerStyles: {fillColor: [79, 38, 131]},
+                    addPageContent: function(data) {
+                        doc.text("Students Information", 30, 30);
+                    }
+                });
                 doc.output("dataurlnewwindow");
             });
             
