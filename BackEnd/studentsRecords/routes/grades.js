@@ -27,7 +27,7 @@ router.route('/')
         } else {
             
             models.Grades.find({"term": Student.term}, function (error, grade) {
-                console.log(grade);
+                
                 if (error) response.send(error);
                 response.json({grade: grade});
             });

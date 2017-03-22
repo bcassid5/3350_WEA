@@ -81,7 +81,12 @@ export default Ember.Component.extend({
   newGradeNote: null,
   newGradeCourse: null,
   newGradeIndex: null,
-
+  newProgramLevel: null,
+  newProgramLoad: null,
+  newProgramStatus: null,
+  newProgramPlans: [],
+  newProgramName: null,
+  newProgramIndex: null,
   USP01IsPermitted: Ember.computed(function(){ //Manage system roles
     var authentication = this.get('oudaAuth');
     if (authentication.getName === "Root") {
@@ -236,7 +241,13 @@ export default Ember.Component.extend({
           self.set('termCodeModel', terms);
           
           
+          self.set('studentProgramModel', []);
+          for(var i =0; i <self.get('termCodeModel').get('length'); i++){
+           self.get('store').query('program-record',{term: self.get('termCodeModel').objectAt(i).get('id')}).then(function(programs){
+            self.get('studentProgramModel').addObjects(programs);
+            });
           
+          }
           self.set('gradeModel', []);
           for(var i =0; i <self.get('termCodeModel').get('length'); i++){
            self.get('store').query('grade',{term: self.get('termCodeModel').objectAt(i).get('id')}).then(function(grades){
@@ -285,9 +296,8 @@ export default Ember.Component.extend({
     var self = this;
     
     Ember.$('.menu .item').tab({'onVisible':function(){
-      self.set('studentProgramModel', self.get('store').peekAll('program-record'));
-      console.log('load');
-      console.log(self.get('studentProgramModel').objectAt(0).get('load'));
+      
+      console.log(self.get('studentProgramModel').get('length'));
       self.set('allowprograms', true);
       
     }});
@@ -312,7 +322,7 @@ export default Ember.Component.extend({
   },
 
   actions: {
-
+    
     updateHighSchoolSelection(val){
         this.set('currentHighSchool', val);
         this.set('optionNumber', 1);
@@ -390,7 +400,21 @@ export default Ember.Component.extend({
               
           });
     },
-
+    removeProgram(termIndex, programIndex)
+    {
+      var self = this;
+      this.get('store').find('program-record',this.get('studentProgramModel').objectAt(programIndex).get('id')).then(function(record){
+                record.deleteRecord();
+                if(record.get('isDeleted'))
+                {
+                    record.save();
+                    self.get('studentProgramModel').removeAt(programIndex);
+                }
+                
+          }, function (error){
+              console.log(error);
+          });
+    },
     removeGrade(termIndex, gradeIndex)
     {
       var self = this;
@@ -425,6 +449,40 @@ export default Ember.Component.extend({
             });
       }
     },
+    updateSelectedProgram()
+    {
+      if (!(this.get('newProgramLevel')=="" || this.get('newProgramLoad')=="" || this.get('newProgramStatus')==""))
+      {
+        
+        var temp = []
+        for (let i =0; i< this.get('newProgramPlans').get('length'); i++)
+        {
+          
+          for (let j =0; j< this.get('planCodeModel').get('length'); j++)
+          {
+            
+            
+            if (this.get('newProgramPlans').objectAt(i)==this.get('planCodeModel').objectAt(j).get('id'))
+            {
+              
+              temp.pushObject(this.get('planCodeModel').objectAt(j));
+            }
+          }
+        }
+        var self = this;
+        this.get('store').find('program-record',this.get('studentProgramModel').objectAt(this.get('newProgramIndex')).get('id')).then(function(record){
+            record.set('level', self.get('newProgramLevel'));
+            record.set('load', self.get('newProgramLoad'));
+            
+            record.set('status', self.get('newProgramStatus'));
+            
+            record.set('plan', temp);
+            
+            record.save();
+            Ember.$('.ui.program.modal').modal('hide');
+            });
+      }
+    },
     cancelSave()
     {
       Ember.$('.ui.save.modal').modal('hide');
@@ -441,6 +499,32 @@ export default Ember.Component.extend({
       this.set('newGradeIndex', gradeIndex);
       this.set('newGradeCourse', this.get('gradeModel').objectAt(gradeIndex).get('course').get('courseLetter')+this.get('gradeModel').objectAt(gradeIndex).get('course').get('courseNumber'));
       Ember.$('.ui.grade.modal').modal('show');
+    },
+    selectNewPlans(things)
+    {
+      this.set('newProgramPlans', things);
+      console.log(this.get('newProgramPlans'));
+    },
+    updateTheProgram(termIndex, gradeIndex)
+    {
+      
+      
+      this.set('newProgramLevel', this.get('studentProgramModel').objectAt(gradeIndex).get('level'));
+      this.set('newProgramLoad', this.get('studentProgramModel').objectAt(gradeIndex).get('load'));
+      this.set('newProgramStatus', this.get('studentProgramModel').objectAt(gradeIndex).get('status'));
+      this.set('newProgramPlans', []);
+      for (var i =0; i<this.get('studentProgramModel').objectAt(gradeIndex).get('plan').get('length'); i++)
+      {
+        this.get('newProgramPlans').push(this.get('studentProgramModel').objectAt(gradeIndex).get('plan').objectAt(i).get('id'));
+      }
+      
+      this.set('newProgramName', this.get('studentProgramModel').objectAt(gradeIndex).get('name'));
+      this.set('newProgramIndex', gradeIndex);
+      Ember.$('.ui.program.modal').modal('show');
+    },
+    cancelUpdateProgram()
+    {
+      Ember.$('.ui.program.modal').modal('hide');
     },
     addGrade(index)
     {
@@ -485,6 +569,7 @@ export default Ember.Component.extend({
                 
                 });
         var self =this;
+        this.set('newGrade', !(this.get('newGrade')));
         record.save().then(() =>{
           self.set('gradeModel', []);
           for(var i =0; i <self.get('termCodeModel').get('length'); i++){
@@ -538,19 +623,22 @@ export default Ember.Component.extend({
       if(!e)
       {
         var record = this.get('store').createRecord('programRecord', {
-                name: this.get('programModel').objectAt(this.$('#terms').find('.'+index).find('.selectedProgram').val()),
-                level: this.$('#terms').find('.'+index).find('.level').val(),
-                load: this.$('#terms').find('.'+index).find('.load').val(),
-                status: this.$('#terms').find('.'+index).find('.status').val(),
-                
+                name: this.get('programModel').objectAt(this.$('#terms').find('.'+index).find('.newProgram').find('.selectedProgram').val()),
+                level: this.$('#terms').find('.'+index).find('.newProgram').find('.level').val(),
+                load: this.$('#terms').find('.'+index).find('.newProgram').find('.load').val(),
+                status: this.$('#terms').find('.'+index).find('.newProgram').find('.status').val(),
+                semester: this.get('termCodeModel').objectAt(index),
                 plan: [],
                 
                 });
         var self = this;
-        
+        this.set('newProg', !(this.get('newProg')));
         record.save().then(() =>{
-          self.get('termCodeModel').objectAt(index).get('program').pushObject(record);
-          self.get('termCodeModel').objectAt(index).save();
+          for(var i =0; i <self.get('termCodeModel').get('length'); i++){
+           self.get('store').query('program-record',{term: self.get('termCodeModel').objectAt(i).get('id')}).then(function(programs){
+            self.get('studentProgramModel').addObjects(programs);
+          });
+          }
         });
       }
       

@@ -63,6 +63,30 @@ export default Ember.Component.extend({
     errCode: null,
     newCodeList: null,
 
+    MSC02IsPermitted: Ember.computed(function(){ //Manage system roles
+    var authentication = this.get('oudaAuth');
+    if (authentication.getName === "Root") {
+      return true;
+    } else {
+      return (authentication.get('userCList').indexOf("MSC02") >= 0);
+    }
+  }),
+    MACC1IsPermitted: Ember.computed(function(){ //Manage system roles
+    var authentication = this.get('oudaAuth');
+    if (authentication.getName === "Root") {
+      return true;
+    } else {
+      return (authentication.get('userCList').indexOf("MACC1") >= 0);
+    }
+  }),
+    MAR02IsPermitted: Ember.computed(function(){ //Manage system roles
+    var authentication = this.get('oudaAuth');
+    if (authentication.getName === "Root") {
+      return true;
+    } else {
+      return (authentication.get('userCList').indexOf("MAR02") >= 0);
+    }
+  }),
     init() {
         this._super(...arguments);
         this.newResChoice="";

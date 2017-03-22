@@ -26,10 +26,12 @@ router.route('/')
             });
         } else {
             
-            models.ProgramRecords.find({"student": Student.student}, function (error, programRecord) {
+            models.ProgramRecords.find({"semester": Student.term}, function (error, programRecord) {
+                
                 if (error) response.send(error);
                 response.json({programRecord: programRecord});
             });
+            
         }
     });
 

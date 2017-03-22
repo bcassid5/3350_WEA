@@ -16,7 +16,7 @@ var programRecordSchema = mongoose.Schema(
         load: String,
         status: String,
         
-        semester: [{type: mongoose.Schema.ObjectId, ref: 'TermCodes'}],
+        semester: {type: mongoose.Schema.ObjectId, ref: 'TermCodes'},
         
         plan: [{type: mongoose.Schema.ObjectId, ref: 'PlanCodes'}],
     }

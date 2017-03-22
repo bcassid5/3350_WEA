@@ -27,6 +27,14 @@ export default Ember.Component.extend({
       return (authentication.get('userCList').indexOf("MSC02") >= 0);
     }
   }),
+  ASR02IsPermitted: Ember.computed(function(){ //Manage system roles
+    var authentication = this.get('oudaAuth');
+    if (authentication.getName === "Root") {
+      return true;
+    } else {
+      return (authentication.get('userCList').indexOf("ASR02") >= 0);
+    }
+  }),
   ISR01IsPermitted: Ember.computed(function(){ //Manage system roles
     var authentication = this.get('oudaAuth');
     if (authentication.getName === "Root") {
