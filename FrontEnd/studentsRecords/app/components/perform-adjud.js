@@ -131,21 +131,16 @@ export default Ember.Component.extend({
     },
     actions: {
         noneSelected(){
-            console.log(this.get('departmentGroups').objectAt(0).objectAt(0).get('id'));
-            this.set('isNone', true);
-            this.set('isDepartment', false);
-            this.set('isProgram', false);
-            
+            this.set('showResults', false);
         },
         programSelected(){
-            this.set('isNone', false);
-            this.set('isDepartment', false);
-            this.set('isProgram', true);
+            this.set('isProgram', !this.get('isProgram'));
         },
         departmentSelected(){
-            this.set('isNone', false);
-            this.set('isDepartment', true);
-            this.set('isProgram', false);
+            this.set('isDepartment', !this.get('isDepartment'));
+        },
+        viewAdjudication(){
+            this.set('showResults', !this.get('showResults'));
         },
         selectTerm(index){
             var term = this.get('termModel').objectAt(index).get('name');
@@ -538,22 +533,31 @@ export default Ember.Component.extend({
             this.set('adjudicationTermToView', term);
         },
 
-        viewAdjudication(){
-            this.set('showResults', !this.get('showResults'));
-        },
+        
 
-        exportPDF() {
+        exportPDF(id) {
             var self = this;
             var doc = new jsPDF();
+            var title = "";
             //doc.text("Adjudication: " + this.get("adjudicationTermToView"), 14, 16);
-            var elem = document.getElementById("table");
+            if(id == 1){
+                var elem = document.getElementById("studentTable");
+                title = "Students in Term";
+            } else if (id == 2){
+                var elem = document.getElementById("departmentTable");
+                title = "Students in Departments";
+            } else if (id == 3){
+                var elem = document.getElementById("programTable");
+                title = "Students in Programs";
+            }
+            
             var res = doc.autoTableHtmlToJson(elem);
             doc.autoTable(res.columns, res.data, {
                 startY: 20, 
                 theme: 'grid',
                 headerStyles: {fillColor: [79, 38, 131]},
                 addPageContent: function(data) {
-                    doc.text("Adjudication: " + self.get("adjudicationTermToView"), 15, 15);
+                    doc.text("Adjudication: " + self.get("adjudicationTermToView") + ": " + title, 15, 15);
                 }
             });
             doc.output("dataurlnewwindow");

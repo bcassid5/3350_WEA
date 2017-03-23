@@ -45,13 +45,9 @@
         <div class="ui form">
             <br><br><br><br>
             <div class="ui medium header" >Select per category:</div>
-            
             <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'departmentSelected'}}>Department</button><br><br>
             <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'programSelected'}}>  Program </button><br><br>
             <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'noneSelected'}}>  None </button><br>
-            
-            
-        
         </div>
     </div>
         <div class="ui left aligned twelve wide column">
@@ -74,13 +70,13 @@
                         {{#if showResults}}
                             {{!--<button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'exportPDF'}}>Export </button>--}}
                         {{#if isNone}}
-                            <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'exportPDF'}}>
+                            <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'exportPDF' 1}}>
                                 Export table to PDF
                             </button>
                             <!--<button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'exportExcel'}}>
                                 Export table to Excel
                             </button>-->
-                            <table class="ui celled table" id="table">
+                            <table class="ui celled table" id="studentTable">
                                 <thead>
                                     <tr>
                                         <th>Student</th>
@@ -110,11 +106,11 @@
                             </table>
                             {{/if}}
                             {{#if isDepartment}}
-                            <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'export2'}}>
+                            <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'exportPDF' 2}}>
                                 Export table to PDF
                             </button>
                             {{#each departmentGroups as |group index|}}
-                            <table class="ui celled table" id={{index}}>
+                            <table class="ui celled table" id="departmentTable">
                                 <thead>
                                     <tr>
                                         <th>Student</th>
@@ -152,8 +148,11 @@
                             {{/each}}
                             {{/if}}
                             {{#if isProgram}}
+                            <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'exportPDF' 3}}>
+                                Export table to PDF
+                            </button>
                             {{#each programGroups as |group index|}}
-                            <table class="ui celled table" id="table">
+                            <table class="ui celled table" id="programTable">
                                 <thead>
                                     <tr>
                                         <th>Student</th>
