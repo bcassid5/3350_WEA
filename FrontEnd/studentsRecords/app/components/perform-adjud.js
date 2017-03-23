@@ -20,14 +20,6 @@ export default Ember.Component.extend({
     limit:null,
     offset:null,
     pageSize:null,
-
-    //gradeSum:null,
-    //termAvg: null,
-    //totalTermUnit:null,
-    //passedTermUnit:null,
-    //date:null,
-    //studentCodes:null,
-
     showResults:null,
 
     progress:null,
@@ -95,7 +87,7 @@ export default Ember.Component.extend({
       //      });
         this.get('store').findAll('department').then(function(records){
             self.set('departmentModel', records);
-            console.log(self.get('departmentModel').get('length'));
+            //console.log(self.get('departmentModel').get('length'));
             for (var i =0;i<self.get('departmentModel').get('length');i++)
             {
                 self.get('store').query('student',{department: self.get('departmentModel').objectAt(i).get('id')}).then(function(grades){
@@ -151,53 +143,49 @@ export default Ember.Component.extend({
 
         adjudicate(){
 
-            this.set('gradeModel', []);
-
             var self = this;
+            var index=0;
+            for(var j =0; j <self.get('termModel').get('length'); j++){
+                //console.log(self.get('termCodeModel').objectAt(j).get('name'));
+                if((self.get('termModel').objectAt(j).get('name'))==(self.get('adjudicationTerm'))){
+                    //console.log(j);
+                    index=j;
+                }
+            }
+            this.get('store').query('grade', {schoolterm: self.get('termModel').objectAt(index).get('id')}).then(function(grades){
+            self.set('gradeModel', []);
+            var studentCodes = [];
+            console.log(studentCodes);
+            
+            var gradeSum = 0.0;
+            var totalTermUnit = 0.0;
+            var passedTermUnit = 0.0;
+            var date = new Date().toString();
+            var termAvg = 0.0;
 // for(var t=1; t<=100; t++){
             //     progress=t;
             //     self.$('#progBar').progress('set percent', progress);
             //}
-            var index=0;
-                for(var j =0; j <self.get('termModel').get('length'); j++){
-                    //console.log(self.get('termCodeModel').objectAt(j).get('name'));
-                    if((self.get('termModel').objectAt(j).get('name'))==(self.get('adjudicationTerm'))){
-                        //console.log(j);
-                        index=j;
-                    }
-                }
+            
 
                 //console.log(index);
                 //console.log(this.get('termModel').objectAt(index).get('id'));
-                self.get('store').query('grade', {schoolterm: self.get('termModel').objectAt(index).get('id')}).then(function(grades){
-                    //console.log(grades);
+                
                     self.set('gradeModel', grades);
-                    //console.log(self.get('gradeModel'));
                     if(self.get('adjudicationTerm')!=""){
-                        self.$("#adjudication").form('remove prompt', 'listname');
-
-                            var gradeSum = 0.0;
-                            var totalTermUnit = 0.0;
-                            var passedTermUnit = 0.0;
-                            var studentCodes=null;
-                            //studentCodes = [];
-                            var date=new Date().toString();
-                            var termAvg=0.0;
+                        self.$("#adjudication").form('remove prompt', 'listname');  
                         for(var i=0;i<self.get('studentModel').get('length');i++){
                             var currentStudent = self.get('studentModel').objectAt(i);
-
-                            console.log("******************");
-                            //console.log(this.get('gradeModel'));
-
+                            studentCodes = [];
+                            console.log(studentCodes);
                             gradeSum = 0.0;
                             totalTermUnit = 0.0;
                             passedTermUnit = 0.0;
-                            studentCodes=null;
-                            studentCodes = [];
-                            date=new Date().toString();
-                            termAvg=0.0;
-
-                            console.log(studentCodes);
+                            date = new Date().toString();
+                            termAvg = 0.0;
+                            //console.log("******************");
+                            //console.log(this.get('gradeModel'));
+                            //console.log(studentCodes);
                             //console.log(studentCodes.get('length'));
                             //console.log(studentCodes);
                             //console.log(studentCodes.get('length'));
@@ -239,9 +227,9 @@ export default Ember.Component.extend({
                                 var avg = (gradeSum)/(tempGrades.get('length'));
                                 termAvg=avg;
 
-                                console.log(termAvg);
-                                console.log(totalTermUnit);
-                                console.log(passedTermUnit);
+                                //console.log(termAvg);
+                                //console.log(totalTermUnit);
+                                //console.log(passedTermUnit);
 
 
                                 var codeTest=true;
@@ -471,17 +459,20 @@ export default Ember.Component.extend({
                                         console.log(studentCodes);
                                         studentCodes.push(self.get('store').peekRecord('assessmentCode', currentAssessmentCode.get('id')));
                                         console.log(studentCodes);
+                                        var index=0;
+                                        while(index!=-1){
+                                            index=studentCodes.indexOf(null);
+                                            console.log(index);
+                                            if (index > -1) {
+                                                studentCodes.splice(index, 1);
+                                            }
+                                        }        
                                     }
 
                                 }
                                 
-                                var index=0;
-                                while(index!=-1){
-                                    index=studentCodes.indexOf(null);
-                                    if (index > -1) {
-                                        studentCodes.splice(index, 1);
-                                    }
-                                }
+                                
+                                
 
                                 //console.log(currentStudent);
                                 //console.log(studentCodes);
@@ -585,7 +576,7 @@ export default Ember.Component.extend({
             for(var i =0; i <this.get('departmentGroups').get('length');i++)
             {
                 var self = this;
-                console.log(this.get('departmentGroups').get('length'));
+                //console.log(this.get('departmentGroups').get('length'));
             
             //doc.text("Adjudication: " + this.get("adjudicationTermToView"), 14, 16);
             var elem = document.getElementById(i);
