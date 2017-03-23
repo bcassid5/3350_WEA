@@ -596,22 +596,15 @@ export default Ember.Component.extend({
         },
 
         deleteAll() {
-            var self = this;
-            var myStore = this.get('store');
-            this.get('store').findAll('adjudication').then(function (adjuds) {
-                console.log(adjuds.content.length);
-                console.log(adjuds.content[0].id);
-                for (var i=0; i < adjuds.content.length; i++){
-                    //console.log(adjuds.content[i].id);
-                    var del = self.get('store').peekRecord('adjudication', adjuds.content[i].id);
-                    //console.log(del);
-                    del.deleteRecord();
-                    if(del.get('isDeleted'))
-                    {
-                        del.save();
-                    }
-                }
+            this.get('store').findAll('adjudication').then(function(record){
+                record.content.forEach(function(rec) {
+                    Ember.run.once(this, function() {
+                    rec.deleteRecord();
+                    rec.save();
+                    });
+                }, this);
             });
+            
         }
     
 
