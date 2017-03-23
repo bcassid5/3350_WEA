@@ -41,6 +41,19 @@
 </div>
 <div class="ui tab" data-tab="view">
     <div class = "ui grid">
+        <div class="ui left aligned four wide column">
+        <div class="ui form">
+            <br><br><br><br>
+            <div class="ui medium header" >Select per category:</div>
+            
+            <button class="ui violet button" {{action 'departmentSelected'}}>Department</button><br><br>
+            <button class="ui violet button" {{action 'programSelected'}}>  Program </button><br>
+            <button class="ui violet button"{{action 'noneSelected'}}>  None </button><br>
+            
+            
+        
+        </div>
+    </div>
         <div class="ui left aligned twelve wide column">
             <div class = "ui form" id = "rules">
                 <br/>
@@ -59,6 +72,7 @@
                             View
                         </button>
                         {{#if showResults}}
+                        {{#if isNone}}
                             <button class="ui violet button" {{action 'export'}}>
                                 Export table to PDF
                             </button>
@@ -90,6 +104,88 @@
                                 {{/each}}
                                 </tbody>
                             </table>
+                            {{/if}}
+                            {{#if isDepartment}}
+                            <button class="ui violet button" {{action 'export2'}}>
+                                Export table to PDF
+                            </button>
+                            {{#each departmentGroups as |group index|}}
+                            <table class="ui celled table" id={{index}}>
+                                <thead>
+                                    <tr>
+                                        <th>Student</th>
+                                        <th>Term Average</th>
+                                        <th>Term Units</th>
+                                        <th>Term Units Received</th>
+                                        <th>Assessment Codes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {{#each group as |studentInDepartment index2|}}
+                                    
+                                
+                                {{#each adjudicationModel as |adjudicationChoice index2|}}
+                                {{#if (eq adjudicationChoice.student.id studentInDepartment.id)}}
+                                        {{#if (eq adjudicationChoice.note adjudicationTermToView)}}
+                                        <tr class={{index2}}>
+                                            <td>{{adjudicationChoice.student.firstName}} {{adjudicationChoice.student.lastName}}<br/>{{adjudicationChoice.student.number}}</td>
+                                            <td>{{adjudicationChoice.termAVG}}</td>
+                                            <td>{{adjudicationChoice.termUnitTotal}}</td>
+                                            <td>{{adjudicationChoice.termUnitPassed}}</td>
+                                            <td>
+                                                {{#each adjudicationChoice.assessmentCode as |codeChoice|}}
+                                                {{codeChoice.code}}<br/>
+                                                {{/each}}
+                                            </td>
+                                        </tr>
+                                    {{/if}}
+                                    {{/if}}
+                                {{/each}}
+                                
+                                {{/each}}
+                                </tbody>
+                            </table>
+                            {{/each}}
+                            {{/if}}
+                            {{#if isProgram}}
+                            {{#each programGroups as |group index|}}
+                            <table class="ui celled table" id="table">
+                                <thead>
+                                    <tr>
+                                        <th>Student</th>
+                                        <th>Term Average</th>
+                                        <th>Term Units</th>
+                                        <th>Term Units Received</th>
+                                        <th>Assessment Codes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {{#each group as |studentInDepartment index2|}}
+                                    
+                                
+                                {{#each adjudicationModel as |adjudicationChoice index2|}}
+                                {{#if (eq adjudicationChoice.student.id studentInDepartment.id)}}
+                                        {{#if (eq adjudicationChoice.note adjudicationTermToView)}}
+                                        <tr class={{index2}}>
+                                            <td>{{adjudicationChoice.student.firstName}} {{adjudicationChoice.student.lastName}}<br/>{{adjudicationChoice.student.number}}</td>
+                                            <td>{{adjudicationChoice.termAVG}}</td>
+                                            <td>{{adjudicationChoice.termUnitTotal}}</td>
+                                            <td>{{adjudicationChoice.termUnitPassed}}</td>
+                                            <td>
+                                                {{#each adjudicationChoice.assessmentCode as |codeChoice|}}
+                                                {{codeChoice.code}}<br/>
+                                                {{/each}}
+                                            </td>
+                                        </tr>
+                                    {{/if}}
+                                    {{/if}}
+                                {{/each}}
+                                
+                                {{/each}}
+                                </tbody>
+                            </table>
+                            {{/each}}
+                            {{/if}}
                         {{/if}}
                     </div>
 

@@ -32,6 +32,13 @@ export default Ember.Component.extend({
 
     progress:null,
 
+    departmentModel: null,
+    programModel: null,
+    isNone: true,
+    isDepartment:false,
+    isProgram: false,
+    departmentGroups: [],
+    programGroups: [],
     moveProgress: Ember.observer('progress', function(){
         this.rerender();
         this.$('#progBar').progress('set percent', this.get("progress"));
@@ -85,11 +92,41 @@ export default Ember.Component.extend({
         this.get('store').findAll('assessmentCode').then(function(records){
             self.set('codeModel', records);
         });
-
-
+        //this.get('store').query('student',{department: "58d2a553a3ddd62848d60587"}).then(function(grades){
+      //           console.log(grades.get('length'));
+      //           self.get('store').query('student',{program: self.get('programModel').objectAt(0).get('id')}).then(function(grades2){
+      //           console.log(grades2.get('length'));
+      //      });
+      //      });
+        this.get('store').findAll('department').then(function(records){
+            self.set('departmentModel', records);
+            console.log(self.get('departmentModel').get('length'));
+            for (var i =0;i<self.get('departmentModel').get('length');i++)
+            {
+                self.get('store').query('student',{department: self.get('departmentModel').objectAt(i).get('id')}).then(function(grades){
+                
+                self.get('departmentGroups').push(grades);
+                
+           });
+           
+            }
+        });
         this.get('store').findAll('adjudication').then(function(records){
             self.set('adjudicationModel', records);
         });
+        this.get('store').findAll('program').then(function (records) {
+           self.set('programModel', records);
+           for (var i =0;i<self.get('programModel').get('length');i++)
+            {
+                self.get('store').query('student',{program: self.get('programModel').objectAt(i).get('id')}).then(function(grades){
+                
+                self.get('programGroups').push(grades);
+                
+           });
+           
+            }
+        });
+        
     },
 
     didRender(){
@@ -98,7 +135,23 @@ export default Ember.Component.extend({
         this.$('#progBar').progress('set percent', self.get("progress"));
     },
     actions: {
-
+        noneSelected(){
+            console.log(this.get('departmentGroups').objectAt(0).objectAt(0).get('id'));
+            this.set('isNone', true);
+            this.set('isDepartment', false);
+            this.set('isProgram', false);
+            
+        },
+        programSelected(){
+            this.set('isNone', false);
+            this.set('isDepartment', false);
+            this.set('isProgram', true);
+        },
+        departmentSelected(){
+            this.set('isNone', false);
+            this.set('isDepartment', true);
+            this.set('isProgram', false);
+        },
         selectTerm(index){
             var term = this.get('termModel').objectAt(index).get('name');
             this.set('adjudicationTerm', term);
@@ -490,6 +543,30 @@ export default Ember.Component.extend({
                 }
             });
             doc.output("dataurlnewwindow");
+        },
+        export2() {
+            var doc = new jsPDF();
+            
+            for(var i =0; i <this.get('departmentGroups').get('length');i++)
+            {
+                var self = this;
+                console.log(this.get('departmentGroups').get('length'));
+            
+            //doc.text("Adjudication: " + this.get("adjudicationTermToView"), 14, 16);
+            var elem = document.getElementById(i);
+            var res = doc.autoTableHtmlToJson(elem);
+            doc.autoTable(res.columns, res.data, {
+                startY: 20, 
+                theme: 'grid',
+                headerStyles: {fillColor: [79, 38, 131]},
+                addPageContent: function(data) {
+                    doc.text("Adjudication: " + self.get("adjudicationTermToView"), 15, 15);
+                }
+            });
+            
+        }
+        doc.output("dataurlnewwindow");
+            
         }
     }
 });
