@@ -25,6 +25,7 @@ router.route('/')
             console.log('no student');
             models.Programs.find(function (error, programs) {
                 if (error) response.send(error);
+                console.log(programs);
                 response.json({program: programs});
             });
         } else {

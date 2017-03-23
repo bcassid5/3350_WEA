@@ -110,7 +110,11 @@ export default Ember.Component.extend({
         this.newProgAdminName="";
         this.newDeptName="";
         this.newProgAdminPosition="";
-
+        this.get('store').findAll('program').then(function (records) {
+           self.set('programModel', records);
+           
+           
+        });
         this.get('store').findAll('residency').then(function (records) {
             self.set('residencyModel', records);
         });
@@ -139,10 +143,7 @@ export default Ember.Component.extend({
         this.get('store').findAll('courseCode').then(function (records) {
            self.set('courseModel', records);
         });
-        this.get('store').findAll('program').then(function (records) {
-           self.set('programModel', records);
-           
-        });
+        
         
 
         /****************/
@@ -471,8 +472,10 @@ export default Ember.Component.extend({
       {
           this.set('newPlanChoice',val);
       },
+      
       updateProgramChoice(index)
       {
+          console.log(this.$("#programChoice").find('.'+index).find('.selectedDepartment').val());
           var e = false;
           if(this.get('programModel').objectAt(index).get('name')=="")
           {
@@ -494,7 +497,15 @@ export default Ember.Component.extend({
           }
           if (!e)
           {
-              this.get('programModel').objectAt(index).save();
+              var self=this;
+              this.get('store').find('program',this.get('programModel').objectAt(index).get('id')).then(function(record){
+            
+            record.set('department', self.get('departmentModel').objectAt(self.$("#programChoice").find('.'+index).find('.selectedDepartment').val()));
+            record.save();
+                
+            });
+              //this.set(this.get('programModel').objectAt(index).get('department'), this.$("#programChoice").find('.'+index).find('.selectedDepartment').val());
+              //this.get('programModel').objectAt(index).save();
           }
       },
       updateCourseChoice(index)

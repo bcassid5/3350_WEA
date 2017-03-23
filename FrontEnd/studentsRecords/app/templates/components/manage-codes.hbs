@@ -336,7 +336,7 @@
                             <i class="angle double left icon"></i><i class="angle double right icon"></i>
                         </h4>
                         <br/>
-
+                        <div id = "programChoice">
                         {{#each programModel as |programChoice index|}}
                         <div class = {{index}}>
                             <div class="ui form">
@@ -350,10 +350,11 @@
                             </div> 
                             <div class = "field">
                             <label name="deptList">Department</label>
-                            <select  class="selectedDepartment" name="deptList">
+                            <select  class="selectedDepartment" name="deptList" >
                                 <option hidden>No Department</option>
-                                {{#each departmentModel as |department|}}
-                                <option value={{department.id}} selected={{eq department.id
+                                {{#each departmentModel as |department index2|}}
+                                
+                                <option value={{index2}} selected={{eq department.id
                                                                                     programChoice.department.id}}>{{department.name}} </option>
                                 {{/each}}
                             </select>
@@ -380,6 +381,7 @@
                             </div>
                         </div>
                         {{/each}}
+                        </div>
                     </div>      
                 </div>
             </div>
