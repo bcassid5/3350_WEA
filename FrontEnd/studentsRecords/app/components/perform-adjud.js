@@ -578,22 +578,42 @@ export default Ember.Component.extend({
                 var self = this;
                 //console.log(this.get('departmentGroups').get('length'));
             
-            //doc.text("Adjudication: " + this.get("adjudicationTermToView"), 14, 16);
-            var elem = document.getElementById(i);
-            var res = doc.autoTableHtmlToJson(elem);
-            doc.autoTable(res.columns, res.data, {
-                startY: 20, 
-                theme: 'grid',
-                headerStyles: {fillColor: [79, 38, 131]},
-                addPageContent: function(data) {
-                    doc.text("Adjudication: " + self.get("adjudicationTermToView"), 15, 15);
+                //doc.text("Adjudication: " + this.get("adjudicationTermToView"), 14, 16);
+                var elem = document.getElementById(i);
+                var res = doc.autoTableHtmlToJson(elem);
+                doc.autoTable(res.columns, res.data, {
+                    startY: 20, 
+                    theme: 'grid',
+                    headerStyles: {fillColor: [79, 38, 131]},
+                    addPageContent: function(data) {
+                        doc.text("Adjudication: " + self.get("adjudicationTermToView"), 15, 15);
+                    }
+                });
+                
+            }
+            doc.output("dataurlnewwindow");
+            
+        },
+
+        deleteAll() {
+            var self = this;
+            var myStore = this.get('store');
+            this.get('store').findAll('adjudication').then(function (adjuds) {
+                console.log(adjuds.content.length);
+                console.log(adjuds.content[0].id);
+                for (var i=0; i < adjuds.content.length; i++){
+                    //console.log(adjuds.content[i].id);
+                    var del = self.get('store').peekRecord('adjudication', adjuds.content[i].id);
+                    //console.log(del);
+                    del.deleteRecord();
+                    if(del.get('isDeleted'))
+                    {
+                        del.save();
+                    }
                 }
             });
-            
         }
-        doc.output("dataurlnewwindow");
-            
-        }
+    
 
     }
 });
