@@ -46,9 +46,9 @@
             <br><br><br><br>
             <div class="ui medium header" >Select per category:</div>
             
-            <button class="ui violet button" {{action 'departmentSelected'}}>Department</button><br><br>
-            <button class="ui violet button" {{action 'programSelected'}}>  Program </button><br><br>
-            <button class="ui violet button"{{action 'noneSelected'}}>  None </button><br>
+            <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'departmentSelected'}}>Department</button><br><br>
+            <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'programSelected'}}>  Program </button><br><br>
+            <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'noneSelected'}}>  None </button><br>
             
             
         
@@ -74,7 +74,7 @@
                         {{#if showResults}}
                             {{!--<button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'exportPDF'}}>Export </button>--}}
                         {{#if isNone}}
-                            <button class="ui violet button" {{action 'exportPDF'}}>
+                            <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'exportPDF'}}>
                                 Export table to PDF
                             </button>
                             <!--<button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'exportExcel'}}>
@@ -110,7 +110,7 @@
                             </table>
                             {{/if}}
                             {{#if isDepartment}}
-                            <button class="ui violet button" {{action 'export2'}}>
+                            <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'export2'}}>
                                 Export table to PDF
                             </button>
                             {{#each departmentGroups as |group index|}}
