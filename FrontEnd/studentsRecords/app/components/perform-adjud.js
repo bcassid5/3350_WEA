@@ -21,12 +21,12 @@ export default Ember.Component.extend({
     offset:null,
     pageSize:null,
 
-    gradeSum:null,
-    termAvg: null,
-    totalTermUnit:null,
-    passedTermUnit:null,
-    date:null,
-    studentCodes:null,
+    //gradeSum:null,
+    //termAvg: null,
+    //totalTermUnit:null,
+    //passedTermUnit:null,
+    //date:null,
+    //studentCodes:null,
 
     showResults:null,
 
@@ -42,12 +42,7 @@ export default Ember.Component.extend({
         var self = this;
         this.adjudicationTerm="";
         this.adjudicationTermToView="";
-        this.termAvg=0.0;
-        this.gradeSum=0.0;
         this.gradeModel=[];
-        this.totalTermUnit=0.0;
-        this.passedTermUnit=0.0;
-        this.studentCodes=[];
         this.showResults=false;
         this.progress=0.0;
         this.get('store').findAll('schoolTerm').then(function (records) {
@@ -112,12 +107,7 @@ export default Ember.Component.extend({
             //     progress=t;
             //     self.$('#progBar').progress('set percent', progress);
             //}
-            if(this.get('adjudicationTerm')!=""){
-                this.$("#adjudication").form('remove prompt', 'listname');
-
-
-
-                var index=0;
+            var index=0;
                 for(var j =0; j <self.get('termModel').get('length'); j++){
                     //console.log(self.get('termCodeModel').objectAt(j).get('name'));
                     if((self.get('termModel').objectAt(j).get('name'))==(self.get('adjudicationTerm'))){
@@ -128,57 +118,85 @@ export default Ember.Component.extend({
 
                 //console.log(index);
                 //console.log(this.get('termModel').objectAt(index).get('id'));
-                this.get('store').query('grade', {schoolterm: this.get('termModel').objectAt(index).get('id')}).then(function(grades){
+                self.get('store').query('grade', {schoolterm: self.get('termModel').objectAt(index).get('id')}).then(function(grades){
                     //console.log(grades);
                     self.set('gradeModel', grades);
                     //console.log(self.get('gradeModel'));
-                });
+            if(self.get('adjudicationTerm')!=""){
+                self.$("#adjudication").form('remove prompt', 'listname');
 
 
-                for(var i=0;i<this.get('studentModel').get('length');i++){
-                    var currentStudent = this.get('studentModel').objectAt(i);
+
+                
+                
+
+                    var gradeSum = 0.0;
+                    var totalTermUnit = 0.0;
+                    var passedTermUnit = 0.0;
+                    var studentCodes=null;
+                    //studentCodes = [];
+                    var date=new Date().toString();
+                    var termAvg=0.0;
+                for(var i=0;i<self.get('studentModel').get('length');i++){
+                    var currentStudent = self.get('studentModel').objectAt(i);
 
                     console.log("******************");
                     //console.log(this.get('gradeModel'));
 
+                    gradeSum = 0.0;
+                    totalTermUnit = 0.0;
+                    passedTermUnit = 0.0;
+                    studentCodes=null;
+                    studentCodes = [];
+                    date=new Date().toString();
+                    termAvg=0.0;
+
+                    console.log(studentCodes);
+                    //console.log(studentCodes.get('length'));
+                    //console.log(studentCodes);
+                    //console.log(studentCodes.get('length'));
+                    //console.log("----------------");
                     var tempGrades=[];
-                    for(var t=0;t<this.get('gradeModel').get('length');t++){
+                    for(var t=0;t<self.get('gradeModel').get('length');t++){
                         //console.log(currentStudent.get('id'));
-                        for(var q=0;q<this.get('termCodeModel').get('length');q++){
+                        for(var q=0;q<self.get('termCodeModel').get('length');q++){
                             //console.log(this.get('gradeModel').objectAt(t).get('term').get('id'));
                             //console.log(this.get('termCodeModel').objectAt(q).get('id'));
-                            if(this.get('gradeModel').objectAt(t).get('term').get('id')==this.get('termCodeModel').objectAt(q).get('id')){
-                                if(this.get('termCodeModel').objectAt(q).get('student').get('id')==currentStudent.get('id')){
-                                    tempGrades.push(this.get('gradeModel').objectAt(t));
+                            if(self.get('gradeModel').objectAt(t).get('term').get('id')==self.get('termCodeModel').objectAt(q).get('id')){
+                                if(self.get('termCodeModel').objectAt(q).get('student').get('id')==currentStudent.get('id')){
+                                    tempGrades.push(self.get('gradeModel').objectAt(t));
                                 }
                             }
                         }
                     }
                     //console.log(tempTerms);
-                    console.log(tempGrades);
+                    //console.log(tempGrades);
 
                     if(tempGrades.get('length')!=0){
                     
                         for(var k=0;k<tempGrades.get('length');k++){
                             var temp = 0.0;
-                            temp=self.get('gradeSum')+tempGrades.objectAt(k).get('mark');
-                            self.set('gradeSum',temp);
+                            temp=gradeSum+tempGrades.objectAt(k).get('mark');
+                            gradeSum=temp;
 
-                            var temp2 = 0;
-                            temp2=self.get('totalTermUnit')+tempGrades.objectAt(k).get('course').get('unit');
-                            self.set('totalTermUnit', temp2);
+                            var temp2 = 0.0;
+                            temp2=totalTermUnit+tempGrades.objectAt(k).get('course').get('unit');
+                            totalTermUnit=temp2;
 
                             if(tempGrades.objectAt(k).get('mark')>=50){
                                 var temp3=0;
-                                temp3=self.get('passedTermUnit')+tempGrades.objectAt(k).get('course').get('unit');
-                                self.set('passedTermUnit', temp3);
+                                temp3=passedTermUnit+tempGrades.objectAt(k).get('course').get('unit');
+                                passedTermUnit=temp3;
                             }
                         }
 
-                        var avg = (self.get('gradeSum'))/(tempGrades.get('length'));
-                        self.set('termAvg', avg);
+                        var avg = (gradeSum)/(tempGrades.get('length'));
+                        termAvg=avg;
 
-                        self.set('date', Date().toString());
+                        console.log(termAvg);
+                        console.log(totalTermUnit);
+                        console.log(passedTermUnit);
+
 
                         var codeTest=true;
                         for(var w=0;w<self.get('codeModel').get('length');w++){
@@ -191,7 +209,7 @@ export default Ember.Component.extend({
                                 for(var y=0;y<logExpressions.get('length');y++){
                                     var currentExpression = logExpressions.objectAt(y);
                                     if(currentExpression.get('parameter')=="TotalAvg" && currentExpression.get('operator')=="="){
-                                        if(self.get('termAvg')==currentExpression.get('value')){
+                                        if(termAvg==currentExpression.get('value')){
                                             if(codeTest!=false){
                                                 codeTest=true;
                                             }
@@ -199,7 +217,7 @@ export default Ember.Component.extend({
                                             codeTest=false;
                                         }
                                     } else if(currentExpression.get('parameter')=="TotalAvg" && currentExpression.get('operator')==">="){
-                                        if(self.get('termAvg')>=currentExpression.get('value')){
+                                        if(termAvg>=currentExpression.get('value')){
                                             if(codeTest!=false){
                                                 codeTest=true;
                                             }
@@ -207,7 +225,7 @@ export default Ember.Component.extend({
                                             codeTest=false;
                                         }
                                     } else if(currentExpression.get('parameter')=="TotalAvg" && currentExpression.get('operator')=="<="){
-                                        if(self.get('termAvg')<=currentExpression.get('value')){
+                                        if(termAvg<=currentExpression.get('value')){
                                             if(codeTest!=false){
                                                 codeTest=true;
                                             }
@@ -215,7 +233,7 @@ export default Ember.Component.extend({
                                             codeTest=false;
                                         }
                                     } else if(currentExpression.get('parameter')=="TotalAvg" && currentExpression.get('operator')==">"){
-                                        if(self.get('termAvg')>currentExpression.get('value')){
+                                        if(termAvg>currentExpression.get('value')){
                                             if(codeTest!=false){
                                                 codeTest=true;
                                             }
@@ -223,7 +241,7 @@ export default Ember.Component.extend({
                                             codeTest=false;
                                         }
                                     } else if(currentExpression.get('parameter')=="TotalAvg" && currentExpression.get('operator')=="<"){
-                                        if(self.get('termAvg')<currentExpression.get('value')){
+                                        if(termAvg<currentExpression.get('value')){
                                             if(codeTest!=false){
                                                 codeTest=true;
                                             }
@@ -231,7 +249,7 @@ export default Ember.Component.extend({
                                             codeTest=false;
                                         }
                                     } else if(currentExpression.get('parameter')=="TermUnitPassed" && currentExpression.get('operator')=="="){
-                                        if(self.get('passedTermUnit')==currentExpression.get('value')){
+                                        if(passedTermUnit==currentExpression.get('value')){
                                             if(codeTest!=false){
                                                 codeTest=true;
                                             }
@@ -239,7 +257,7 @@ export default Ember.Component.extend({
                                             codeTest=false;
                                         }
                                     } else if(currentExpression.get('parameter')=="TermUnitPassed" && currentExpression.get('operator')==">="){
-                                        if(self.get('passedTermUnit')>=currentExpression.get('value')){
+                                        if(passedTermUnit>=currentExpression.get('value')){
                                             if(codeTest!=false){
                                                 codeTest=true;
                                             }
@@ -247,7 +265,7 @@ export default Ember.Component.extend({
                                             codeTest=false;
                                         }
                                     } else if(currentExpression.get('parameter')=="TermUnitPassed" && currentExpression.get('operator')=="<="){
-                                        if(self.get('passedTermUnit')<=currentExpression.get('value')){
+                                        if(passedTermUnit<=currentExpression.get('value')){
                                             if(codeTest!=false){
                                                 codeTest=true;
                                             }
@@ -255,7 +273,7 @@ export default Ember.Component.extend({
                                             codeTest=false;
                                         }
                                     } else if(currentExpression.get('parameter')=="TermUnitPassed" && currentExpression.get('operator')==">"){
-                                        if(self.get('passedTermUnit')>currentExpression.get('value')){
+                                        if(passedTermUnit>currentExpression.get('value')){
                                             if(codeTest!=false){
                                                 codeTest=true;
                                             }
@@ -263,7 +281,7 @@ export default Ember.Component.extend({
                                             codeTest=false;
                                         }
                                     } else if(currentExpression.get('parameter')=="TermUnitPassed" && currentExpression.get('operator')=="<"){
-                                        if(self.get('passedTermUnit')<currentExpression.get('value')){
+                                        if(passedTermUnit<currentExpression.get('value')){
                                             if(codeTest!=false){
                                                 codeTest=true;
                                             }
@@ -271,7 +289,7 @@ export default Ember.Component.extend({
                                             codeTest=false;
                                         }
                                     } else if(currentExpression.get('parameter')=="TermUnitTotal" && currentExpression.get('operator')=="="){
-                                        if(self.get('totalTermUnit')==currentExpression.get('value')){
+                                        if(totalTermUnit==currentExpression.get('value')){
                                             if(codeTest!=false){
                                                 codeTest=true;
                                             }
@@ -280,7 +298,7 @@ export default Ember.Component.extend({
                                         }
                                     }
                                     else if(currentExpression.get('parameter')=="TermUnitTotal" && currentExpression.get('operator')==">="){
-                                        if(self.get('totalTermUnit')>=currentExpression.get('value')){
+                                        if(totalTermUnit>=currentExpression.get('value')){
                                             if(codeTest!=false){
                                                 codeTest=true;
                                             }
@@ -288,7 +306,7 @@ export default Ember.Component.extend({
                                             codeTest=false;
                                         }
                                     } else if(currentExpression.get('parameter')=="TermUnitTotal" && currentExpression.get('operator')=="<="){
-                                        if(self.get('totalTermUnit')<=currentExpression.get('value')){
+                                        if(totalTermUnit<=currentExpression.get('value')){
                                             if(codeTest!=false){
                                                 codeTest=true;
                                             }
@@ -296,7 +314,7 @@ export default Ember.Component.extend({
                                             codeTest=false;
                                         }
                                     } else if(currentExpression.get('parameter')=="TermUnitTotal" && currentExpression.get('operator')==">"){
-                                        if(self.get('totalTermUnit')>currentExpression.get('value')){
+                                        if(totalTermUnit>currentExpression.get('value')){
                                             if(codeTest!=false){
                                                 codeTest=true;
                                             }
@@ -304,7 +322,7 @@ export default Ember.Component.extend({
                                             codeTest=false;
                                         }
                                     } else if(currentExpression.get('parameter')=="TermUnitTotal" && currentExpression.get('operator')=="<"){
-                                        if(self.get('totalTermUnit')<currentExpression.get('value')){
+                                        if(totalTermUnit<currentExpression.get('value')){
                                             if(codeTest!=false){
                                                 codeTest=true;
                                             }
@@ -404,52 +422,49 @@ export default Ember.Component.extend({
                             }
 
                             if(codeTest==true){
-                                self.get('studentCodes').push(self.get('store').peekRecord('assessmentCode', currentAssessmentCode.get('id')));
+                                console.log(studentCodes);
+                                studentCodes.push(self.get('store').peekRecord('assessmentCode', currentAssessmentCode.get('id')));
+                                console.log(studentCodes);
                             }
 
                         }
                         
                         var index=0;
                         while(index!=-1){
-                            index=self.get('studentCodes').indexOf(null);
+                            index=studentCodes.indexOf(null);
                             if (index > -1) {
-                                self.get('studentCodes').splice(index, 1);
+                                studentCodes.splice(index, 1);
                             }
                         }
 
-                        console.log(currentStudent);
-                        console.log(this.get('studentCodes'));
+                        //console.log(currentStudent);
+                        //console.log(studentCodes);
+                        //console.log(totalTermUnit);
+                        //console.log(termAvg);
+                        //console.log(passedTermUnit);
+                        //console.log(date);
+
                         var record = self.get('store').createRecord('adjudication', {
-                            date: self.get('date'),
-                            termAVG: self.get('termAvg'),
-                            termUnitPassed: self.get('passedTermUnit'),
-                            termUnitTotal: self.get('totalTermUnit'),
+                            date: date,
+                            termAVG: termAvg,
+                            termUnitPassed: passedTermUnit,
+                            termUnitTotal: totalTermUnit,
                             note: self.get('adjudicationTerm'),
-                            assessmentCode: self.get('studentCodes'),
+                            assessmentCode: studentCodes,
                             student: self.get('store').peekRecord('student', currentStudent.get('id'))
                         });
+                        //console.log(studentCodes);
                         record.save();
                     }
 
-                    console.log(self.get('totalTermUnit'));
-                    console.log(self.get('termAvg'));
-                    console.log(self.get('passedTermUnit'));
-                    console.log(self.get('date'));
-
-                    self.set('gradeSum', 0.0);
-                    self.set('totalTermUnit', 0);
-                    self.set('termAvg', 0.0);
-                    self.set('passedTermUnit', 0);
-                    self.set('studentCodes', []);
+                    //console.log(studentCodes);
                     
-                    
-                    
-                    var incrementVal = 100/(this.get('studentModel').get('length'));
+                    var incrementVal = 100/(self.get('studentModel').get('length'));
                     if(self.get('progress')<100){
                         self.set('progress', self.get('progress')+incrementVal);
                     }
                    // this.rerender();
-                    console.log(self.get('progress'));
+                    //console.log(self.get('progress'));
                     //this.$('#progBar').progress('set percent', progress);
                     // if(progress >= 1){
                     //     for(var t=100000000; t>0; t--){}
@@ -460,10 +475,11 @@ export default Ember.Component.extend({
                   //  for(var t=1000000000; t>0; t--){}
                     
                 }
+                
             } else{
-                this.$("#adjudication").form('add prompt', 'listname', 'error text');
+                self.$("#adjudication").form('add prompt', 'listname', 'error text');
             }
-
+            });
         },
 
         selectTermToView(index){
@@ -475,7 +491,7 @@ export default Ember.Component.extend({
             this.set('showResults', !this.get('showResults'));
         },
 
-        export() {
+        exportPDF() {
             var self = this;
             var doc = new jsPDF();
             //doc.text("Adjudication: " + this.get("adjudicationTermToView"), 14, 16);
@@ -490,7 +506,25 @@ export default Ember.Component.extend({
                 }
             });
             doc.output("dataurlnewwindow");
+        },
+
+        exportExcel(){
+            
+            var uri = 'data:application/vnd.ms-excel;base64,'
+            , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+            , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+            , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+            return function (table, name, filename) {
+                if (!table.nodeType) table = document.getElementById('table')
+                var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+
+                document.getElementById("dlink").href = uri + base64(format(template, ctx));
+                document.getElementById("dlink").download = filename;
+                document.getElementById("dlink").click();
+            }
+    
         }
+
     }
 });
 

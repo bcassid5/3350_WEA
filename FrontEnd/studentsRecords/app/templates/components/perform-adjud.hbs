@@ -15,8 +15,8 @@
                 <div id="adjudication">
                     <div class = "ui form">
                         <div class = "field">
-                            <label name="list" style="font-size: 18px">Select the term for which adjudication is to be performed: </label>
-                            <select onchange={{action 'selectTerm' value="target.value"}} name = "listname">
+                            <label name="list" style="font-size: 18px">Select Adjudication Term: </label>
+                            <select class="ui dropdown" onchange={{action 'selectTerm' value="target.value"}} name = "listname">
                                 <option hidden>Select</option>
                                 {{#each termModel as |termChoice index|}}
                                     <option value={{index}}> {{termChoice.name}} </option>    
@@ -29,7 +29,7 @@
                         </div>
                         <div class="label">Progress of Adjudication</div>
                     </div>
-                        <button class="ui violet button" {{action 'adjudicate'}} >
+                        <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'adjudicate'}} >
                             Adjudicate
                         </button>
                     </div>
@@ -47,20 +47,23 @@
                 <div id="adjudicationView">
                     <div class = "ui form">
                         <div class = "field">
-                            <label name="list" style="font-size: 18px">Select the term for which to view adjudication results: </label>
-                            <select onchange={{action 'selectTermToView' value="target.value"}} name = "listname">
+                            <label name="list" style="font-size: 18px">Select Adjudication Term: </label>
+                            <select class="ui dropdown" onchange={{action 'selectTermToView' value="target.value"}} name = "listname">
                                 <option hidden>Select</option>
                                 {{#each termModel as |termChoice index|}}
                                     <option value={{index}}> {{termChoice.name}} </option>    
                                 {{/each}}
                             </select>
                         </div>
-                        <button class="ui violet button" {{action 'viewAdjudication'}} >
+                        <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'viewAdjudication'}} >
                             View
                         </button>
                         {{#if showResults}}
-                            <button class="ui violet button" {{action 'export'}}>
+                            <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'exportPDF'}}>
                                 Export table to PDF
+                            </button>
+                            <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'exportExcel'}}>
+                                Export table to Excel
                             </button>
                             <table class="ui celled table" id="table">
                                 <thead>
