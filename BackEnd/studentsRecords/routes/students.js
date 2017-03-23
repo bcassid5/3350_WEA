@@ -64,7 +64,7 @@ router.route('/')
                             studentArray.push(studentTerms[k].student)
                         }
                         models2.Students.find({"_id": { $in: studentArray}}, function (error4, students){
-                            console.log("students:" + students[0].name);
+                 //           console.log("students:" + students[0].name);
                             
                             response.json({student: students});
                         });

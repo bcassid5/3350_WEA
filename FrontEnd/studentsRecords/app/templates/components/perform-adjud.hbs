@@ -47,7 +47,7 @@
             <div class="ui medium header" >Select per category:</div>
             
             <button class="ui violet button" {{action 'departmentSelected'}}>Department</button><br><br>
-            <button class="ui violet button" {{action 'programSelected'}}>  Program </button><br>
+            <button class="ui violet button" {{action 'programSelected'}}>  Program </button><br><br>
             <button class="ui violet button"{{action 'noneSelected'}}>  None </button><br>
             
             
@@ -72,7 +72,7 @@
                             View
                         </button>
                         {{#if showResults}}
-                            <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'exportPDF'}}>
+                            {{!--<button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'exportPDF'}}>Export </button>--}}
                         {{#if isNone}}
                             <button class="ui violet button" {{action 'export'}}>
                                 Export table to PDF
@@ -194,7 +194,6 @@
                     </div>
 
                 </div>
-                <br/>
             </div>      
         </div>
     </div>
