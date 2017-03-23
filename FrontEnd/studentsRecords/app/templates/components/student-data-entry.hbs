@@ -169,7 +169,7 @@
           <div id="terms">
             {{#each termCodeModel as |termChoice index|}}
               <div class={{index}}>
-                
+                <br>
                 <div class="ui large header" style="color: #4F2683">{{termChoice.name.name}}</div>
                 <div class="ui medium header" >Grades:</div>
                   <table class="ui celled table">
@@ -207,47 +207,6 @@
                     </tbody>
                   </table>
                 <div class = "ui form" id = "termPrograms">
-                  
-                  {{!--{{#each gradeModel as |gradeChoice index2|}}
-                    <div class={{index2}}>
-                      {{#if (eq gradeChoice.term.id termChoice.id)}}
-                        <div class="ui medium header" >{{increment index2}}
-                          {{#if enableGradeEdit}}
-                            <a {{action 'removeGrade' index index2}}> 
-                            <span data-tooltip="Remove This Grade"><i class="large red minus circle icon"></i></span> </a> 
-                            <a {{action 'updateTheGrade' index index2}}> 
-                            <span data-tooltip="Save Changes To Mark"><i class="large save icon" ></i></span></a> 
-                          {{/if}}
-                        </div>
-                        <div class="fields">
-                            <div class = "four wide field">
-                              <label>Mark</label> <input type="text" class="currentGrade" value={{gradeChoice.mark}} name = "currentmark" >
-                            </div>
-                            <div class = "twelve wide field">
-                              <label>Note</label> <input type="text" class="currentNote" name = "currentnote" value = {{gradeChoice.note}}>
-                            </div>
-                          </div>
-                          <div class="ui small header" >Course Info:</div>
-                          <div class="fields">
-                            <div class = "eight wide field">
-                              <label>Letter</label> <input type="text"  class="currentLetter" value={{gradeChoice.course.courseLetter}} name = "currentLetter" >
-                            </div>
-                            <div class = "eight wide field">
-                              <label>Number</label> <input type="text"  class="currentNumber" name = "currentNumber" value = {{gradeChoice.course.courseNumber}}>
-                            </div>
-                          </div>
-                          <div class="fields">
-                            <div class = "eleven wide field">
-                              <label>Name</label> <input type="text"  class="currentName" value={{gradeChoice.course.name}} name = "currentName" >
-                            </div>
-                            <div class = "eight wide field">
-                              <label>Unit</label> <input type="text"  class="currentUnit" name = "currentUnit" value = {{gradeChoice.course.unit}}>
-                            </div>
-                          </div>
-                      {{/if}}
-                    </div>
-                  {{/each}}--}}
-
                   {{#if enableGradeEdit}}
                     <a {{action 'newGradeClicked'}}> <br>
                     <i class="large green add square icon"></i>Add Grade</a>
@@ -276,47 +235,68 @@
                     {{/if}}
                   {{/if}}
                   <div class="ui medium header" >Programs:</div>
-                  {{!--{{#each studentProgramModel as |programChoice1|}}
-                  {{log "program choice"}}
-                  <div class = "field">
-                        <label>Name</label> <input type="text" value = {{programChoice1.name.name}} class="program">
-                      </div>
-                  {{/each}}--}}
-                  {{#each termChoice.program as |programChoice|}}
-                  {{/each}}
-                  {{#if allowprograms}}
-                  {{#each termChoice.program as |programChoice1|}}
-                    {{#each studentProgramModel as |programChoice2|}}
+                  <table class="ui celled table">
+                    <thead>
+                      <tr><th >Name</th>
+                      <th>Level</th>
+                      <th>Load</th>
+                      <th>Status</th>
+                      <th class = "center aligned" >Selected Plans</th>
+                      {{#if enableGradeEdit}}
+                      <th>Edit Options</th>
+                      {{/if}}
                     
-                    {{#if (eq programChoice1.id programChoice2.id)}}
-                    {{log "program choice"}}
-                    {{log programChoice1}}
-                    {{log "programChoice1.id"}}
-                    {{log programChoice1.id}}
-                    {{log "programChoice2.id"}}
-                    {{log programChoice2.id}}
-                    {{log "programChoice1.load"}}
-                    {{log programChoice1.load}}
-                    {{log "programChoice2.load"}}
-                    {{log programChoice2.load}}
-                      <div class = "field">
-                        <label>Name</label> <input type="text" value = {{programChoice2.name.name}} class="level">
-                      </div>
-                    {{/if}}
-                    {{/each}}
+                      
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each programRecordModel as |studentProgramChoice index2|}}
+                    {{!--<div class={{index2}}>--}}
+                      {{#if (eq studentProgramChoice.semester.id termChoice.id)}}
+                      
+                        <tr class={{index2}}>
+                          <td >{{studentProgramChoice.name.name}}</td>
+                          <td>{{studentProgramChoice.level}}</td>
+                          <td>{{studentProgramChoice.load}}</td>
+                          <td>{{studentProgramChoice.status}}</td>
+                          <td class = "left aligned" >
+                            <ul class="ui list">
+                            {{#each studentProgramChoice.plan as |plan|}}
+                            <li>{{plan.name}}</li> 
+                            {{/each}}
+                            </ul>
+                          </td>
+                          {{#if enableGradeEdit}}
+                          <td  class="one wide center aligned">
+                            <a {{action 'removeProgram' index index2}}> 
+                            <span data-tooltip="Remove This Program"><i class="large red minus circle icon"></i></span> </a><br> 
+                            <a {{action 'updateTheProgram' index index2}}> 
+                            <span data-tooltip="Make Changes To Program"><i class="large edit icon" ></i></span></a>
+                          </td> 
+                          {{/if}}
+                        
+                          
+                        </tr>
+                        
+                      {{/if}}
+                    {{!--</div>--}}
                   {{/each}}
-                  {{/if}}
+                    </tbody>
+                  </table>
+                  
+                  
                 </div>
                 {{#if enableGradeEdit}}
                   <br/>
                   <a {{action 'newProgClicked'}}>
                   <i class="large green add square icon"></i>Add Program</a>
+                  
                   {{#if newProg}}
                     <div class="newProgram">
                       <div class = "ui form">
                         <div class = "required field">
                           <label name="list">Select Program</label>
-                          <select  class="selectedProgram" name="list">
+                          <select  class="selectedProgram" name="list" onchange="">
                             <option hidden>Select</option>
                             {{#each programModel as |programChoice index3|}}
                               <option value={{index3}}> {{programChoice.name}} </option> 
@@ -334,14 +314,14 @@
                             <label>Status</label> <input type="text" placeholder="Status" class="status" name = "status">
                           </div>
                         </div>
+                        
                         <button class="ui violet button" {{action 'addProgram' index}} >Add</button>
                         <button class="ui button" {{action 'newProgClicked'}}>Cancel</button>
                       </div>
                     </div>
                   {{/if}}
                 {{/if}}
-                <h4 class="ui horizontal divider header" style="color: #4F2683">
-                <i class="angle double left icon"></i><i class="angle double right icon"></i></h4>
+                
               </div>
             {{/each}}
           </div>
@@ -353,7 +333,7 @@
               <button class="ui violet button" {{action 'toggleGradeEdit'}}>Toggle Edit</button>
               <br>
               {{#if enableGradeEdit}}
-                <a {{action 'newStudentTermClicked'}}> 
+                <a {{action 'newStudentTermClicked'}}> <br>
                 <i class="large green add square icon"></i>Add Term</a>
                 {{#if newStudentTerm}}
                   <div class = "field">
@@ -779,14 +759,60 @@
     <div class = "field">
       <label>Note: </label>{{input type = "text" value =newGradeNote name = "note"}} 
     </div>
+    </div>
+    </div>
+    <div class="actions">
     <button class="ui violet button" {{action 'updateSelectedGrade'}} >
                         Save 
                     </button>
                     <button class="ui button" {{action 'cancelUpdateGrade'}}>
                         Cancel
                     </button>
-  </div>
-  </div>
+    </div>
+  
+  
+</div>
+
+<div class="ui program modal">
+  <div class="header">Edit Program: {{newProgramName.name}}</div>
+  <div class="content" id = "editProgramForm">
+  <div class = "ui form">
+    <div class = "required field">
+      <label>Level: </label>{{input type = "text" value =newProgramLevel name="mark"}} 
+    </div>
+    <div class = "required field">
+      <label>Load: </label>{{input type = "text" value =newProgramLoad name="mark"}} 
+    </div>
+    <div class = "required field">
+      <label>Status: </label>{{input type = "text" value =newProgramStatus name="mark"}} 
+    </div>
+    <div class = "field">
+    <label>Select Plans: </label>
+    {{#ui-dropdown   class="fluid multiple selection" selected=[newProgramPlans] onChange=(action 'selectNewPlans')}}
+       <i class="dropdown icon"></i>
+       <div class="default text">Select Permissions</div>
+       <div class="menu">
+         {{#each newProgramName.availablePlans as |possiblePlan|}}
+           <div class="item"   data-value= "{{possiblePlan.id}}" >
+             {{possiblePlan.name}}
+           </div>
+         {{/each}}
+
+       </div>
+     {{/ui-dropdown}}
+    </div>
+    </div>
+    </div>
+    <div class = "actions">
+    <button class="ui violet button" {{action 'updateSelectedProgram'}} >
+                        Save 
+                    </button>
+                    <button class="ui button" {{action 'cancelUpdateProgram'}}>
+                        Cancel
+                    </button>
+    </div>
+  
+  
 </div>
 
 <div class="ui save modal">

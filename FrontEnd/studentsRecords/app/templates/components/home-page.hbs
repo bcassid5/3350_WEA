@@ -119,22 +119,8 @@
       {{/if}}
       
       {{#if isManageCodeShowing}}
-      {{#if MSC02IsPermitted}}
+      
           {{manage-codes}}
-        {{else}}
-          <div class="ui center aligned raised segment">
-            <div class="ui icon header">
-              <i class="protect icon"></i>
-              Permission Denied
-            </div>
-            <div>
-              <p>This feature (MSC02) is not allowed for your account.</p>
-              <p>Please contact the system administrator for more information.</p>
-            </div>
-
-          </div>
-        {{/if}}
-        
       {{/if}}
       {{#if isUploadShowing}}
       {{#if ISR01IsPermitted}}
@@ -155,7 +141,22 @@
         
       {{/if}}
       {{#if isAdjudShowing}}
-        {{perform-adjud}}
+        {{#if ASR02IsPermitted}}
+          {{perform-adjud}}
+        {{else}}
+          <div class="ui center aligned raised segment">
+            <div class="ui icon header">
+              <i class="protect icon"></i>
+              Permission Denied
+            </div>
+            <div>
+              <p>This feature (ASR02) is not allowed for your account.</p>
+              <p>Please contact the system administrator for more information.</p>
+            </div>
+
+          </div>
+        {{/if}}
+        
       {{/if}}
     <!--</div>
   </div>-->

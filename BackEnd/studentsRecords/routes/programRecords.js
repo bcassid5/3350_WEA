@@ -1,9 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var models = require('../models/programMark');
+var models2 = require('../models/studentsRecordsDB');
 var bodyParser = require('body-parser');
 var parseUrlencoded = bodyParser.urlencoded({extended: false});
 var parseJSON = bodyParser.json();
+var mongoose = require('mongoose');
 
 router.route('/')
     .post(parseUrlencoded, parseJSON, function (request, response) {
@@ -18,18 +20,65 @@ router.route('/')
     })
     .get(parseUrlencoded, parseJSON, function (request, response) {
         var Student = request.query;
+        console.log(Student.department);
         if (!Student) {
-            
+            console.log("!student");
             models.ProgramRecords.find(function (error, programRecords) {
                 if (error) response.send(error);
                 response.json({programRecord: programRecords});
             });
-        } else {
+        }  else if(Student.department) 
+        {
+            console.log("student.department");
+            models.Programs.find({"department": Student.department}, function (error, programs) {
+                
+                if (error) response.send(error);
+                var programArray = [];
+                for(let i =0; i<programs.length;i++)
+                {
+                    programArray.push(new mongoose.Types.ObjectId(programs[i].id));
+                }
+                models.ProgramRecords.find({"name":{
+                        $in: programArray
+                    }
+                }, function (error2, studentPrograms){
+                    
+                    if (error) response.send(error2);
+                    var termArray = [];
+                   
+                    for(let j =0; j<studentPrograms.length; j++)
+                    {
+                        termArray.push(studentPrograms[j].semester);
+                        
+                    }
+                    models.TermCodes.find({"_id": { $in: termArray}}, function (error3, studentTerms){
+                        
+                        var studentArray =[];
+                        for (let k =0;k<studentTerms.length;k++)
+                        {
+                            studentArray.push(studentTerms[k].student);
+                        }
+                        models2.Students.find({"_id": { $in: studentArray}}, function (error4, students){
+                            
+                            
+                            response.json({programRecord: studentPrograms});
+                        });
+                        
+                    });
+                    
+                    
+                });
+                //response.json({program: program});
+            });
+        }
+        else {
             
-            models.ProgramRecords.find({"student": Student.student}, function (error, programRecord) {
+            models.ProgramRecords.find({"semester": Student.term}, function (error, programRecord) {
+               
                 if (error) response.send(error);
                 response.json({programRecord: programRecord});
             });
+            
         }
     });
 

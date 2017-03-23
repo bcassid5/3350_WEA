@@ -63,6 +63,30 @@ export default Ember.Component.extend({
     errCode: null,
     newCodeList: null,
 
+    MSC02IsPermitted: Ember.computed(function(){ //Manage system roles
+    var authentication = this.get('oudaAuth');
+    if (authentication.getName === "Root") {
+      return true;
+    } else {
+      return (authentication.get('userCList').indexOf("MSC02") >= 0);
+    }
+  }),
+    MACC1IsPermitted: Ember.computed(function(){ //Manage system roles
+    var authentication = this.get('oudaAuth');
+    if (authentication.getName === "Root") {
+      return true;
+    } else {
+      return (authentication.get('userCList').indexOf("MACC1") >= 0);
+    }
+  }),
+    MAR02IsPermitted: Ember.computed(function(){ //Manage system roles
+    var authentication = this.get('oudaAuth');
+    if (authentication.getName === "Root") {
+      return true;
+    } else {
+      return (authentication.get('userCList').indexOf("MAR02") >= 0);
+    }
+  }),
     init() {
         this._super(...arguments);
         this.newResChoice="";
@@ -86,14 +110,18 @@ export default Ember.Component.extend({
         this.newProgAdminName="";
         this.newDeptName="";
         this.newProgAdminPosition="";
-
+        this.get('store').findAll('program').then(function (records) {
+           self.set('programModel', records);
+           
+           
+        });
         this.get('store').findAll('residency').then(function (records) {
             self.set('residencyModel', records);
         });
         this.get('store').findAll('gender').then(function (records) {
            self.set('genderModel', records);
         });
-
+        
 
         this.get('store').findAll('highschool-subject').then(function(records){
             self.set('highSchoolSubjectModel', records);
@@ -115,9 +143,8 @@ export default Ember.Component.extend({
         this.get('store').findAll('courseCode').then(function (records) {
            self.set('courseModel', records);
         });
-        this.get('store').findAll('program').then(function (records) {
-           self.set('programModel', records);
-        });
+        
+        
 
         /****************/
         this.get('store').findAll('faculty').then(function(records){
@@ -125,6 +152,7 @@ export default Ember.Component.extend({
         });
         this.get('store').findAll('department').then(function(records){
             self.set('departmentModel', records);
+            
         });
         this.get('store').findAll('progAdmin').then(function(records){
             self.set('progAdminModel', records);
@@ -444,8 +472,10 @@ export default Ember.Component.extend({
       {
           this.set('newPlanChoice',val);
       },
+      
       updateProgramChoice(index)
       {
+          console.log(this.$("#programChoice").find('.'+index).find('.selectedDepartment').val());
           var e = false;
           if(this.get('programModel').objectAt(index).get('name')=="")
           {
@@ -467,7 +497,15 @@ export default Ember.Component.extend({
           }
           if (!e)
           {
-              this.get('programModel').objectAt(index).save();
+              var self=this;
+              this.get('store').find('program',this.get('programModel').objectAt(index).get('id')).then(function(record){
+            
+            record.set('department', self.get('departmentModel').objectAt(self.$("#programChoice").find('.'+index).find('.selectedDepartment').val()));
+            record.save();
+                
+            });
+              //this.set(this.get('programModel').objectAt(index).get('department'), this.$("#programChoice").find('.'+index).find('.selectedDepartment').val());
+              //this.get('programModel').objectAt(index).save();
           }
       },
       updateCourseChoice(index)

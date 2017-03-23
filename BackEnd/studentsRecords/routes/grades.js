@@ -1,10 +1,12 @@
 var express = require('express');
 var router = express.Router();
 var models = require('../models/programMark');
+var models2 = require('../models/studentsRecordsDB');
 var bodyParser = require('body-parser');
 var parseUrlencoded = bodyParser.urlencoded({extended: false});
 var parseJSON = bodyParser.json();
 var mongoose = require("mongoose");
+
 
 router.route('/')
     .post(parseUrlencoded, parseJSON, function (request, response) {
