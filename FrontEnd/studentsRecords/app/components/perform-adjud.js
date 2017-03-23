@@ -125,11 +125,6 @@ export default Ember.Component.extend({
             if(self.get('adjudicationTerm')!=""){
                 self.$("#adjudication").form('remove prompt', 'listname');
 
-
-
-                
-                
-
                     var gradeSum = 0.0;
                     var totalTermUnit = 0.0;
                     var passedTermUnit = 0.0;
