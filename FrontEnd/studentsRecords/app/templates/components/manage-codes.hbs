@@ -20,7 +20,8 @@
 </div>
 
 <div class="ui active tab"data-tab="residencies">
-    <div class="ui grid">
+    {{#if MSC02IsPermitted}}
+          <div class="ui grid">
         <div class="ui lef aligned five wide column"></div>
         <div class="ui lef aligned seven wide column">
             <div class="ui form">
@@ -43,9 +44,25 @@
             </div>
         </div>
     </div>
+        {{else}}
+          <div class="ui center aligned raised segment">
+            <div class="ui icon header">
+              <i class="protect icon"></i>
+              Permission Denied
+            </div>
+            <div>
+              <p>This feature (MSC02) is not allowed for your account.</p>
+              <p>Please contact the system administrator for more information.</p>
+            </div>
+
+          </div>
+        {{/if}}
+        
+    
 </div>
 <div class="ui tab" data-tab="genders">
-    <div class="ui grid">
+    {{#if MSC02IsPermitted}}
+          <div class="ui grid">
         <div class="ui lef aligned five wide column"></div>
         <div class="ui lef aligned seven wide column">
             <div class="ui form">
@@ -68,11 +85,27 @@
             </div>
             
         </div>
-    </div>    
+    </div> 
+        {{else}}
+          <div class="ui center aligned raised segment">
+            <div class="ui icon header">
+              <i class="protect icon"></i>
+              Permission Denied
+            </div>
+            <div>
+              <p>This feature (MSC02) is not allowed for your account.</p>
+              <p>Please contact the system administrator for more information.</p>
+            </div>
+
+          </div>
+        {{/if}}
+        
+       
 </div>
 
 <div class="ui tab" data-tab="programCodes">
-    <div class="ui grid">
+    {{#if MSC02IsPermitted}}
+          <div class="ui grid">
         <div class="four wide column">
             <div class="ui secondary vertical pointing menu">
                 <div class="active violet item" data-tab="termCodes">Term Codes</div>
@@ -302,6 +335,9 @@
                             <i class="angle double left icon"></i><i class="angle double right icon"></i>
                         </h4>
                         <br/>
+
+                        <div id = "programChoice">
+                        {{#each programModel as |programChoice index|}}
                         <div class = {{index}}>
                             <div class="ui form">
                             <div class = "ui large header" style="color: #4F2683">Option {{increment index}}
@@ -314,10 +350,11 @@
                             </div> 
                             <div class = "field">
                             <label name="deptList">Department</label>
-                            <select  class="selectedDepartment" name="deptList">
+                            <select  class="selectedDepartment" name="deptList" >
                                 <option hidden>No Department</option>
-                                {{#each departmentModel as |department|}}
-                                <option value={{department.id}} selected={{eq department.id
+                                {{#each departmentModel as |department index2|}}
+                                
+                                <option value={{index2}} selected={{eq department.id
                                                                                     programChoice.department.id}}>{{department.name}} </option>
                                 {{/each}}
                             </select>
@@ -342,15 +379,32 @@
                             </div>
                         </div>
                         {{/each}}
+                        </div>
                     </div>      
                 </div>
             </div>
         </div>
         </div>
         </div>
+        {{else}}
+          <div class="ui center aligned raised segment">
+            <div class="ui icon header">
+              <i class="protect icon"></i>
+              Permission Denied
+            </div>
+            <div>
+              <p>This feature (MSC02) is not allowed for your account.</p>
+              <p>Please contact the system administrator for more information.</p>
+            </div>
+
+          </div>
+        {{/if}}
+        
+    
 </div>
 <div class="ui tab" data-tab="highschool">
-    <div class="ui grid">
+    {{#if MSC02IsPermitted}}
+          <div class="ui grid">
         <div class="four wide column">
                 <div class="ui secondary vertical pointing menu">
                             <div class="active violet item" data-tab="highSchools">High Schools</div>
@@ -561,9 +615,25 @@
    </div>
    </div>
     </div>
+        {{else}}
+          <div class="ui center aligned raised segment">
+            <div class="ui icon header">
+              <i class="protect icon"></i>
+              Permission Denied
+            </div>
+            <div>
+              <p>This feature (MSC02) is not allowed for your account.</p>
+              <p>Please contact the system administrator for more information.</p>
+            </div>
+
+          </div>
+        {{/if}}
+        
+    
     </div>
    <div class="ui tab" data-tab="faculty">
-       <div class="ui grid">
+       {{#if MSC02IsPermitted}}
+          <div class="ui grid">
            <div class="four wide column">
                 <div class="ui secondary vertical pointing menu">
                     <div class="active violet item" data-tab="fact">Faculties</div>
@@ -744,6 +814,21 @@
     </div>
 </div>
        </div>
+        {{else}}
+          <div class="ui center aligned raised segment">
+            <div class="ui icon header">
+              <i class="protect icon"></i>
+              Permission Denied
+            </div>
+            <div>
+              <p>This feature (MSC02) is not allowed for your account.</p>
+              <p>Please contact the system administrator for more information.</p>
+            </div>
+
+          </div>
+        {{/if}}
+        
+       
        </div>
 
 <div class="ui tab" data-tab="assessment">
@@ -757,7 +842,8 @@
         </div>
     <div class="twelve wide column">
     <div class="ui active tab" data-tab="logexp">
-        <div class="ui grid">
+        {{#if MSC02IsPermitted}}
+          <div class="ui grid">
             <div class="ui lef aligned twelve wide column">
                 <div class="ui form">
                     <br>
@@ -818,9 +904,25 @@
                 </div>
             </div>
         </div>
+        {{else}}
+          <div class="ui center aligned raised segment">
+            <div class="ui icon header">
+              <i class="protect icon"></i>
+              Permission Denied
+            </div>
+            <div>
+              <p>This feature (MSC02) is not allowed for your account.</p>
+              <p>Please contact the system administrator for more information.</p>
+            </div>
+
+          </div>
+        {{/if}}
+        
+        
     </div>
     <div class="ui tab" data-tab="codes">
-        <div class = "ui grid">
+        {{#if MACC1IsPermitted}}
+          <div class = "ui grid">
             <div class="ui left aligned twelve wide column">
                 <div class = "ui form" id = "codes">
                     <br/>
@@ -916,9 +1018,25 @@
                 </div>      
             </div>
         </div>
+        {{else}}
+          <div class="ui center aligned raised segment">
+            <div class="ui icon header">
+              <i class="protect icon"></i>
+              Permission Denied
+            </div>
+            <div>
+              <p>This feature (MACC1) is not allowed for your account.</p>
+              <p>Please contact the system administrator for more information.</p>
+            </div>
+
+          </div>
+        {{/if}}
+        
+        
     </div>
     <div class="ui tab" data-tab="rules">
-        <div class = "ui grid">
+        {{#if MAR02IsPermitted}}
+          <div class = "ui grid">
             <div class="ui left aligned twelve wide column">
                 <div class = "ui form" id = "rules">
                     <br/>
@@ -1007,6 +1125,21 @@
                 </div>      
             </div>
         </div>
+        {{else}}
+          <div class="ui center aligned raised segment">
+            <div class="ui icon header">
+              <i class="protect icon"></i>
+              Permission Denied
+            </div>
+            <div>
+              <p>This feature (MAR02) is not allowed for your account.</p>
+              <p>Please contact the system administrator for more information.</p>
+            </div>
+
+          </div>
+        {{/if}}
+        
+        
     </div>
     </div>
     </div>

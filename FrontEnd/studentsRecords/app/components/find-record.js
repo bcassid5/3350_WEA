@@ -160,9 +160,9 @@ init() {
       }
 
       //this.set('notDONE', false);
-      Ember.$('.ui.modal').modal('hide');
-      //Ember.$('.ui.modal').remove();
-      Ember.$('.ui.modal').modal('show');
+      Ember.$('.ui.search.modal').modal('hide');
+      //Ember.$('.ui.search.modal').remove();
+      Ember.$('.ui.search.modal').modal('show');
    },
 
    select: function(student){
@@ -204,8 +204,8 @@ init() {
     exit: function () {
       this.set('showResults', false);
       this.set('notDONE', false);
-      Ember.$('.ui.modal').modal('hide');
-      Ember.$('.ui.modal').remove();
+      Ember.$('.ui.search.modal').modal('hide');
+      Ember.$('.ui.search.modal').remove();
     },
 
     remove: function () {
@@ -214,13 +214,13 @@ init() {
       this.set('OFFSET', this.get('offsetCancel'));
       this.set('INDEX', this.get('indexCancel'));
       this.set('notDONE', false);
-      Ember.$('.ui.modal').modal('hide');
-      Ember.$('.ui.modal').remove();
+      Ember.$('.ui.search.modal').modal('hide');
+      Ember.$('.ui.search.modal').remove();
     }
   },
 
   didRender() {
-      Ember.$('.ui.modal')
+      Ember.$('.ui.search.modal')
         .modal({
          closable: false
         })
