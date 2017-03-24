@@ -155,7 +155,7 @@ export default Ember.Component.extend({
             this.get('store').query('grade', {schoolterm: self.get('termModel').objectAt(index).get('id')}).then(function(grades){
             self.set('gradeModel', []);
             var studentCodes = [];
-            console.log(studentCodes);
+            //console.log(studentCodes);
             
             var gradeSum = 0.0;
             var totalTermUnit = 0.0;
@@ -177,7 +177,7 @@ export default Ember.Component.extend({
                         for(var i=0;i<self.get('studentModel').get('length');i++){
                             var currentStudent = self.get('studentModel').objectAt(i);
                             studentCodes = [];
-                            console.log(studentCodes);
+                            //console.log(studentCodes);
                             gradeSum = 0.0;
                             totalTermUnit = 0.0;
                             passedTermUnit = 0.0;
@@ -204,7 +204,7 @@ export default Ember.Component.extend({
                                 }
                             }
                             //console.log(tempTerms);
-                            //console.log(tempGrades);
+                           // console.log(tempGrades);
 
                             if(tempGrades.get('length')!=0){
                             
@@ -218,14 +218,19 @@ export default Ember.Component.extend({
                                     totalTermUnit=temp2;
 
                                     if(tempGrades.objectAt(k).get('mark')>=50){
-                                        var temp3=0;
+                                        var temp3=0.0;
                                         temp3=passedTermUnit+tempGrades.objectAt(k).get('course').get('unit');
                                         passedTermUnit=temp3;
                                     }
                                 }
 
-                                var avg = (gradeSum)/(tempGrades.get('length'));
-                                termAvg=avg;
+                                if(tempGrades.get('length')>0){
+                                    var avg = (gradeSum)/(tempGrades.get('length'));
+                                    termAvg=avg;
+                                } else{
+                                    termAvg=0.0;
+                                }
+                                
 
                                 //console.log(termAvg);
                                 //console.log(totalTermUnit);
@@ -243,226 +248,172 @@ export default Ember.Component.extend({
                                         for(var y=0;y<logExpressions.get('length');y++){
                                             var currentExpression = logExpressions.objectAt(y);
                                             if(currentExpression.get('parameter')=="TotalAvg" && currentExpression.get('operator')=="="){
-                                                if(termAvg==currentExpression.get('value')){
-                                                    if(codeTest!=false){
+                                                codeTest = codeTest && termAvg==currentExpression.get('value');
+                                                    /*if(codeTest!=false){
                                                         codeTest=true;
                                                     }
                                                 } else{
                                                     codeTest=false;
-                                                }
+                                                }*/
                                             } else if(currentExpression.get('parameter')=="TotalAvg" && currentExpression.get('operator')==">="){
-                                                if(termAvg>=currentExpression.get('value')){
-                                                    if(codeTest!=false){
+                                                codeTest = codeTest && (termAvg>=currentExpression.get('value'));
+                                                  /*  if(codeTest!=false){
                                                         codeTest=true;
                                                     }
                                                 } else{
                                                     codeTest=false;
-                                                }
+                                                }*/
                                             } else if(currentExpression.get('parameter')=="TotalAvg" && currentExpression.get('operator')=="<="){
-                                                if(termAvg<=currentExpression.get('value')){
-                                                    if(codeTest!=false){
+                                                codeTest = codeTest && (termAvg<=currentExpression.get('value'));
+                                                    /*if(codeTest!=false){
                                                         codeTest=true;
                                                     }
                                                 } else{
                                                     codeTest=false;
-                                                }
+                                                }*/
                                             } else if(currentExpression.get('parameter')=="TotalAvg" && currentExpression.get('operator')==">"){
-                                                if(termAvg>currentExpression.get('value')){
-                                                    if(codeTest!=false){
+                                                codeTest = codeTest && (termAvg>currentExpression.get('value'));
+                                                    /*if(codeTest!=false){
                                                         codeTest=true;
                                                     }
                                                 } else{
                                                     codeTest=false;
-                                                }
+                                                }*/
                                             } else if(currentExpression.get('parameter')=="TotalAvg" && currentExpression.get('operator')=="<"){
-                                                if(termAvg<currentExpression.get('value')){
-                                                    if(codeTest!=false){
+                                                codeTest = codeTest && (termAvg<currentExpression.get('value'));
+                                                    /*if(codeTest!=false){
                                                         codeTest=true;
                                                     }
                                                 } else{
                                                     codeTest=false;
-                                                }
+                                                }*/
                                             } else if(currentExpression.get('parameter')=="TermUnitPassed" && currentExpression.get('operator')=="="){
-                                                if(passedTermUnit==currentExpression.get('value')){
-                                                    if(codeTest!=false){
+                                                codeTest = codeTest && (passedTermUnit==currentExpression.get('value'));
+                                                   /* if(codeTest!=false){
                                                         codeTest=true;
                                                     }
                                                 } else{
                                                     codeTest=false;
-                                                }
+                                                }*/
                                             } else if(currentExpression.get('parameter')=="TermUnitPassed" && currentExpression.get('operator')==">="){
-                                                if(passedTermUnit>=currentExpression.get('value')){
-                                                    if(codeTest!=false){
+                                                codeTest = codeTest && (passedTermUnit>=currentExpression.get('value'));
+                                                  /*  if(codeTest!=false){
                                                         codeTest=true;
                                                     }
                                                 } else{
                                                     codeTest=false;
-                                                }
+                                                }*/
                                             } else if(currentExpression.get('parameter')=="TermUnitPassed" && currentExpression.get('operator')=="<="){
-                                                if(passedTermUnit<=currentExpression.get('value')){
-                                                    if(codeTest!=false){
+                                                codeTest = codeTest && (passedTermUnit<=currentExpression.get('value'));
+                                                    /*if(codeTest!=false){
                                                         codeTest=true;
                                                     }
                                                 } else{
                                                     codeTest=false;
-                                                }
+                                                }*/
                                             } else if(currentExpression.get('parameter')=="TermUnitPassed" && currentExpression.get('operator')==">"){
-                                                if(passedTermUnit>currentExpression.get('value')){
-                                                    if(codeTest!=false){
+                                                codeTest = codeTest && (passedTermUnit>currentExpression.get('value'));
+                                                  /*  if(codeTest!=false){
                                                         codeTest=true;
                                                     }
                                                 } else{
                                                     codeTest=false;
-                                                }
+                                                }*/
                                             } else if(currentExpression.get('parameter')=="TermUnitPassed" && currentExpression.get('operator')=="<"){
-                                                if(passedTermUnit<currentExpression.get('value')){
-                                                    if(codeTest!=false){
+                                                codeTest = codeTest && (passedTermUnit<currentExpression.get('value'));
+                                                  /*  if(codeTest!=false){
                                                         codeTest=true;
                                                     }
                                                 } else{
                                                     codeTest=false;
-                                                }
+                                                }*/
                                             } else if(currentExpression.get('parameter')=="TermUnitTotal" && currentExpression.get('operator')=="="){
-                                                if(totalTermUnit==currentExpression.get('value')){
-                                                    if(codeTest!=false){
+                                                codeTest = codeTest && (totalTermUnit==currentExpression.get('value'));
+                                                  /*  if(codeTest!=false){
                                                         codeTest=true;
                                                     }
                                                 } else{
                                                     codeTest=false;
-                                                }
+                                                }*/
                                             }
                                             else if(currentExpression.get('parameter')=="TermUnitTotal" && currentExpression.get('operator')==">="){
-                                                if(totalTermUnit>=currentExpression.get('value')){
-                                                    if(codeTest!=false){
+                                                codeTest = codeTest && (totalTermUnit>=currentExpression.get('value'));
+                                                  /*  if(codeTest!=false){
                                                         codeTest=true;
                                                     }
                                                 } else{
                                                     codeTest=false;
-                                                }
+                                                }*/
                                             } else if(currentExpression.get('parameter')=="TermUnitTotal" && currentExpression.get('operator')=="<="){
-                                                if(totalTermUnit<=currentExpression.get('value')){
-                                                    if(codeTest!=false){
+                                                codeTest = codeTest && (totalTermUnit<=currentExpression.get('value'));
+                                                 /*   if(codeTest!=false){
                                                         codeTest=true;
                                                     }
                                                 } else{
                                                     codeTest=false;
-                                                }
+                                                }*/
                                             } else if(currentExpression.get('parameter')=="TermUnitTotal" && currentExpression.get('operator')==">"){
-                                                if(totalTermUnit>currentExpression.get('value')){
-                                                    if(codeTest!=false){
+                                               codeTest = codeTest && (totalTermUnit>currentExpression.get('value'));
+                                                /*    if(codeTest!=false){
                                                         codeTest=true;
                                                     }
                                                 } else{
                                                     codeTest=false;
-                                                }
+                                                }*/
                                             } else if(currentExpression.get('parameter')=="TermUnitTotal" && currentExpression.get('operator')=="<"){
-                                                if(totalTermUnit<currentExpression.get('value')){
-                                                    if(codeTest!=false){
+                                                codeTest = codeTest && (totalTermUnit<currentExpression.get('value'));
+                                                /*    if(codeTest!=false){
                                                         codeTest=true;
                                                     }
                                                 } else{
                                                     codeTest=false;
-                                                }
+                                                }*/
                                             } else{
-                                                var notFound=true;
-                                                if(notFound==true){
-                                                    for(var h=0;h<self.get('courseCodeModel').get('length');h++){
-                                                        var currentCourse = self.get('courseCodeModel').objectAt(h);
-                                                        var currentCourseRef = currentCourse.get('courseLetter')+currentCourse.get('courseNumber');
-                                                        if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')=="="){
-                                                            for(var f=0;f<tempGrades.get('length');f++){
-                                                                var currentStudentGrade = tempGrades.objectAt(f);
-                                                                var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
-                                                                if(currentStudentGradeCourse==currentCourseRef){
-                                                                    if(currentStudentGrade.get('mark')==currentExpression.get('value')){
-                                                                        if(codeTest!=false){
-                                                                            codeTest=true;
-                                                                            notFound=false;
-                                                                        }
-                                                                    } else{
-                                                                        codeTest=false;
-                                                                    }
-                                                                }
-                                                            }
-                                                        } else if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')==">="){
-                                                            for(var f=0;f<tempGrades.get('length');f++){
-                                                                var currentStudentGrade = tempGrades.objectAt(f);
-                                                                var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
-                                                                if(currentStudentGradeCourse==currentCourseRef){ 
-                                                                    if(currentStudentGrade.get('mark')>=currentExpression.get('value')){
-                                                                        if(codeTest!=false){
-                                                                            codeTest=true;
-                                                                            notFound=false;
-                                                                        }
-                                                                    } else{
-                                                                        codeTest=false;
-                                                                    }
-                                                                }
-                                                            }
-                                                        } else if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')=="<="){
-                                                            for(var f=0;f<tempGrades.get('length');f++){
-                                                                var currentStudentGrade = tempGrades.objectAt(f);
-                                                                var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
-                                                                if(currentStudentGradeCourse==currentCourseRef){
-                                                                    if(currentStudentGrade.get('mark')<=currentExpression.get('value')){
-                                                                        if(codeTest!=false){
-                                                                            codeTest=true;
-                                                                            notFound=false;
-                                                                        }
-                                                                    } else{
-                                                                        codeTest=false;
-                                                                    }
-                                                                }
-                                                            }
-                                                        } else if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')==">"){
-                                                            for(var f=0;f<tempGrades.get('length');f++){
-                                                                var currentStudentGrade = tempGrades.objectAt(f);
-                                                                var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
-                                                                if(currentStudentGradeCourse==currentCourseRef){ 
-                                                                    if (currentStudentGrade.get('mark')>currentExpression.get('value')){
-                                                                        if(codeTest!=false){
-                                                                            codeTest=true;
-                                                                            notFound=false;
-                                                                        }
-                                                                    } else{
-                                                                        codeTest=false;
-                                                                    }
-                                                                }
-                                                            }
-                                                        } else if(currentExpression.get('parameter')==currentCourseRef && currentExpression.get('operator')=="<"){
-                                                            for(var f=0;f<tempGrades.get('length');f++){
-                                                                var currentStudentGrade = tempGrades.objectAt(f);
-                                                                var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
-                                                                if(currentStudentGradeCourse==currentCourseRef) { 
-                                                                    if(currentStudentGrade.get('mark')<currentExpression.get('value')){
-                                                                        if(codeTest!=false){
-                                                                            codeTest=true;
-                                                                            notFound=false;
-                                                                        }
-                                                                    } else{
-                                                                        codeTest=false;
-                                                                    }
-                                                                }
+                                                var found=false;
+                                                for(var h=0;h<self.get('courseCodeModel').get('length');h++){
+                                                    var currentCourse = self.get('courseCodeModel').objectAt(h);
+                                                    var currentCourseRef = currentCourse.get('courseLetter')+currentCourse.get('courseNumber');
+
+                                                    if(currentExpression.get('parameter')==currentCourseRef){
+                                                        for(var z=0;z<tempGrades.get('length');z++){
+                                                            var currentStudentGrade = tempGrades.objectAt(z);
+                                                            var currentStudentGradeCourse = currentStudentGrade.get('course').get('courseLetter')+currentStudentGrade.get('course').get('courseNumber');
+                                                            if(currentStudentGradeCourse==currentCourseRef){
+                                                                if(currentExpression.get('operator')=="="){
+                                                                    codeTest = codeTest && (currentStudentGrade.get('mark')==currentExpression.get('value'));
+                                                                    found=true;
+                                                                } else if(currentExpression.get('operator')==">="){
+                                                                    codeTest = codeTest && (currentStudentGrade.get('mark')>=currentExpression.get('value'));
+                                                                    found=true;
+                                                                } else if(currentExpression.get('operator')=="<="){
+                                                                    codeTest = codeTest && (currentStudentGrade.get('mark')<=currentExpression.get('value'));
+                                                                    found=true;
+                                                                } else if(currentExpression.get('operator')==">"){
+                                                                    codeTest = codeTest && (currentStudentGrade.get('mark')>currentExpression.get('value'));
+                                                                    found=true;
+                                                                } else if(currentExpression.get('operator')=="<"){
+                                                                    codeTest = codeTest && (currentStudentGrade.get('mark')<currentExpression.get('value'));
+                                                                    found=true;
+                                                                } 
                                                             }
                                                         }
                                                     }
-
-                                                    if(notFound==true){
-                                                        codeTest=false;
-                                                    }
                                                 }
+
+                                                codeTest=codeTest&&found;
+
                                             }
                                         }
                                     }
 
                                     if(codeTest==true){
-                                        console.log(studentCodes);
+                                        //console.log(studentCodes);
                                         studentCodes.push(self.get('store').peekRecord('assessmentCode', currentAssessmentCode.get('id')));
-                                        console.log(studentCodes);
+                                       // console.log(studentCodes);
                                         var index=0;
                                         while(index!=-1){
                                             index=studentCodes.indexOf(null);
-                                            console.log(index);
+                                            //console.log(index);
                                             if (index > -1) {
                                                 studentCodes.splice(index, 1);
                                             }
