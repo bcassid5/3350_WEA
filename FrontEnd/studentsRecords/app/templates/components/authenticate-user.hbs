@@ -1,10 +1,36 @@
 <!-- Display the login screen with the main application background -->
 {{#if isPasswordChanging}}
+
+<div class="ui one column left aligned grid">
+    <div class="ui left aligned two wide column"></div>
+    <div class="middle aligned column six wide form-holder">
+      <br><br><br><br>
+      <br><br><br><br>
+      <br><br><br><br>
+      <h2 class="center aligned header form-head" style="color: #FFFFFF">Please change your password and login again</h2>
+      <div class="ui form">
+        <div class="field">
+          <label>Password</label>
+          {{input value=firstPassword type="password"}}
+        </div>
+        <div class="field">
+          <label>Re-enter Password</label>
+          {{input value=secondPassword type="password"}}
+        </div>
+        <div class="field">
+          <button id = "button" class="ui button large fluid" style="background-color: #4F2683; color: #FFFFFF" {{action 'save'}}>
+            Change Password
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!--
   <section class="hero">
     <div class="row intro">
       <div>
         <div class="row">
-          <div class="large-10  large-centered columns">
+          <div class="ui grid">
             <div class="panel">
               <h3>Please change your password and login again</h3>
               <br>
@@ -13,7 +39,7 @@
                   <label class="right">Enter Password</label>
                 </div>
                 <div class="small-7 columns" class="left">
-                  {{input value=firstPassword type="password" }}
+                  {{input value=firstPassword type="password"}}
                 </div>
               </div>
               <div class="row">
@@ -21,7 +47,7 @@
                   <label class="right">Reenter Password</label>
                 </div>
                 <div class="small-7 columns" class="left">
-                  {{input value=secondPassword type="password" }}
+                  {{input value=secondPassword type="password"}}
                 </div>
               </div>
               <br> <br>
@@ -33,7 +59,7 @@
       </div>
     </div>
   </section>
-
+-->
 
 {{else}}
 
