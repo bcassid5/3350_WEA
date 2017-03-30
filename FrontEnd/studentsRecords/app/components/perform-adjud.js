@@ -132,7 +132,11 @@ export default Ember.Component.extend({
             this.set('isDepartment', !this.get('isDepartment'));
         },
         viewAdjudication(){
-            this.set('showResults', !this.get('showResults'));
+            if (this.get("adjudicationTermToView") == ""){
+                alert("Term not selected");
+            } else {
+                this.set('showResults', !this.get('showResults'));
+            }
         },
         selectTerm(index){
             var term = this.get('termModel').objectAt(index).get('name');
@@ -550,15 +554,12 @@ export default Ember.Component.extend({
             this.get('store').findAll('adjudication').then(function(record){
                 record.content.forEach(function(rec) {
                     Ember.run.once(this, function() {
-                    rec.deleteRecord();
-                    rec.save();
+                        rec.deleteRecord();
+                        rec.save();
                     });
                 }, this);
-            });
-            
+            }); 
         }
-    
-
     }
 });
 

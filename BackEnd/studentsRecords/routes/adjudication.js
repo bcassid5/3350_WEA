@@ -67,7 +67,7 @@ router.route('/:adjudications_id')
         })
     })
     .delete(parseUrlencoded, parseJSON, function (request, response) {
-        models.Adjudications.findByIdAndRemove(request.params.adjudication_id,
+        models.Adjudications.findByIdAndRemove(request.params.adjudications_id,
             function (error, deleted) {
                 if (!error) {
                     response.json({adjudication: deleted});
