@@ -110,11 +110,8 @@ export default Ember.Component.extend({
         this.newProgAdminName="";
         this.newDeptName="";
         this.newProgAdminPosition="";
-        this.get('store').findAll('program').then(function (records) {
-           self.set('programModel', records);
-           
-           
-        });
+
+        
         this.get('store').findAll('residency').then(function (records) {
             self.set('residencyModel', records);
         });
@@ -156,6 +153,10 @@ export default Ember.Component.extend({
         });
         this.get('store').findAll('progAdmin').then(function(records){
             self.set('progAdminModel', records);
+        });
+
+        this.get('store').findAll('program').then(function (records) {
+           self.set('programModel', records);
         });
 
         /*************/

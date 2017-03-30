@@ -202,14 +202,14 @@
                                     <div class = "seven wide field">
                                     <label>Course Letter</label> <input type="text" placeholder="Letter" class="letter" name="letter">
                                     </div>
-                                    <div class = "five wide field">
+                                    <div class = "six wide field">
                                     <label>Course Number</label> <input type="text" placeholder="Number" class="number" name = "number">
                                     </div>
                                     <div class = "three wide field">
                                     <label>Unit</label> <input type="text" placeholder="Unit" class="unit" name = "unit">
                                     </div>
                                 </div>
-                                <div class ="required fifteen wide field">
+                                <div class ="required sixteen wide field">
                                     <label>Course Name</label><input type = "text" class="name" placeholder="Name" name = "name">
                                 </div>
                                 <button class="ui violet button" {{action 'addCoursesOption'}} >
@@ -328,16 +328,14 @@
                         </div>
                         {{/if}}
 
-                        
+                        <div id = "programChoice">
+                        {{#each programModel as |programChoice index|}}
 
                         <h4 class="ui horizontal divider header" style="color: #4F2683">
                             <i class="angle double left icon"></i><i class="angle double right icon"></i>
                         </h4>
                         <br/>
 
-
-                        <div id = "programChoice">
-                        {{#each programModel as |programChoice index|}}
                         <div class = {{index}}>
                             <div class="ui form">
                             <div class = "ui large header" style="color: #4F2683">Option {{increment index}}
@@ -351,9 +349,7 @@
                             <div class = "field">
                             <label name="deptList">Department</label>
                             <select  class="selectedDepartment" name="deptList" >
-                                <option hidden>No Department</option>
                                 {{#each departmentModel as |department index2|}}
-                                
                                 <option value={{index2}} selected={{eq department.id
                                                                                     programChoice.department.id}}>{{department.name}} </option>
                                 {{/each}}
@@ -671,7 +667,7 @@
                             <div style="margin-right: 12px" clas="inline field">
                                 <input style="width: 300px" value={{facultyChoice.name}} type="text"  onchange = {{action 'changeFacultyName' index}} class = {{index}} >
                             </div>
-                            <div style="margin-left: 30px" class="inline field">
+                            <div style="margin-left: 3px" class="inline field">
                                 <a {{action 'removeFacultyOption' index}}> 
                                     <i class="large red minus circle icon"></i> <br/>
                                 </a>
