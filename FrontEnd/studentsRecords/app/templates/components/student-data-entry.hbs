@@ -132,6 +132,7 @@
 
       <div id = "adjudicationChoice">
       {{#each adjudicationModel as |adjChoice index|}}
+      {{#if (compare adjChoice.student.id "==" currentStudent.id)}}
       <h4 class="ui horizontal divider header" style="color: #4F2683">
           <i class="angle double left icon"></i><i class="angle double right icon"></i>
       </h4>
@@ -163,7 +164,7 @@
           </div>
       </div>
 
-
+     {{/if}}
       {{/each}}
     </div>
   </div>
