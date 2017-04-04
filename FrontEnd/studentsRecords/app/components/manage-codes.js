@@ -681,7 +681,7 @@ export default Ember.Component.extend({
       },
 
       addSubjectOption(){
-        if ((this.get('newSubjectName')!=="")&&(this.get('newSubjectDescription')!=="")){
+        if ((this.get('newSubjectName')!=="")&&(this.get('newSubjectDescription')!=="")&&(this.get('newSubjectName')!==null)&&(this.get('newSubjectDescription')!==null)){
             var record = this.get('store').createRecord('highschool-subject', {
                 name: this.get('newSubjectName'),
                 description: this.get('newSubjectDescription'),
@@ -730,7 +730,7 @@ export default Ember.Component.extend({
       },
 
       addHighSchoolOption(){
-        if (this.get('newHighSchoolName')!==""){
+        if ((this.get('newHighSchoolName')!=="")&&(this.get('newHighSchoolName')!==null)){
             var record = this.get('store').createRecord('highSchool', {
                 name: this.get('newHighSchoolName'),
                 course: []
@@ -834,7 +834,8 @@ export default Ember.Component.extend({
       },
 
       addCourseOption(){
-        if (this.get('newHighSchoolName')!==""){
+        if ((this.get('newCourseHighSchoolName')!=="")&&(this.get('newCourseHighSchoolName')!=-null)&&(this.get('newCourseSubject')!=null)&&(this.get('newCourseLevel')!==null)
+        &&(this.get('newCourseSource')!==null)&&(this.get('newCourseUnit')!==null)){
             var record = this.get('store').createRecord('high-school-course', {
                 level: this.get('newCourseLevel'),
                 source: this.get('newCourseSource'),
@@ -855,7 +856,7 @@ export default Ember.Component.extend({
       },
 
       addFacultyOption(){
-        if (this.get('newFacultyChoice')!==""){
+        if (this.get('newFacultyChoice')!==""&&(this.get('newFacultyChoice')!==null)){
             var record = this.get('store').createRecord('faculty', {
                 name: this.get('newFacultyChoice'),
                 department: []
@@ -1051,7 +1052,7 @@ export default Ember.Component.extend({
 
       addLogExpOption()
       {
-          if (this.get('newLogExpValue')!=="" && this.get('newLogExpParam')!="" && this.get('newLogExpOpr')!=""){
+          if (this.get('newLogExpValue')!==null && this.get('newLogExpParam')!=null && this.get('newLogExpOpr')!=null){
             var expression =  this.get('newLogExpParam')+this.get('newLogExpOpr')+this.get('newLogExpValue');
             var record = this.get('store').createRecord('logExpress', {
                 boolExpress: expression,
