@@ -36,13 +36,13 @@ router.route('/')
 
 router.route('/:adjudications_id')
     .get(parseUrlencoded, parseJSON, function (request, response) {
-        models.Adjudications.findById(request.params.adjudication_id, function (error, adjudication) {
+        models.Adjudications.findById(request.params.adjudications_id, function (error, adjudication) {
             if (error) response.send(error);
             response.json({adjudication: adjudication});
         })
     })
     .put(parseUrlencoded, parseJSON, function (request, response) {
-        models.Adjudications.findById(request.params.adjudication_id, function (error, adjudication) {
+        models.Adjudications.findById(request.params.adjudications_id, function (error, adjudication) {
             if (error) {
                 response.send({error: error});
             }

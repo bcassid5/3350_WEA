@@ -87,7 +87,17 @@ export default Ember.Component.extend({
   newProgramPlans: [],
   newProgramName: null,
   newProgramIndex: null,
-  
+
+  logExpModel:null,
+  ruleModel:null,
+  codeModel:null,
+  adjudicationModel:null,
+  newAdjTerm:false,
+  errAdjTerm:null,
+  newCodeList:null,
+  newAdjTermName:null,
+
+
   USP01IsPermitted: Ember.computed(function(){ //Manage system roles
     var authentication = this.get('oudaAuth');
     if (authentication.getName === "Root") {
@@ -195,6 +205,24 @@ export default Ember.Component.extend({
     });
     this.get('store').findAll('schoolTerm').then(function(records) {
       self.set('termModel', records);
+    });
+
+    /*****************************************/
+    //adjudication models
+    this.get('store').findAll('logExpress').then(function(records){
+        self.set('logExpModel', records);
+    });
+
+    this.get('store').findAll('rule').then(function(records){
+        self.set('ruleModel', records);
+    });
+
+    this.get('store').findAll('assessmentCode').then(function(records){
+        self.set('codeModel', records);
+    });
+
+    this.get('store').findAll('adjudication').then(function(records){
+        self.set('adjudicationModel', records);
     });
     
     // load first page of the students records
@@ -333,6 +361,174 @@ export default Ember.Component.extend({
   },
 
   actions: {
+
+    /*********************************/
+      selectTerm(val){
+          this.set('newAdjTermName', val);
+      },
+
+      addAdjOption()
+      {
+          var note =this.get('newAdjTermName');
+          var avg =this.$("#newAdjTerm").find('.avg').val();
+          var ttu =this.$("#newAdjTerm").find('.ttu').val();
+          var tup =this.$("#newAdjTerm").find('.tup').val();
+
+          this.set("errAdjTerm", false);
+            if(note=="")
+            {
+                this.$("#newAdjTerm").form('add prompt', 'term', 'error text');
+                this.set("errAdjTerm", true);
+            }
+            else 
+            {
+                this.$("#newAdjTerm").form('remove prompt', 'term');
+            }
+            if(avg=="")
+            {
+                this.$("#newAdjTerm").form('add prompt', 'avg', 'error text');
+                this.set("errAdjTerm", true);
+            }
+            else 
+            {
+                this.$("#newAdjTerm").form('remove prompt', 'avg');
+            }
+            if(ttu=="")
+            {
+                this.$("#newAdjTerm").form('add prompt', 'ttu', 'error text');
+                this.set("errAdjTerm", true);
+            }
+            else 
+            {
+                this.$("#newAdjTerm").form('remove prompt', 'ttu');
+            }
+
+            if(tup=="")
+            {
+                this.$("#newAdjTerm").form('add prompt', 'tup', 'error text');
+                this.set("errAdjTerm", true);
+            }
+            else 
+            {
+                this.$("#newAdjTerm").form('remove prompt', 'tup');
+            }
+            if(this.get('newCodeList').get('length')==0)
+            {   
+                this.$("#newAdjTerm").form('add prompt', 'listname', 'error text');
+                this.set("errAdjTerm", true);
+            }
+            else 
+            {
+                this.$("#newProgram").form('remove prompt', 'listname');
+            }
+            if(!this.get('errAdjTerm'))
+            {
+                var date = new Date().toString();
+                this.set('newAdjTerm', false);
+                this.set("errAdjTerm", false);
+                var record = this.get('store').createRecord('adjudication', {
+                  date: date,
+                  termAVG: avg,
+                  termUnitPassed: tup,
+                  termUnitTotal: ttu,
+                  note: note,
+                  student: this.get('currentStudent'),
+                  assessmentCode: this.get('newCodeList'),
+                });
+                record.save();
+            }
+
+      },
+      
+      removeNewCode(index)
+      {
+          
+          this.get('newCodeList').splice(index, 1);
+          this.$("#newAdjTerm").find('.'+index).remove();
+          
+      },
+
+      selectCode(index)
+      {
+          var repeat = false;
+          for(var i =0;i<this.get('newCodeList').get('length');i++)
+          {
+              if(this.get('codeModel').objectAt(index).get('code') == this.get('newCodeList').objectAt(i).get('code'))
+              {
+                  repeat = true;
+              }
+          }
+          if(!repeat){
+            this.get('newCodeList').pushObject(this.get('codeModel').objectAt(index));
+          }
+      },
+
+      newAdjTermClicked()
+      {
+          this.set('newAdjTerm', !(this.get('newAdjTerm')));
+          this.set('errAdjTerm', false);
+          this.set('newCodeList',[]);
+          this.set('newAdjTermName', null);
+      },
+
+    removeAdjOption(index)
+      {
+          this.get('store').find('adjudication',this.get('adjudicationModel').objectAt(index).get('id')).then(function(record){
+                record.deleteRecord();
+                if(record.get('isDeleted'))
+                {
+                    record.save();
+                }
+                
+          }, function (error){
+              //console.log(error);
+          });
+      },
+
+      updateAdjChoice(index)
+      {
+          var e = false;
+          if (this.get('adjudicationModel').objectAt(index).get('assessmentCode').get('length')==0)
+          {
+              this.$("#adjs").find('.'+index).form('add prompt', 'list', 'error text');
+              e=true;
+          }
+          else 
+          {
+              this.$("#adjs").find('.'+index).form('remove prompt', 'list');
+          }
+          if (!e)
+          {
+              var self=this;
+              this.get('store').find('adjudication',this.get('adjudicationModel').objectAt(index).get('id')).then(function(record){
+                record.save();
+              });
+          }
+      },
+
+      updateCode(index)
+      {
+          var choice = this.$("#adjs").find('.'+index).find('.selectedCode').val();
+          var repeat= false;
+          for (var i =0; i<this.get('adjudicationModel').objectAt(index).get('assessmentCode').get('length'); i++)
+          {
+              if (this.get('codeModel').objectAt(choice).get('code')==this.get('adjudicationModel').objectAt(index).get('assessmentCode').objectAt(i).get('code'))
+              {
+                  repeat=true;
+              }
+          }
+          if (!repeat)
+          {
+              this.get('adjudicationModel').objectAt(index).get('assessmentCode').pushObject(this.get('codeModel').objectAt(choice));
+          }
+          
+      },
+
+      removeAssessmentCode(assessmentIndex, codeIndex)
+      {
+          this.get('adjudicationModel').objectAt(assessmentIndex).get('assessmentCode').removeAt(codeIndex);
+      },
+    /*********************************/
     
     updateHighSchoolSelection(val){
         this.set('currentHighSchool', val);

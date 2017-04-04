@@ -55,13 +55,120 @@
 {{else}}
   <!-- Show data entry form -->
 
-  <div class="ui five item inverted menu" style="background-color: #4F2683; color: #ffffff">
+  <div class="ui six item inverted menu" style="background-color: #4F2683; color: #ffffff">
     <div class="active item" data-tab="basics">Basic Info</div>
     <div class="item" data-tab="admiss">Admission & Registration</div>
     <div class="item" data-tab="grades">Grades</div>
     <div class="item" data-tab="awards">Awards and Scholarships</div>
+    <div class="item" data-tab="adj">Adjudication</div>
     <div class="item" data-tab="danger">Danger Zone</div>
   </div>
+
+  <div class="ui tab" data-tab="adj">
+    <div class = "ui form" id = "adjs">
+
+      <br/>
+      <a {{action 'newAdjTermClicked'}}>
+          <i class="large green add square icon"></i>Add New Adjudication Record
+          </a>
+      <br>
+      {{#if newAdjTerm}}
+      <br>
+      <div id="newAdjTerm">
+          <div class = "ui form error">
+          <div class = "field">
+              <label name="termList">Term</label>
+              <select name = "termListName" onchange={{action "selectTerm" value="target.value"}}>
+                  <option hidden>Select</option>
+                  {{#each termModel as |term|}}
+                  <option value={{term.name}}>{{term.name}}</option>
+                  {{/each}}
+              </select>
+          </div>
+          <div class ="required fifteen wide field">
+              <label>Average</label><input type = "number" class="avg" placeholder="Average" name = "avg">
+          </div>
+          <div class ="required fifteen wide field">
+              <label>Total Term Units</label><input type = "number" class="ttu" placeholder="Total Term Units" name = "ttu">
+          </div>
+          <div class ="required fifteen wide field">
+              <label>Term Units Passed</label><input type = "number" class="tup" placeholder="Term Units Passed" name = "tup">
+          </div>
+          <div class = "field">
+              <label name="list">Available Assessment Codes</label>
+              <select onchange={{action 'selectCode' value="target.value"}} name = "listname">
+                  <option hidden>Select</option>
+              {{#each codeModel as |codeChoice index|}}
+                  <option value={{index}}> {{codeChoice.code}} {{codeChoice.description}} </option> 
+                  
+              {{/each}}
+          
+              </select>
+          </div>
+          <div class="ui medium header" style="color: #4F2683">Selected Assessment Codes:</div>
+          <ul>
+          {{#each newCodeList as |codeChoice index|}}
+                  <li class={{index}}>{{codeChoice.code}} : {{codeChoice.description}}
+                  <a {{action 'removeNewCode' index}}><span data-tooltip="Remove This Code"><i class=" large red minus circle icon"></i></span></a></li>
+          {{/each}}
+          </ul>
+          <br>
+          <button class="ui violet button" {{action 'addAdjOption'}} >
+              Add 
+          </button>
+          <button class="ui button" {{action 'newAdjTermClicked'}}>
+              Cancel
+          </button>
+          {{#if errAdjTerm}}
+          
+          <div class="ui error message">
+              <div class="header">Missing Fields</div>
+              <p>Please make sure all required fields are filled and at least one assessment code selected.</p>
+          </div>
+          {{/if}}
+          </div>
+      </div>
+      {{/if}}
+
+      <div id = "adjudicationChoice">
+      {{#each adjudicationModel as |adjChoice index|}}
+      <h4 class="ui horizontal divider header" style="color: #4F2683">
+          <i class="angle double left icon"></i><i class="angle double right icon"></i>
+      </h4>
+      <br/>
+      <div class = {{index}}>
+          <div class="ui form">
+          <div class = "ui large header" style="color: #4F2683">{{adjChoice.note}}
+              <a {{action 'removeAdjOption' index}}> 
+              <span data-tooltip="Remove This Adjudication Term"><i class="red minus circle icon"></i></span> </a> <a {{action 'updateAdjChoice' index}}> 
+              <span data-tooltip="Save Changes to Option"><i class=" save icon" ></i></span></a> 
+          </div>
+          <div class = "field">
+              <label name="list">Available Assessment Codes</label>
+              <select onchange={{action 'updateCode' index }} class="selectedCode" name="list">
+                  <option hidden>Select</option>
+              {{#each codeModel as |codeChoice index2|}}
+                  <option value={{index2}}> {{codeChoice.code}} {{codeChoice.description}}</option> 
+                  
+              {{/each}}
+              </select>
+          </div>
+          <div class="ui small header" style="color: #4F2683">Selected Codes:</div>
+          <ul>
+          {{#each adjChoice.assessmentCode as |assessmentCode index2|}}
+              <li class={{index2}}>{{assessmentCode.code}}: {{assessmentCode.description}}
+                  <a {{action 'removeAssessmentCode' index index2}}><span data-tooltip="Remove This Code"><i class=" large red minus circle icon"></i></span></a></li>
+          {{/each}}
+          </ul>
+          </div>
+      </div>
+
+
+      {{/each}}
+    </div>
+  </div>
+  </div>
+
   <div class="ui bottom attached active tab" data-tab="basics">
     <!-- student basic information !-->
     <br>
