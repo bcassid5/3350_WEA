@@ -186,7 +186,7 @@ export default Ember.Component.extend({
                         for(var i=0;i<self.get('studentModel').get('length');i++){
                             var currentStudent = self.get('studentModel').objectAt(i);
 
-                            console.log("******************");
+                            //console.log("******************");
                             //console.log(this.get('gradeModel'));
 
                             gradeSum = 0.0;
@@ -197,7 +197,7 @@ export default Ember.Component.extend({
                             date=new Date().toString();
                             termAvg=0.0;
 
-                            console.log(studentCodes);
+                            //console.log(studentCodes);
                             //console.log(studentCodes.get('length'));
                             //console.log(studentCodes);
                             //console.log(studentCodes.get('length'));

@@ -125,15 +125,17 @@ export default Ember.Component.extend({
 
         this.get('store').findAll('highschool-subject').then(function(records){
             self.set('highSchoolSubjectModel', records);
+            self.get('store').findAll('highSchool').then(function(records3){
+            self.set('highSchoolModel', records3);
+            self.get('store').findAll('high-school-course').then(function(records2){
+            self.set('highSchoolCourseModel', records2);
+            });
+        });
         });
 
-        this.get('store').findAll('highSchool').then(function(records){
-            self.set('highSchoolModel', records);
-        });
+        
 
-        this.get('store').findAll('high-school-course').then(function(records){
-            self.set('highSchoolCourseModel', records);
-            }),
+        
         this.get('store').findAll('schoolTerm').then(function (records) {
            self.set('termModel', records);
         });
@@ -623,7 +625,150 @@ export default Ember.Component.extend({
               }
           }
       },
-      
+      findProgramClicked()
+      {
+          var searchVal = this.$('.programSearchVal').val().toLowerCase();
+          
+         // console.log(this.get('courseModel').get('length'));
+          for (var i=0; i<this.get('courseModel').get('length'); i++)
+          {
+              if(this.get('programModel').objectAt(i).get('name').toLowerCase() == searchVal)
+              {
+                 
+                  var offset = this.$("#programChoice").find('.'+i).offset();
+                  offset.left -=20;
+                  offset.top -=20;
+                  $('html, body').animate({
+                        scrollTop: offset.top,
+                        scrollLeft: offset.left
+                    });
+                    break;
+              }
+          }
+      },
+      findPlanClicked()
+      {
+          var searchVal = this.$('.planSearchVal').val().toLowerCase();
+          
+         // console.log(this.get('courseModel').get('length'));
+          for (var i=0; i<this.get('planModel').get('length'); i++)
+          {
+              if(this.get('planModel').objectAt(i).get('name').toLowerCase() == searchVal)
+              {
+                 
+                  var offset = this.$("#planCodes").find('.'+i).offset();
+                  offset.left -=20;
+                  offset.top -=20;
+                  $('html, body').animate({
+                        scrollTop: offset.top,
+                        scrollLeft: offset.left
+                    });
+                    break;
+              }
+          }
+      },
+      findSubjectClicked()
+      {
+          var searchVal = this.$('.subjectSearchVal').val().toLowerCase();
+          
+         // console.log(this.get('courseModel').get('length'));
+          for (var i=0; i<this.get('highSchoolSubjectModel').get('length'); i++)
+          {
+              if(this.get('highSchoolSubjectModel').objectAt(i).get('name').toLowerCase() == searchVal)
+              {
+                 
+                  var offset = this.$("#hsSubjects").find('.'+i).offset();
+                  offset.left -=20;
+                  offset.top -=20;
+                  $('html, body').animate({
+                        scrollTop: offset.top,
+                        scrollLeft: offset.left
+                    });
+                    break;
+              }
+          }
+      },
+      findHSClicked()
+      {
+          var searchVal = this.$('.hsSearchVal').val().toLowerCase();
+          
+         // console.log(this.get('courseModel').get('length'));
+          for (var i=0; i<this.get('highSchoolModel').get('length'); i++)
+          {
+              if(this.get('highSchoolModel').objectAt(i).get('name').toLowerCase() == searchVal)
+              {
+                 
+                  var offset = this.$("#highschoolsmod").find('.'+i).offset();
+                  offset.left -=20;
+                  offset.top -=20;
+                  $('html, body').animate({
+                        scrollTop: offset.top,
+                        scrollLeft: offset.left
+                    });
+                    break;
+              }
+          }
+      },
+      findCourseClicked()
+      {
+          var searchVal = this.$('.courseSearchVal').val().toLowerCase();
+          var searchVal2 = this.$('.courseSearchVal2').val().toLowerCase();
+          
+          
+          //console.log(xc[0].get('subject'));
+         // console.log(this.get('courseModel').get('length'));
+          for (var i=0; i<this.get('highSchoolCourseModel').get('length'); i++)
+          {
+              if (searchVal == "")
+              {
+                if (this.get('highSchoolCourseModel').objectAt(i).get('subject').get('name').toLowerCase()==searchVal2)
+                {
+                    var offset = this.$("#hsCourses").find('.'+i).offset();
+                    console.log(this.get('highSchoolCourseModel').objectAt(i).get('subject').get('name').toLowerCase());
+                  offset.left -=20;
+                  offset.top -=20;
+                  $('html, body').animate({
+                        scrollTop: offset.top,
+                        scrollLeft: offset.left
+                    });
+                    break;
+                }
+              }
+              else if (searchVal2 == "")
+              {
+                if (this.get('highSchoolCourseModel').objectAt(i).get('highschool').get('name').toLowerCase()==searchVal)
+                {
+                    var offset = this.$("#hsCourses").find('.'+i).offset();
+                    console.log(this.get('highSchoolCourseModel').objectAt(i).get('highschool').get('name').toLowerCase());
+                  offset.left -=20;
+                  offset.top -=20;
+                  $('html, body').animate({
+                        scrollTop: offset.top,
+                        scrollLeft: offset.left
+                    });
+                    break;
+                }
+              }
+              else 
+              {
+                if (this.get('highSchoolCourseModel').objectAt(i).get('highschool').get('name').toLowerCase()==searchVal && 
+                this.get('highSchoolCourseModel').objectAt(i).get('subject').get('name').toLowerCase()==searchVal2) 
+                {
+                    console.log(this.get('highSchoolCourseModel').objectAt(i).get('highschool').get('name').toLowerCase());
+                    console.log(this.get('highSchoolCourseModel').objectAt(i).get('subject').get('name').toLowerCase());
+                    var offset = this.$("#hsCourses").find('.'+i).offset();
+                  offset.left -=20;
+                  offset.top -=20;
+                  $('html, body').animate({
+                        scrollTop: offset.top,
+                        scrollLeft: offset.left
+                    });
+                    break;
+                }
+              }
+              
+          }
+      },
 
       removeSubjectOption(index){
        this.get('store').find('highschool-subject',this.get('highSchoolSubjectModel').objectAt(index).get('id')).then(function(record){
