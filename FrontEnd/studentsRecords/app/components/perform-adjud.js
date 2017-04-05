@@ -180,15 +180,18 @@ export default Ember.Component.extend({
                         self.$("#adjudication").form('remove prompt', 'listname');  
                         for(var i=0;i<self.get('studentModel').get('length');i++){
                             var currentStudent = self.get('studentModel').objectAt(i);
-                            studentCodes = [];
-                            //console.log(studentCodes);
+
+                            //console.log("******************");
+                            //console.log(this.get('gradeModel'));
+
                             gradeSum = 0.0;
                             totalTermUnit = 0.0;
                             passedTermUnit = 0.0;
-                            date = new Date().toString();
-                            termAvg = 0.0;
-                            //console.log("******************");
-                            //console.log(this.get('gradeModel'));
+                            studentCodes=null;
+                            studentCodes = [];
+                            date=new Date().toString();
+                            termAvg=0.0;
+
                             //console.log(studentCodes);
                             //console.log(studentCodes.get('length'));
                             //console.log(studentCodes);

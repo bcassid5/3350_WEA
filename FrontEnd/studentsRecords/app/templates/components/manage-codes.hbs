@@ -143,6 +143,18 @@
             </div>
         </div>
     <div class="ui tab" data-tab="planCodes">
+        <div class=" ui inverted segment" style="background-color: #4F2683" id="find">
+                <div class="field">
+                    <div class="ui medium header" style="color: #FFFFFF">Search Plans</div>
+                    <div class="ui icon input">
+                        <input type="text" placeholder="Search..." class="planSearchVal">
+                        <i class="search icon"></i>
+                    </div> 
+                    <button class="ui button" {{action 'findPlanClicked'}}>
+                        Find 
+                    </button>
+                </div>
+            </div>
         <div class="ui grid">
             <div class="ui left aligned three wide column"></div>
             <div class="ui left aligned seven wide column">
@@ -158,12 +170,13 @@
                     </div>
                     <div id="planCodes">
                         {{#each planModel as |planChoice index|}}
-                        
+                        <div class = {{index}}>
                         <div class="inline field">
                             <label>Option {{increment index}}:</label> <input value={{planChoice.name}} type="text"  onchange = {{action 'changePlanName' index}} class = {{index}}>
                             <a {{action 'removePlanOption' index}}> 
                                 <i class="large red minus circle icon"></i> <br>
                             </a>
+                        </div>
                         </div>
                         {{/each}}
                     </div>
@@ -266,6 +279,18 @@
             </div>
         </div>
         <div class="ui tab" data-tab="programs">
+            <div class=" ui inverted segment" style="background-color: #4F2683" id="findProgram">
+                <div class="field">
+                    <div class="ui medium header" style="color: #FFFFFF">Search Programs</div>
+                    <div class="ui icon input">
+                        <input type="text" placeholder="Search..." class="programSearchVal">
+                        <i class="search icon"></i>
+                    </div> 
+                    <button class="ui button" {{action 'findProgramClicked'}}>
+                        Find 
+                    </button>
+                </div>
+            </div>
             <div class = "ui grid">
                 <div class="ui center aligned three wide column"></div>
                 <div class="ui left aligned seven wide column">
@@ -409,7 +434,20 @@
                 </div>
         </div>
     <div class="twelve wide column">
+        
  <div class="ui tab" data-tab="hsSubject">
+     <div class=" ui inverted segment" style="background-color: #4F2683" id="find">
+                <div class="field">
+                    <div class="ui medium header" style="color: #FFFFFF">Search Subjects</div>
+                    <div class="ui icon input">
+                        <input type="text" placeholder="Search..." class="subjectSearchVal">
+                        <i class="search icon"></i>
+                    </div> 
+                    <button class="ui button" {{action 'findSubjectClicked'}}>
+                        Find 
+                    </button>
+                </div>
+            </div>
        <div class="ui grid">
             <div class="ui left aligned twelve wide column">
                 <div class="ui form">
@@ -435,7 +473,9 @@
                             </a>
                         </div>
                     </div>
+                    <div id="hsSubjects">
                      {{#each highSchoolSubjectModel as |highSchoolSubjectChoice index|}}
+                     <div class = {{index}}>
                         <div class="fields">
                             <div class="field">
                                 <br/>
@@ -455,14 +495,27 @@
                                 </a>
                             </div>
                         </div>
+                     </div>
                     {{/each}}
+                    </div>
                 </div>
             </div>          
         </div>
    </div>
 
 <div class="active ui tab" data-tab="highSchools">
-       
+       <div class=" ui inverted segment" style="background-color: #4F2683" id="find">
+                <div class="field">
+                    <div class="ui medium header" style="color: #FFFFFF">Search High Schools</div>
+                    <div class="ui icon input">
+                        <input type="text" placeholder="Search..." class="hsSearchVal">
+                        <i class="search icon"></i>
+                    </div> 
+                    <button class="ui button" {{action 'findHSClicked'}}>
+                        Find 
+                    </button>
+                </div>
+            </div>
        <div class="ui grid">
             <div class="ui left aligned twelve wide column">
                 <div class="ui form">
@@ -484,8 +537,9 @@
                             </a>
                         </div>
                     </div>
-                    
+                    <div id = "highschoolsmod">
                      {{#each highSchoolModel as |highSchoolChoice index|}}
+                     <div class = {{index}}>
                     <div class="fields">
                         <div class="field">
                             <br/>
@@ -503,7 +557,9 @@
                             </a>
                         </div>
                     </div>
+                     </div>
                     {{/each}}
+                    </div>
                     
                 </div>
             </div>          
@@ -511,6 +567,33 @@
    </div>
 
    <div class="ui tab" data-tab="hsCourse">
+       <div class=" ui inverted segment" style="background-color: #4F2683" id="find">
+                
+                    <div class="ui medium header" style="color: #FFFFFF">Search Course</div>
+                    
+                    <label>High School: </label>
+                    <div class="ui icon input">
+                        <input type="text" placeholder="Search..." class="courseSearchVal">
+                        
+                    </div> 
+                    
+                    
+                    <label>Subject: </label>
+                    <div class="ui icon input">
+                        <input type="text" placeholder="Search..." class="courseSearchVal2">
+                        
+                    </div> 
+                    
+                    
+                    <button class="ui icon button" {{action 'findCourseClicked'}}>
+                        <i class="search icon"></i>
+                        Find
+                        
+                    </button>
+                    
+                    
+                
+            </div>
        <div class="ui grid">
             <div class="ui left aligned twelve wide column">
                 <div class="ui form">
@@ -538,7 +621,7 @@
                             <select style="width: 150px" onchange={{action 'updateCourseSubject' value="target.value"}} class="sub{{index}}">
                                 <option value="" disabled selected style="display: none;">Subject</option>
                                 {{#each highSchoolSubjectModel as |highSchoolSubjectChoice|}}
-                                    <option value={{highSchoolSubjectChoice.id}}>{{highSchoolSubjectChoice.description}} </option>
+                                    <option value={{highSchoolSubjectChoice.id}}>{{highSchoolSubjectChoice.name}} </option>
                                 {{/each}}
                             </select>
                         </div>
@@ -558,7 +641,9 @@
                             </a>
                         </div>
                     </div>
+                    <div id="hsCourses">
                      {{#each highSchoolCourseModel as |highSchoolCourseChoice indexHS|}}
+                     <div class = {{indexHS}}>
                         <div class="fields" id="HS">
                             <div class="field">
                                 <br/>
@@ -582,7 +667,7 @@
                                 <select style="width: 150px" onchange={{action 'updateCourseSubject' value="target.value"}}>
                                     {{#each highSchoolSubjectModel as |highSchoolSubjectChoice|}}
                                         <option value={{highSchoolSubjectChoice.id}} selected={{eq highSchoolSubjectChoice.id
-                                                                                                highSchoolCourseChoice.subject.id}}>{{highSchoolSubjectChoice.description}} </option>
+                                                                                                highSchoolCourseChoice.subject.id}}>{{highSchoolSubjectChoice.name}} </option>
                                     {{/each}}
                                 </select>
                             </div>
@@ -604,7 +689,9 @@
                             </div>
                         
                         </div>
+                     </div>
                     {{/each}}
+                    </div>
                 </div>
             </div>          
         </div>
