@@ -1,11 +1,14 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  store: Ember.inject.service(),
   routing: Ember.inject.service('-routing'),
   isUsersShowing: false,
   isFeatureEditing: false,
   isRolesEditing: false,
   isHomeShowing: true,
+  main: true,
+  change: false,
   
   H: "item active",
   SR: "item",
@@ -30,6 +33,37 @@ export default Ember.Component.extend({
   },
 
   actions: {
+
+    save(){
+      var authentication = this.get('oudaAuth');
+      var myStore = this.get('store');
+      var userName = this.get('name');
+      var hashedPassword = authentication.hash(this.get('firstPassword'));
+      var self = this;
+      myStore.queryRecord('password', {filter: {userName: userName}}).then(function (userShadow) {
+        userShadow.set('encryptedPassword', hashedPassword);
+        userShadow.set('passwordMustChanged', true);
+        userShadow.set('passwordReset', false);
+        userShadow.save().then(function () {
+          self.get('oudaAuth').close();
+            //alert("Password Changed");
+            self.set('main', true);
+            self.set('change', false);
+          //self.get('routing').transitionTo('login');
+        });
+      });
+    },
+
+    mainPress(){
+      this.set('main', true);
+      this.set('change', false);
+    },
+
+    changePress(){
+      this.set('main', false);
+      this.set('change', true);
+    },
+
     manageUsers () {
       this.set('isUsersShowing', true);
       this.set('isHomeShowing', false);
