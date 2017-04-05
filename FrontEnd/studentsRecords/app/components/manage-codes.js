@@ -834,8 +834,11 @@ export default Ember.Component.extend({
       },
 
       addCourseOption(){
-        if ((this.get('newCourseHighSchoolName')!=="")&&(this.get('newCourseHighSchoolName')!=-null)&&(this.get('newCourseSubject')!=null)&&(this.get('newCourseLevel')!==null)
-        &&(this.get('newCourseSource')!==null)&&(this.get('newCourseUnit')!==null)){
+        if ((this.get('newCourseHighSchoolName')!=="")&&(this.get('newCourseHighSchoolName')!=-null)
+        &&(this.get('newCourseSubject')!=null)&&(this.get('newCourseSubject')!=="")
+        &&(this.get('newCourseLevel')!==null)&&(this.get('newCourseLevel')!=="")
+        &&(this.get('newCourseSource')!==null)&&(this.get('newCourseSource')!=="")
+        &&(this.get('newCourseUnit')!==null)&&(this.get('newCourseUnit')!=="")){
             var record = this.get('store').createRecord('high-school-course', {
                 level: this.get('newCourseLevel'),
                 source: this.get('newCourseSource'),
@@ -1052,7 +1055,8 @@ export default Ember.Component.extend({
 
       addLogExpOption()
       {
-          if (this.get('newLogExpValue')!==null && this.get('newLogExpParam')!=null && this.get('newLogExpOpr')!=null){
+          if (this.get('newLogExpValue')!==null && this.get('newLogExpParam')!==null && this.get('newLogExpOpr')!==null 
+          && this.get('newLogExpOpr')!==""&&this.get('newLogExpParam')!==""&&this.get('newLogExpValue')!==""){
             var expression =  this.get('newLogExpParam')+this.get('newLogExpOpr')+this.get('newLogExpValue');
             var record = this.get('store').createRecord('logExpress', {
                 boolExpress: expression,
