@@ -114,13 +114,15 @@
                             </table>
                             {{/if}}
                             {{#if isDepartment}}
-                            <div id = "departments">
+                            
                             <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'departmentExport' true}}>
                                 Export table to PDF
                             </button>
                             <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'departmentExport' false}}>
                                 Export to Excel
                             </button>
+                            <br><br>
+                            <div id = "departments">
                             {{#each departmentGroups as |group index|}}
                             
                             
@@ -172,13 +174,15 @@
                             </div>
                             {{/if}}
                             {{#if isProgram}}
-                            <div id = "programs">
+                            
                                 <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'programExport' true}}>
                                     Export table to PDF
                                 </button>
                                 <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'programExport' false}}>
                                 Export to Excel
                                 </button>
+                                <br><br>
+                                <div id = "programs">
                                 {{#each programGroups as |group index|}}
                                 {{#each programModel as |prgm index3|}}
                                 {{#if (eq index index3)}}

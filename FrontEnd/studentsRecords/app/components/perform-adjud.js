@@ -583,7 +583,7 @@ export default Ember.Component.extend({
             
         },
 
-    },
+    
     departmentExport(type)
     {
 
@@ -916,6 +916,7 @@ export default Ember.Component.extend({
                 }, this);
             }); 
         }
+    }
 });
 
 
