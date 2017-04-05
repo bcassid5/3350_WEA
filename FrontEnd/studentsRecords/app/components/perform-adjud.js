@@ -21,7 +21,7 @@ export default Ember.Component.extend({
     offset:null,
     pageSize:null,
     showResults:null,
-
+    
     progress:null,
     chosen: null,
     departmentModel: null,
@@ -33,14 +33,48 @@ export default Ember.Component.extend({
     programGroups: [],
     departmentsAdded: [],
     programsAdded: [],
+    numberData: null,
+    ifNoneStat: null,
+    baroptions: {
+                title: {
+                    display: true,
+                    fontSize: 16,
+                    fontStle:"bold",
+                    fontColor:"#101",
+                    text: 'Students per Assestment Code'
+                },
+                legend: {
+                    display: false,
+                },
+                scales: {
+                    yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Students',
+                        
+                    },
+                    ticks: {
+                            suggestedMin: 0,
+                            fixedStepSize: 1,
+                        }
+                }],
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Assesment Code'
+                    }
+                    }]
+                }
+            },
     moveProgress: Ember.observer('progress', function(){
         this.rerender();
         this.$('#progBar').progress('set percent', this.get("progress"));
     }),
-
+    
     init(){
         this._super(...arguments);
         var self = this;
+        this.ifNoneStat=false;
         this.adjudicationTerm="";
         this.adjudicationTermToView="";
         this.gradeModel=[];
@@ -52,6 +86,7 @@ export default Ember.Component.extend({
         this.departmentGroups=[],
         this.programGroups=[],
         this.chosen=false;
+        
         this.get('store').findAll('schoolTerm').then(function (records) {
            self.set('termModel', records);
         });
@@ -146,12 +181,75 @@ export default Ember.Component.extend({
             this.set('isProgram', false);
             this.set("isNone", false);
         },
+        displayStatistics()
+        {
+            function extractContent(value){
+                var div = document.createElement('div')
+                div.innerHTML=value;
+                var text= div.textContent;            
+                return text;
+            }
+            
+            if(!this.get('ifNoneStat'))
+            {
+            var counts =[];
+                var names=[]
+                for(let i =0;i<this.get('codeModel').get('length');i++)
+                {
+                    counts.push(0);
+                    names.push(this.get('codeModel').objectAt(i).get('code'));
+                }
+                
+                
+                
+                var first=true;
+                $('#studentTable tr').each(function() {
+                    if(!first)
+                    {
+                        var codes = extractContent($(this).find(".codes").html().replace(/\s\s+/g, '').replace(/<br>/g,"|")).split("|");
+                        for(let j=0;j<codes.length;j++)
+                        {
+                            for(let k=0;k<names.length;k++)
+                            {
+                                if(codes[j]==names[k])
+                                {
+                                    counts[k]++;
+                                }
+                            }
+                        }
+                        
+                    }
+                    else{
+                    first=false;
+                }
+                
+                });
+                console.log(counts);
+                this.set('numberData', {
+                labels: names,
+                datasets: [
+                    {
+                        backgroundColor: "rgba(79,38,131,.99)",
+                        borderWidth: 1,
+                        data: counts,
+                    }
+                ]
+                
+            });
+            this.set('ifNoneStat', !(this.get('ifNoneStat')));
+            }
+        },
         viewAdjudication(){
+            
             if (this.get("adjudicationTermToView") == ""){
                 alert("Term not selected");
             } else {
                 this.set('showResults', !this.get('showResults'));
+                
             }
+            
+            
+            
         },
         selectTerm(index){
             var term = this.get('termModel').objectAt(index).get('name');

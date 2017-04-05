@@ -79,9 +79,15 @@
                             <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'excelExport'}}>
                                 Export table to Excel
                             </button>
+                            <button class="ui button" style="background-color: #000000; color: #ffffff" {{action 'displayStatistics'}}>
+                                Display Statistics
+                            </button>
                             <!--<button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'exportExcel'}}>
                                 Export table to Excel
                             </button>-->
+                            {{#if ifNoneStat}}
+                            {{ember-chart type="bar" data=numberData height=200 width=200 options=baroptions}}
+                            {{/if}}
                             <table class="ui celled table" id="studentTable">
                                 <thead>
                                     <tr>
