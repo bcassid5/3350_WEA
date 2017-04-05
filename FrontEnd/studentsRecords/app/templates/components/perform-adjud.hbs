@@ -76,13 +76,17 @@
                             <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'exportPDF' 1}}>
                                 Export table to PDF
                             </button>
+                            <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'excelExport'}}>
+                                Export table to Excel
+                            </button>
                             <!--<button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'exportExcel'}}>
                                 Export table to Excel
                             </button>-->
                             <table class="ui celled table" id="studentTable">
                                 <thead>
                                     <tr>
-                                        <th>Student</th>
+                                        <th>Student Name</th>
+                                        <th>Student Number</th>
                                         <th>Term Average</th>
                                         <th>Term Units</th>
                                         <th>Term Units Received</th>
@@ -93,11 +97,12 @@
                                 {{#each adjudicationModel as |adjudicationChoice index2|}}
                                         {{#if (eq adjudicationChoice.note adjudicationTermToView)}}
                                         <tr class={{index2}}>
-                                            <td>{{adjudicationChoice.student.firstName}} {{adjudicationChoice.student.lastName}}<br/>{{adjudicationChoice.student.number}}</td>
-                                            <td>{{adjudicationChoice.termAVG}}</td>
-                                            <td>{{adjudicationChoice.termUnitTotal}}</td>
-                                            <td>{{adjudicationChoice.termUnitPassed}}</td>
-                                            <td>
+                                            <td class="info">{{adjudicationChoice.student.firstName}} {{adjudicationChoice.student.lastName}}</td>
+                                            <td class="id">{{adjudicationChoice.student.number}}</td>
+                                            <td class="avg">{{adjudicationChoice.termAVG}}</td>
+                                            <td class="termtotal">{{adjudicationChoice.termUnitTotal}}</td>
+                                            <td class="termPassed">{{adjudicationChoice.termUnitPassed}}</td>
+                                            <td class="codes">
                                                 {{#each adjudicationChoice.assessmentCode as |codeChoice|}}
                                                 {{codeChoice.code}}<br/>
                                                 {{/each}}
@@ -109,14 +114,27 @@
                             </table>
                             {{/if}}
                             {{#if isDepartment}}
-                            <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'exportPDF' 2}}>
+                            <div id = "departments">
+                            <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'departmentExport' true}}>
                                 Export table to PDF
+                            </button>
+                            <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'departmentExport' false}}>
+                                Export to Excel
                             </button>
                             {{#each departmentGroups as |group index|}}
-                            <table class="ui celled table" id="departmentTable">
+                            
+                            
+                            {{#each departmentModel as |dprt index3|}}
+                            {{#if (eq index index3)}}
+                                <div class="ui medium header" style="color: #4F2683">{{dprt.name}}</div>
+                            {{/if}}
+                            {{/each}}
+                            
+                            <table class="ui celled table" id={{index}}>
                                 <thead>
                                     <tr>
-                                        <th>Student</th>
+                                        <th>Student Name</th>
+                                        <th>Student Number</th>
                                         <th>Term Average</th>
                                         <th>Term Units</th>
                                         <th>Term Units Received</th>
@@ -124,6 +142,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    
                                 {{#each group as |studentInDepartment index2|}}
                                     
                                 
@@ -131,11 +150,12 @@
                                 {{#if (eq adjudicationChoice.student.id studentInDepartment.id)}}
                                         {{#if (eq adjudicationChoice.note adjudicationTermToView)}}
                                         <tr class={{index2}}>
-                                            <td>{{adjudicationChoice.student.firstName}} {{adjudicationChoice.student.lastName}}<br/>{{adjudicationChoice.student.number}}</td>
-                                            <td>{{adjudicationChoice.termAVG}}</td>
-                                            <td>{{adjudicationChoice.termUnitTotal}}</td>
-                                            <td>{{adjudicationChoice.termUnitPassed}}</td>
-                                            <td>
+                                            <td class="info">{{adjudicationChoice.student.firstName}} {{adjudicationChoice.student.lastName}}</td>
+                                            <td class="id">{{adjudicationChoice.student.number}}</td>
+                                            <td class="avg">{{adjudicationChoice.termAVG}}</td>
+                                            <td class="termtotal">{{adjudicationChoice.termUnitTotal}}</td>
+                                            <td class="termPassed">{{adjudicationChoice.termUnitPassed}}</td>
+                                            <td class="codes">
                                                 {{#each adjudicationChoice.assessmentCode as |codeChoice|}}
                                                 {{codeChoice.code}}<br/>
                                                 {{/each}}
@@ -149,48 +169,61 @@
                                 </tbody>
                             </table>
                             {{/each}}
+                            </div>
                             {{/if}}
                             {{#if isProgram}}
-                            <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'exportPDF' 3}}>
-                                Export table to PDF
-                            </button>
-                            {{#each programGroups as |group index|}}
-                            <table class="ui celled table" id="programTable">
-                                <thead>
-                                    <tr>
-                                        <th>Student</th>
-                                        <th>Term Average</th>
-                                        <th>Term Units</th>
-                                        <th>Term Units Received</th>
-                                        <th>Assessment Codes</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                {{#each group as |studentInDepartment index2|}}
-                                    
-                                
-                                {{#each adjudicationModel as |adjudicationChoice index2|}}
-                                {{#if (eq adjudicationChoice.student.id studentInDepartment.id)}}
-                                        {{#if (eq adjudicationChoice.note adjudicationTermToView)}}
-                                        <tr class={{index2}}>
-                                            <td>{{adjudicationChoice.student.firstName}} {{adjudicationChoice.student.lastName}}<br/>{{adjudicationChoice.student.number}}</td>
-                                            <td>{{adjudicationChoice.termAVG}}</td>
-                                            <td>{{adjudicationChoice.termUnitTotal}}</td>
-                                            <td>{{adjudicationChoice.termUnitPassed}}</td>
-                                            <td>
-                                                {{#each adjudicationChoice.assessmentCode as |codeChoice|}}
-                                                {{codeChoice.code}}<br/>
-                                                {{/each}}
-                                            </td>
+                            <div id = "programs">
+                                <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'programExport' true}}>
+                                    Export table to PDF
+                                </button>
+                                <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'programExport' false}}>
+                                Export to Excel
+                                </button>
+                                {{#each programGroups as |group index|}}
+                                {{#each programModel as |prgm index3|}}
+                                {{#if (eq index index3)}}
+                                    <div class="ui medium header" style="color: #4F2683">{{prgm.name}}</div>
+                                {{/if}}
+                                {{/each}}
+                                <table class="ui celled table" id={{index}}>
+                                    <thead>
+                                        <tr>
+                                            <th>Student Name</th>
+                                            <th>Student Number</th>
+                                            <th>Term Average</th>
+                                            <th>Term Units</th>
+                                            <th>Term Units Received</th>
+                                            <th>Assessment Codes</th>
                                         </tr>
-                                    {{/if}}
-                                    {{/if}}
+                                    </thead>
+                                    <tbody>
+                                    {{#each group as |studentInDepartment index2|}}
+                                        
+                                    
+                                    {{#each adjudicationModel as |adjudicationChoice index2|}}
+                                    {{#if (eq adjudicationChoice.student.id studentInDepartment.id)}}
+                                            {{#if (eq adjudicationChoice.note adjudicationTermToView)}}
+                                            <tr class={{index2}}>
+                                                 <td class="info">{{adjudicationChoice.student.firstName}} {{adjudicationChoice.student.lastName}}</td>
+                                                <td class="id">{{adjudicationChoice.student.number}}</td>
+                                                <td class="avg">{{adjudicationChoice.termAVG}}</td>
+                                                <td class="termtotal">{{adjudicationChoice.termUnitTotal}}</td>
+                                                <td class="termPassed">{{adjudicationChoice.termUnitPassed}}</td>
+                                                <td class="codes">
+                                                    {{#each adjudicationChoice.assessmentCode as |codeChoice|}}
+                                                    {{codeChoice.code}}<br/>
+                                                    {{/each}}
+                                                </td>
+                                            </tr>
+                                        {{/if}}
+                                        {{/if}}
+                                    {{/each}}
+                                    
+                                    {{/each}}
+                                    </tbody>
+                                </table>
                                 {{/each}}
-                                
-                                {{/each}}
-                                </tbody>
-                            </table>
-                            {{/each}}
+                            </div>
                             {{/if}}
                         {{/if}}
                     </div>
@@ -200,3 +233,72 @@
         </div>
     </div>
 </div>
+<div class="ui department modal">
+      <div class="ui icon header">
+        <i class="add to cart icon"></i>
+        Select Departments To Export
+      </div>
+      <div class="content">
+        {{#ui-dropdown   class="fluid multiple selection" onChange=(action 'selectDepartmentToExport')}}
+       <i class="dropdown icon"></i>
+       <div class="default text">Select Departments</div>
+       <div class="menu">
+         {{#each departmentModel as |departmentChoice index|}}
+           <div class="item"   data-value= {{index}} >
+             {{departmentChoice.name}} 
+           </div>
+         {{/each}}
+
+       </div>
+     {{/ui-dropdown}}
+      </div>
+      <div class="actions">
+        <div class="ui violet inverted button"{{action 'cancelDepartment'}}>
+          
+          Cancel
+        </div>
+        <div class="ui violet button"{{action 'exportDepartment' false}}>
+          
+          Export Selected
+        </div>
+        <div class="ui black button"{{action 'exportDepartment' true}}>
+          
+          Export All
+        </div>
+      </div>
+</div>
+<div class="ui program modal">
+      <div class="ui icon header">
+        <i class="add to cart icon"></i>
+        Select Programs To Export
+      </div>
+      <div class="content">
+        {{#ui-dropdown   class="fluid multiple selection" onChange=(action 'selectProgramToExport')}}
+       <i class="dropdown icon"></i>
+       <div class="default text">Select Programs</div>
+       <div class="menu">
+         {{#each programModel as |departmentChoice index|}}
+           <div class="item"   data-value= {{index}} >
+             {{departmentChoice.name}} 
+           </div>
+         {{/each}}
+
+       </div>
+     {{/ui-dropdown}}
+      </div>
+      <div class="actions">
+        <div class="ui violet inverted button"{{action 'cancelProgram'}}>
+          
+          Cancel
+        </div>
+        <div class="ui violet button"{{action 'exportProgram' false}}>
+          
+          Export Selected
+        </div>
+        <div class="ui black button"{{action 'exportProgram' true}}>
+          
+          Export All
+        </div>
+      </div>
+</div>
+
