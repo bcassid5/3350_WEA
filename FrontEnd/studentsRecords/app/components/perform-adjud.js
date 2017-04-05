@@ -31,7 +31,7 @@ export default Ember.Component.extend({
     showResults:null,
 
     progress:null,
-
+    chosen: null,
     departmentModel: null,
     programModel: null,
     isNone: true,
@@ -39,6 +39,8 @@ export default Ember.Component.extend({
     isProgram: false,
     departmentGroups: [],
     programGroups: [],
+    departmentsAdded: [],
+    programsAdded: [],
     moveProgress: Ember.observer('progress', function(){
         this.rerender();
         this.$('#progBar').progress('set percent', this.get("progress"));
@@ -52,6 +54,12 @@ export default Ember.Component.extend({
         this.gradeModel=[];
         this.showResults=false;
         this.progress=0.0;
+        this.isNone=true;
+        this.isDepartment=false;
+        this.isProgram=false;
+        this.departmentGroups=[],
+        this.programGroups=[],
+        this.chosen=false;
         this.get('store').findAll('schoolTerm').then(function (records) {
            self.set('termModel', records);
         });
@@ -95,9 +103,10 @@ export default Ember.Component.extend({
       //      });
         this.get('store').findAll('department').then(function(records){
             self.set('departmentModel', records);
-            console.log(self.get('departmentModel').get('length'));
+            
             for (var i =0;i<self.get('departmentModel').get('length');i++)
             {
+               
                 self.get('store').query('student',{department: self.get('departmentModel').objectAt(i).get('id')}).then(function(grades){
                 
                 self.get('departmentGroups').push(grades);
@@ -131,13 +140,19 @@ export default Ember.Component.extend({
     },
     actions: {
         noneSelected(){
-            this.set('showResults', false);
+            this.set('isDepartment', false);
+            this.set('isProgram', false);
+            this.set("isNone", true);
         },
         programSelected(){
-            this.set('isProgram', !this.get('isProgram'));
+            this.set('isDepartment', false);
+            this.set('isProgram', true);
+            this.set("isNone", false);
         },
         departmentSelected(){
-            this.set('isDepartment', !this.get('isDepartment'));
+            this.set('isDepartment', true);
+            this.set('isProgram', false);
+            this.set("isNone", false);
         },
         viewAdjudication(){
             this.set('showResults', !this.get('showResults'));
@@ -239,9 +254,7 @@ export default Ember.Component.extend({
                                 var avg = (gradeSum)/(tempGrades.get('length'));
                                 termAvg=avg;
 
-                                console.log(termAvg);
-                                console.log(totalTermUnit);
-                                console.log(passedTermUnit);
+                                
 
 
                                 var codeTest=true;
@@ -560,6 +573,7 @@ export default Ember.Component.extend({
                     doc.text("Adjudication: " + self.get("adjudicationTermToView") + ": " + title, 15, 15);
                 }
             });
+            
             doc.output("dataurlnewwindow");
         },
 
@@ -585,7 +599,7 @@ export default Ember.Component.extend({
             for(var i =0; i <this.get('departmentGroups').get('length');i++)
             {
                 var self = this;
-                console.log(this.get('departmentGroups').get('length'));
+                
             
             //doc.text("Adjudication: " + this.get("adjudicationTermToView"), 14, 16);
             var elem = document.getElementById(i);
@@ -602,7 +616,328 @@ export default Ember.Component.extend({
         }
         doc.output("dataurlnewwindow");
             
+    },
+    departmentExport(type)
+    {
+
+        this.set('departmentsAdded', []);
+        for(let i =0; i < this.get('departmentModel').get('length'); i++)
+        {
+            this.get('departmentsAdded').push(false);
         }
+        console.log(this.get('departmentsAdded'));
+        this.set('chosen', type);
+        Ember.$('.ui.department.modal').modal('show');
+    },
+    programExport(type)
+    {
+
+        this.set('programsAdded', []);
+        for(let i =0; i < this.get('programModel').get('length'); i++)
+        {
+            this.get('programsAdded').push(false);
+        }
+        console.log(this.get('programsAdded'));
+        this.set('chosen', type);
+        Ember.$('.ui.program.modal').modal('show');
+    },
+    cancelDepartment()
+    {
+        Ember.$('.ui.department.modal').modal('hide');
+        
+    },
+    cancelProgram()
+    {
+        Ember.$('.ui.program.modal').modal('hide');
+    },
+    selectDepartmentToExport(id)
+    {
+        this.set('departmentsAdded', []);
+        for(let i=0; i<this.get('departmentModel').get('length');i++)
+        {
+            let match = false;
+            for(let j =0; j<id.length;j++)
+            {
+                if(i==id[j])
+                {
+                    match=true;
+                }
+            }
+            this.get('departmentsAdded').push(match);
+            
+            
+        }
+        
+        console.log(this.get('departmentsAdded'));
+    },
+    selectProgramToExport(id)
+    {
+        this.set('programsAdded', []);
+        for(let i=0; i<this.get('programModel').get('length');i++)
+        {
+            let match = false;
+            for(let j =0; j<id.length;j++)
+            {
+                if(i==id[j])
+                {
+                    match=true;
+                }
+            }
+            this.get('programsAdded').push(match);
+            
+            
+        }
+        
+        console.log(this.get('programsAdded'));
+    },
+    exportDepartment(thing)
+    {
+        if(thing)
+        {
+            this.set('departmentsAdded', []);
+            for(let i =0; i < this.get('departmentModel').get('length'); i++)
+            {
+                this.get('departmentsAdded').push(true);
+            }
+            
+        }
+        if (this.get('chosen')){
+            var doc = new jsPDF('p', 'pt');
+            var header = function(data) {
+                doc.setFontSize(20);
+                doc.setTextColor(79, 38, 131);
+                doc.setFontStyle('normal');
+                //doc.addImage(headerImgData, 'JPEG', data.settings.margin.left, 20, 50, 50);
+                doc.text("Adjudication By Department", data.settings.margin.left, 50);
+            };
+            var first=true;
+            for(var i =0; i<this.get('departmentModel').get('length'); i++)
+            {
+                if(first)
+                {
+                    if(this.get('departmentsAdded').objectAt(i))
+                    {
+                        first=false;
+                        var res = doc.autoTableHtmlToJson(this.$('#departments').find('#'+i)[0]);
+                        doc.text(40, 70, this.get('departmentModel').objectAt(i).get('name'));
+                        doc.autoTable(res.columns, res.data, {margin: {top: 80}, headerStyles: {fillColor: [79, 38, 131]}, addPageContent: header});
+                    }
+                }
+                else
+                {
+                    if(this.get('departmentsAdded').objectAt(i))
+                    {
+                        var res = doc.autoTableHtmlToJson(this.$('#departments').find('#'+i)[0]);
+                        doc.text(40, doc.autoTableEndPosY()+20, this.get('departmentModel').objectAt(i).get('name'));
+                        var options = {
+                            headerStyles: {fillColor: [79, 38, 131]},
+                            margin: {
+                            top: 80
+                            },
+                            startY: doc.autoTableEndPosY() + 30
+                        };
+                        doc.autoTable(res.columns, res.data, options);
+
+                    }
+                }
+            }
+            Ember.$('.ui.department.modal').modal('hide');
+            doc.output("dataurlnewwindow");
+        }
+        else 
+        {
+                function extractContent(value){
+                var div = document.createElement('div')
+                div.innerHTML=value;
+                var text= div.textContent;            
+                return text;
+            }
+            var stuff= [];
+            var options = [];
+            var i =-1;
+            var first=false;
+            var self=this;
+            for(let j=0; j<this.get('departmentGroups').get('length');j++){
+                if(this.get('departmentsAdded').objectAt(j)){
+                var data=[];
+                
+                $('#departments').find('#'+j+' tr').each(function() {
+                    var row=[];
+                    if(first)
+                    {
+                    
+                    row.push(extractContent($(this).find(".info").html()));  
+                    row.push(extractContent($(this).find(".id").html()));  
+                    
+                    row.push(extractContent($(this).find(".avg").html()));   
+                    row.push(extractContent($(this).find(".termtotal").html()));   
+                    row.push(extractContent($(this).find(".termPassed").html()));   
+                    row.push(extractContent(extractContent($(this).find(".codes").html()).replace(/\s\s+/g, ' ')));   
+                    data.push(row);
+                }
+                else 
+                {
+                    row=["Student Name","Student Number", "Term Average", "Term Units", "Term Units Recieved", "Assesment Codes"];
+                    data.push(row);
+                    first=true;
+                    options.push(self.get('departmentModel').objectAt(j).get('name'));
+                }
+            });
+            first=false;
+            stuff.push(data);
+                }
+        }
+        
+        Ember.$('.ui.department.modal').modal('hide');
+        this.get('myexport').export(stuff, options, "AdjudicationReportByDepartment.xlsx");
+        }
+    
+    },
+    exportProgram(thing)
+    {
+        if(thing)
+        {
+            this.set('programsAdded', []);
+            for(let i =0; i < this.get('programModel').get('length'); i++)
+            {
+                this.get('programsAdded').push(true);
+            }
+            
+        }
+        if (this.get('chosen')){
+        var doc = new jsPDF('p', 'pt');
+        var header = function(data) {
+            doc.setFontSize(20);
+            doc.setTextColor(79, 38, 131);
+            doc.setFontStyle('normal');
+            //doc.addImage(headerImgData, 'JPEG', data.settings.margin.left, 20, 50, 50);
+            doc.text("Adjudication By Program", data.settings.margin.left, 50);
+        };
+        var first=true;
+        for(var i =0; i<this.get('programModel').get('length'); i++)
+        {
+            if(first)
+            {
+                if(this.get('programsAdded').objectAt(i))
+                {
+                    first=false;
+                    var res = doc.autoTableHtmlToJson(this.$('#programs').find('#'+i)[0]);
+                    doc.text(40, 70, this.get('programModel').objectAt(i).get('name'));
+                    doc.autoTable(res.columns, res.data, {margin: {top: 80}, headerStyles: {fillColor: [79, 38, 131]}, addPageContent: header});
+                }
+            }
+            else
+            {
+                if(this.get('programsAdded').objectAt(i))
+                {
+                    var res = doc.autoTableHtmlToJson(this.$('#programs').find('#'+i)[0]);
+                    doc.text(40, doc.autoTableEndPosY()+20, this.get('programModel').objectAt(i).get('name'));
+                    var options = {
+                        headerStyles: {fillColor: [79, 38, 131]},
+                        margin: {
+                        top: 80
+                        },
+                        startY: doc.autoTableEndPosY() + 30
+                    };
+                    doc.autoTable(res.columns, res.data, options);
+
+                }
+            }
+        }
+        Ember.$('.ui.program.modal').modal('hide');
+        doc.output("dataurlnewwindow");
+    }
+    else 
+        {
+                function extractContent(value){
+                var div = document.createElement('div')
+                div.innerHTML=value;
+                var text= div.textContent;            
+                return text;
+            }
+            var stuff= [];
+            var options = [];
+            var i =-1;
+            var first=false;
+            var self=this;
+            for(let j=0; j<this.get('programGroups').get('length');j++){
+                if(this.get('programsAdded').objectAt(j)){
+                var data=[];
+                
+                $('#programs').find('#'+j+' tr').each(function() {
+                    var row=[];
+                    if(first)
+                    {
+                    
+                    row.push(extractContent($(this).find(".info").html()));  
+                    row.push(extractContent($(this).find(".id").html()));  
+                    
+                    row.push(extractContent($(this).find(".avg").html()));   
+                    row.push(extractContent($(this).find(".termtotal").html()));   
+                    row.push(extractContent($(this).find(".termPassed").html()));   
+                    row.push(extractContent(extractContent($(this).find(".codes").html()).replace(/\s\s+/g, ' ')));   
+                    data.push(row);
+                }
+                else 
+                {
+                    row=["Student Name","Student Number", "Term Average", "Term Units", "Term Units Recieved", "Assesment Codes"];
+                    data.push(row);
+                    first=true;
+                    options.push(self.get('programModel').objectAt(j).get('name'));
+                }
+            });
+            first=false;
+            stuff.push(data);
+                }
+        }
+        
+        Ember.$('.ui.program.modal').modal('hide');
+        this.get('myexport').export(stuff, options, "AdjudicationReportByProgram.xlsx");
+        }
+    },
+    excelExport()
+    {
+        function extractContent(value){
+            var div = document.createElement('div')
+            div.innerHTML=value;
+            var text= div.textContent;            
+            return text;
+        }
+        var stuff= [];
+        var first =false;
+        var data=[];
+        var options = ["All Students"];
+        $('#studentTable tr').each(function() {
+            var row=[];
+            if(first)
+            {
+            row.push(extractContent($(this).find(".info").html()));  
+            row.push(extractContent($(this).find(".id").html()));  
+            
+            row.push(extractContent($(this).find(".avg").html()));   
+            row.push(extractContent($(this).find(".termtotal").html()));   
+            row.push(extractContent($(this).find(".termPassed").html()));   
+            row.push(extractContent(extractContent($(this).find(".codes").html()).replace(/\s\s+/g, ' ')));   
+            data.push(row);
+        }
+        else 
+        {
+            row=["Student Name","Student Number", "Term Average", "Term Units", "Term Units Recieved", "Assesment Codes"];
+            data.push(row);
+            first=true;
+        }
+    });
+    stuff.push(data);
+        
+        
+   
+   
+   
+   
+    this.get('myexport').export(stuff, options, "AdjudicationReport.xlsx");
+   
+                
+    },
 
     }
 });
