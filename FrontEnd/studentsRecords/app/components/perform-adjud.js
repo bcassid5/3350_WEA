@@ -34,7 +34,43 @@ export default Ember.Component.extend({
     departmentsAdded: [],
     programsAdded: [],
     numberData: null,
+    numberData2: null,
+    numberData3: null,
+    numberData4: null,
+    numberData5: null,
     ifNoneStat: null,
+    selectedDepartment:null,
+    selectedProgram:null,
+    baroptions4:null,
+    baroptions5:null,
+    baroptions2:{
+                title: {
+                    display: true,
+                    fontSize: 16,
+                    fontStle:"bold",
+                    fontColor:"#101",
+                    text: 'Students per Department'
+                },
+                legend: {
+                    display: true,
+                    
+                },
+                
+            },
+    baroptions3:{
+                title: {
+                    display: true,
+                    fontSize: 16,
+                    fontStle:"bold",
+                    fontColor:"#101",
+                    text: 'Students per Program'
+                },
+                legend: {
+                    display: true,
+                    
+                },
+                
+            },
     baroptions: {
                 title: {
                     display: true,
@@ -86,6 +122,8 @@ export default Ember.Component.extend({
         this.departmentGroups=[],
         this.programGroups=[],
         this.chosen=false;
+        this.selectedDepartment=null;
+        this.selectedProgram=null;
         
         this.get('store').findAll('schoolTerm').then(function (records) {
            self.set('termModel', records);
@@ -170,16 +208,19 @@ export default Ember.Component.extend({
             this.set('isDepartment', false);
             this.set('isProgram', false);
             this.set("isNone", true);
+            this.set('ifNoneStat', false);
         },
         programSelected(){
             this.set('isDepartment', false);
             this.set('isProgram', true);
             this.set("isNone", false);
+            this.set('ifNoneStat', false);
         },
         departmentSelected(){
             this.set('isDepartment', true);
             this.set('isProgram', false);
             this.set("isNone", false);
+            this.set('ifNoneStat', false);
         },
         displayStatistics()
         {
@@ -189,54 +230,410 @@ export default Ember.Component.extend({
                 var text= div.textContent;            
                 return text;
             }
-            
+            function rainbow(numOfSteps, step) {
+                
+                var r, g, b;
+                var h = step / numOfSteps;
+                var i = ~~(h * 6);
+                var f = h * 6 - i;
+                var q = 1 - f;
+                switch(i % 6){
+                    case 0: r = 1; g = f; b = 0; break;
+                    case 1: r = q; g = 1; b = 0; break;
+                    case 2: r = 0; g = 1; b = f; break;
+                    case 3: r = 0; g = q; b = 1; break;
+                    case 4: r = f; g = 0; b = 1; break;
+                    case 5: r = 1; g = 0; b = q; break;
+                }
+                var c = "#" + ("00" + (~ ~(r * 255)).toString(16)).slice(-2) + ("00" + (~ ~(g * 255)).toString(16)).slice(-2) + ("00" + (~ ~(b * 255)).toString(16)).slice(-2);
+                return (c);
+            }
             if(!this.get('ifNoneStat'))
             {
-            var counts =[];
-                var names=[]
-                for(let i =0;i<this.get('codeModel').get('length');i++)
-                {
-                    counts.push(0);
-                    names.push(this.get('codeModel').objectAt(i).get('code'));
-                }
-                
-                
-                
-                var first=true;
-                $('#studentTable tr').each(function() {
-                    if(!first)
+                var counts =[];
+                    var names=[]
+                    for(let i =0;i<this.get('codeModel').get('length');i++)
                     {
-                        var codes = extractContent($(this).find(".codes").html().replace(/\s\s+/g, '').replace(/<br>/g,"|")).split("|");
-                        for(let j=0;j<codes.length;j++)
+                        counts.push(0);
+                        names.push(this.get('codeModel').objectAt(i).get('code'));
+                    }
+                    
+                    
+                    
+                    var first=true;
+                    $('#studentTable tr').each(function() {
+                        if(!first)
                         {
-                            for(let k=0;k<names.length;k++)
+                            var codes = extractContent($(this).find(".codes").html().replace(/\s\s+/g, '').replace(/<br>/g,"|")).split("|");
+                            for(let j=0;j<codes.length;j++)
                             {
-                                if(codes[j]==names[k])
+                                for(let k=0;k<names.length;k++)
                                 {
-                                    counts[k]++;
+                                    if(codes[j]==names[k])
+                                    {
+                                        counts[k]++;
+                                    }
+                                }
+                            }
+                            
+                        }
+                        else{
+                        first=false;
+                    }
+                    
+                });
+                var max =0;
+                    for (let i =0;i<counts.length;i++)
+                    {
+                        if(counts[i]>max)
+                        {
+                            max=counts[i];
+                        }
+                    }
+                    this.set('baroptions', {
+                title: {
+                    display: true,
+                    fontSize: 16,
+                    fontStle:"bold",
+                    fontColor:"#101",
+                    text: 'Students per Assestment Code'
+                },
+                legend: {
+                    display: false,
+                },
+                scales: {
+                    yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Number of Students',
+                        
+                    },
+                    ticks: {
+                            suggestedMin: 0,
+                            suggestedMax: max+2,
+                            fixedStepSize: 1,
+                        }
+                }],
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Assesment Code'
+                    }
+                    }]
+                }
+            });
+                    this.set('numberData', {
+                    labels: names,
+                    datasets: [
+                        {
+                            backgroundColor: "rgba(0,0,128,.9)",
+                            borderWidth: 1,
+                            data: counts,
+                        }
+                    ]
+                    
+                });
+                counts=[];
+                names=[];
+                var colors = [];
+                
+                for(let i =0;i<this.get('departmentModel').get('length');i++)
+                    {
+                        counts.push(0);
+                        for(let j=0;j<this.get('departmentGroups').objectAt(i).get('length');j++)
+                        {
+                            for(let k=0;k<this.get('adjudicationModel').get('length');k++)
+                            {
+                                if(this.get('adjudicationModel').objectAt(k).get('student').get('id')==this.get('departmentGroups').objectAt(i).objectAt(j).get('id'))
+                                {
+                                    if(this.get('adjudicationModel').objectAt(k).get('note')==this.get('adjudicationTermToView'))
+                                    {
+                                        counts[i]++;
+                                    }
                                 }
                             }
                         }
                         
+                        colors.push(rainbow(this.get('departmentModel').get('length'),i+1));
+                        names.push(this.get('departmentModel').objectAt(i).get('name'));
                     }
-                    else{
-                    first=false;
-                }
-                
+                    
+                    this.set('numberData2', {
+                    labels: names,
+                    datasets: [
+                        {
+                            backgroundColor: colors,
+                            
+                            data: counts,
+                        }
+                    ]
+                    
                 });
-                console.log(counts);
-                this.set('numberData', {
-                labels: names,
-                datasets: [
+                counts=[];
+                names=[];
+                colors=[];
+                for(let i =0;i<this.get('programModel').get('length');i++)
                     {
-                        backgroundColor: "rgba(79,38,131,.99)",
-                        borderWidth: 1,
-                        data: counts,
+                        counts.push(0);
+                        for(let j=0;j<this.get('programGroups').objectAt(i).get('length');j++)
+                        {
+                            for(let k=0;k<this.get('adjudicationModel').get('length');k++)
+                            {
+                                if(this.get('adjudicationModel').objectAt(k).get('student').get('id')==this.get('programGroups').objectAt(i).objectAt(j).get('id'))
+                                {
+                                    if(this.get('adjudicationModel').objectAt(k).get('note')==this.get('adjudicationTermToView'))
+                                    {
+                                        counts[i]++;
+                                    }
+                                }
+                            }
+                        }
+                        
+                        colors.push(rainbow(this.get('programModel').get('length'),i+1));
+                        names.push(this.get('programModel').objectAt(i).get('name'));
                     }
-                ]
-                
+                    this.set('numberData3', {
+                    labels: names,
+                    datasets: [
+                        {
+                            backgroundColor: colors,
+                            
+                            data: counts,
+                        }
+                    ]
+                    
+                });
+                this.set('ifNoneStat', !(this.get('ifNoneStat')));
+            }
+        },
+        displayStatistics2()
+        {
+            
+            if(this.get('ifNoneStat'))
+            {
+                this.set('ifNoneStat', !(this.get('ifNoneStat')));
+            }
+            if(!this.get('ifNoneStat') && this.get('selectedDepartment')!=null)
+            {
+                this.set('ifNoneStat', !(this.get('ifNoneStat')));
+                var counts =[];
+                    var names=[]
+                    for(let i =0;i<this.get('codeModel').get('length');i++)
+                    {
+                        counts.push(0);
+                        names.push(this.get('codeModel').objectAt(i).get('code'));
+                    }
+                    var first=true;
+                 $('#departments').find('#'+this.get('selectedDepartment')+' tr').each(function() {
+                     if(!first)
+                        {
+                            var codes = extractContent($(this).find(".codes").html().replace(/\s\s+/g, '').replace(/<br>/g,"|")).split("|");
+                            for(let j=0;j<codes.length;j++)
+                            {
+                                for(let k=0;k<names.length;k++)
+                                {
+                                    if(codes[j]==names[k])
+                                    {
+                                        counts[k]++;
+                                    }
+                                }
+                            }
+                            
+                        }
+                        else{
+                        first=false;
+                    }
+                 });
+                 var max =0;
+                    for (let i =0;i<counts.length;i++)
+                    {
+                        if(counts[i]>max)
+                        {
+                            max=counts[i];
+                        }
+                    }
+                    this.set('baroptions4', {
+                title: {
+                    display: true,
+                    fontSize: 16,
+                    fontStle:"bold",
+                    fontColor:"#101",
+                    text: 'Students per Assestment Code in '+this.get('departmentModel').objectAt(this.get('selectedDepartment')).get('name')
+                },
+                legend: {
+                    display: false,
+                },
+                scales: {
+                    yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Number of Students',
+                        
+                    },
+                    ticks: {
+                            suggestedMin: 0,
+                            suggestedMax: max+2,
+                            fixedStepSize: 1,
+                        }
+                }],
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Assesment Code'
+                    }
+                    }]
+                }
             });
-            this.set('ifNoneStat', !(this.get('ifNoneStat')));
+                    this.set('numberData4', {
+                    labels: names,
+                    datasets: [
+                        {
+                            backgroundColor: "rgba(0,0,128,.9)",
+                            borderWidth: 1,
+                            data: counts,
+                        }
+                    ]
+                    
+                });
+            }
+            function extractContent(value){
+                var div = document.createElement('div')
+                div.innerHTML=value;
+                var text= div.textContent;            
+                return text;
+            }
+            function rainbow(numOfSteps, step) {
+                
+                var r, g, b;
+                var h = step / numOfSteps;
+                var i = ~~(h * 6);
+                var f = h * 6 - i;
+                var q = 1 - f;
+                switch(i % 6){
+                    case 0: r = 1; g = f; b = 0; break;
+                    case 1: r = q; g = 1; b = 0; break;
+                    case 2: r = 0; g = 1; b = f; break;
+                    case 3: r = 0; g = q; b = 1; break;
+                    case 4: r = f; g = 0; b = 1; break;
+                    case 5: r = 1; g = 0; b = q; break;
+                }
+                var c = "#" + ("00" + (~ ~(r * 255)).toString(16)).slice(-2) + ("00" + (~ ~(g * 255)).toString(16)).slice(-2) + ("00" + (~ ~(b * 255)).toString(16)).slice(-2);
+                return (c);
+            }
+        },
+        displayStatistics3()
+        {
+            
+            if(this.get('ifNoneStat'))
+            {
+                this.set('ifNoneStat', !(this.get('ifNoneStat')));
+            }
+            if(!this.get('ifNoneStat') && this.get('selectedProgram')!=null)
+            {
+                this.set('ifNoneStat', !(this.get('ifNoneStat')));
+                var counts =[];
+                    var names=[]
+                    for(let i =0;i<this.get('codeModel').get('length');i++)
+                    {
+                        counts.push(0);
+                        names.push(this.get('codeModel').objectAt(i).get('code'));
+                    }
+                    var first=true;
+                 $('#programs').find('#'+this.get('selectedProgram')+' tr').each(function() {
+                     if(!first)
+                        {
+                            var codes = extractContent($(this).find(".codes").html().replace(/\s\s+/g, '').replace(/<br>/g,"|")).split("|");
+                            for(let j=0;j<codes.length;j++)
+                            {
+                                for(let k=0;k<names.length;k++)
+                                {
+                                    if(codes[j]==names[k])
+                                    {
+                                        counts[k]++;
+                                    }
+                                }
+                            }
+                            
+                        }
+                        else{
+                        first=false;
+                    }
+                 });
+                 var max =0;
+                    for (let i =0;i<counts.length;i++)
+                    {
+                        if(counts[i]>max)
+                        {
+                            max=counts[i];
+                        }
+                    }
+                    this.set('baroptions5', {
+                title: {
+                    display: true,
+                    fontSize: 16,
+                    fontStle:"bold",
+                    fontColor:"#101",
+                    text: 'Students per Assestment Code in '+this.get('programModel').objectAt(this.get('selectedProgram')).get('name')
+                },
+                legend: {
+                    display: false,
+                },
+                scales: {
+                    yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Number of Students',
+                        
+                    },
+                    ticks: {
+                            suggestedMin: 0,
+                            suggestedMax: max+2,
+                            fixedStepSize: 1,
+                        }
+                }],
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Assesment Code'
+                    }
+                    }]
+                }
+            });
+                    this.set('numberData5', {
+                    labels: names,
+                    datasets: [
+                        {
+                            backgroundColor: "rgba(0,0,128,.9)",
+                            borderWidth: 1,
+                            data: counts,
+                        }
+                    ]
+                    
+                });
+            }
+            function extractContent(value){
+                var div = document.createElement('div')
+                div.innerHTML=value;
+                var text= div.textContent;            
+                return text;
+            }
+            function rainbow(numOfSteps, step) {
+                
+                var r, g, b;
+                var h = step / numOfSteps;
+                var i = ~~(h * 6);
+                var f = h * 6 - i;
+                var q = 1 - f;
+                switch(i % 6){
+                    case 0: r = 1; g = f; b = 0; break;
+                    case 1: r = q; g = 1; b = 0; break;
+                    case 2: r = 0; g = 1; b = f; break;
+                    case 3: r = 0; g = q; b = 1; break;
+                    case 4: r = f; g = 0; b = 1; break;
+                    case 5: r = 1; g = 0; b = q; break;
+                }
+                var c = "#" + ("00" + (~ ~(r * 255)).toString(16)).slice(-2) + ("00" + (~ ~(g * 255)).toString(16)).slice(-2) + ("00" + (~ ~(b * 255)).toString(16)).slice(-2);
+                return (c);
             }
         },
         viewAdjudication(){
@@ -595,6 +992,15 @@ export default Ember.Component.extend({
             var term = this.get('termModel').objectAt(index).get('name');
             this.set('adjudicationTermToView', term);
         },
+        selectDepartmentToView(index){
+            
+            this.set('selectedDepartment', index);
+            console.log(this.get('selectedDepartment'));
+        },
+        selectProgramToView(index){
+            this.set('selectedProgram', index);
+            console.log(this.get('selectedProgram'));
+        },
 
         
 
@@ -627,21 +1033,7 @@ export default Ember.Component.extend({
             doc.output("dataurlnewwindow");
         },
 
-        exportExcel(){
-            
-            var uri = 'data:application/vnd.ms-excel;base64,'
-            , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
-            , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
-            , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
-            return function (table, name, filename) {
-                if (!table.nodeType) table = document.getElementById('table')
-                var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
-
-                document.getElementById("dlink").href = uri + base64(format(template, ctx));
-                document.getElementById("dlink").download = filename;
-                document.getElementById("dlink").click();
-            }
-        },
+        
     
         export2() {
             var doc = new jsPDF();

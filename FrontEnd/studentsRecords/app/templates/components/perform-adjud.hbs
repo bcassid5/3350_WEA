@@ -80,13 +80,15 @@
                                 Export table to Excel
                             </button>
                             <button class="ui button" style="background-color: #000000; color: #ffffff" {{action 'displayStatistics'}}>
-                                Display Statistics
+                                Generate Statistics
                             </button>
                             <!--<button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'exportExcel'}}>
                                 Export table to Excel
                             </button>-->
                             {{#if ifNoneStat}}
                             {{ember-chart type="bar" data=numberData height=200 width=200 options=baroptions}}
+                            {{ember-chart type="pie" data=numberData2 height=200 width=200 options=baroptions2}}
+                            {{ember-chart type="pie" data=numberData3 height=200 width=200 options=baroptions3}}
                             {{/if}}
                             <table class="ui celled table" id="studentTable">
                                 <thead>
@@ -127,6 +129,22 @@
                             <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'departmentExport' false}}>
                                 Export to Excel
                             </button>
+                            <div class="inline fields">
+                            <label name="list" style="font-size: 14px">Select Department: </label>
+                            <select class="ui dropdown" onchange={{action 'selectDepartmentToView' value="target.value"}} name = "listname">
+                                <option hidden>Select</option>
+                                {{#each departmentModel as |departmentChoice index|}}
+                                    <option value={{index}}> {{departmentChoice.name}} </option>    
+                                {{/each}}
+                            </select>
+                            <button class="ui button" style="background-color: #000000; color: #ffffff" {{action 'displayStatistics2'}}>
+                                Generate Statistics
+                            </button>
+                            </div>
+                            {{#if ifNoneStat}}
+                            {{ember-chart type="bar" data=numberData4 height=200 width=200 options=baroptions4}}
+                            
+                            {{/if}}
                             <br><br>
                             <div id = "departments">
                             {{#each departmentGroups as |group index|}}
@@ -187,6 +205,22 @@
                                 <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'programExport' false}}>
                                 Export to Excel
                                 </button>
+                                <div class="inline fields">
+                                <label name="list" style="font-size: 14px">Select Department: </label>
+                                <select class="ten wide ui dropdown" onchange={{action 'selectProgramToView' value="target.value"}} name = "listname">
+                                    <option hidden>Select</option>
+                                    {{#each programModel as |programChoice index|}}
+                                        <option value={{index}}> {{programChoice.name}} </option>    
+                                    {{/each}}
+                                </select>
+                                <button class="ui button" style="background-color: #000000; color: #ffffff" {{action 'displayStatistics3'}}>
+                                    Generate Statistics
+                                </button>
+                                </div>
+                                {{#if ifNoneStat}}
+                                {{ember-chart type="bar" data=numberData5 height=200 width=200 options=baroptions5}}
+                                
+                                {{/if}}
                                 <br><br>
                                 <div id = "programs">
                                 {{#each programGroups as |group index|}}
