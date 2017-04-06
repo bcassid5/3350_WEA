@@ -98,6 +98,7 @@ export default Ember.Component.extend({
         this.newCode=false;
         this.newRule=false;
         this.newDept=false;
+        this.newDeptFaculty=null;
         this.err = false;
         this.errProgram = false;
         this.errCode=false;
@@ -110,6 +111,8 @@ export default Ember.Component.extend({
         this.newProgAdminName="";
         this.newDeptName="";
         this.newProgAdminPosition="";
+        this.newCourseHighSchool=null;
+        this.newProgAdminDept=null;
 
         
         this.get('store').findAll('residency').then(function (records) {
@@ -934,7 +937,9 @@ export default Ember.Component.extend({
       },
 
       removeHSCourseOption(index){
-       this.get('store').find('high-school-course',this.get('highSchoolCourseModel').objectAt(index).get('id')).then(function(record){
+          var self=this;
+          
+        self.get('store').find('high-school-course',self.get('highSchoolCourseModel').objectAt(index).get('id')).then(function(record){
                 record.deleteRecord();
                 if(record.get('isDeleted'))
                 {
@@ -979,7 +984,7 @@ export default Ember.Component.extend({
       },
 
       addCourseOption(){
-        if ((this.get('newCourseHighSchoolName')!=="")&&(this.get('newCourseHighSchoolName')!=-null)
+        if ((this.get('newCourseHighSchoolName')!=="")&&(this.get('newCourseHighSchool')!=null)
         &&(this.get('newCourseSubject')!=null)&&(this.get('newCourseSubject')!=="")
         &&(this.get('newCourseLevel')!==null)&&(this.get('newCourseLevel')!=="")
         &&(this.get('newCourseSource')!==null)&&(this.get('newCourseSource')!=="")
@@ -1053,7 +1058,7 @@ export default Ember.Component.extend({
       },
 
       addDeptOption(){
-        if (this.get('newDeptName')!==""){
+        if (this.get('newDeptName')!=="" && this.get('newDeptFaculty')!=null){
             var record = this.get('store').createRecord('department', {
                 name: this.get('newDeptName'),
                 faculty: this.get('newDeptFaculty'),
@@ -1118,7 +1123,7 @@ export default Ember.Component.extend({
       },
 
       addProgAdminOption(){
-        if (this.get('newProgAdminName')!==""&&this.get('newProgAdminPosition')!=""){
+        if (this.get('newProgAdminName')!==""&&this.get('newProgAdminPosition')!="" && this.get('newProgAdminDept')!=null){
             var record = this.get('store').createRecord('progAdmin', {
                 name: this.get('newProgAdminName'),
                 position: this.get('newProgAdminPosition'),

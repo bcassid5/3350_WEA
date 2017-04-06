@@ -96,6 +96,7 @@ export default Ember.Component.extend({
   errAdjTerm:null,
   newCodeList:null,
   newAdjTermName:null,
+  chosenCourse:null,
 
 
   USP01IsPermitted: Ember.computed(function(){ //Manage system roles
@@ -164,7 +165,7 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
     
-
+    this.chosenCourse=null;
     this.get('store').findAll('highSchool').then(function (records) {
             self.set('highSchoolModel', records);
         });
@@ -361,7 +362,11 @@ export default Ember.Component.extend({
   },
 
   actions: {
-
+    chooseCourse(val)
+    {
+      console.log(val);
+      this.set('chosenCourse', val);
+    },
     /*********************************/
       selectTerm(val){
           this.set('newAdjTermName', val);
@@ -757,22 +762,19 @@ export default Ember.Component.extend({
       {
         this.$("#terms").find('.'+index).form('remove prompt', 'note');
       }
-      if(this.$('#terms').find('.'+index).find('.selectedCourse').val() == "Select")
+      if(this.get('chosenCourse') == null)
       {
         e = true;
-        this.$("#terms").find('.'+index).form('add prompt', 'courseList', 'error text');
+        
       }
-      else 
-      {
-        this.$("#terms").find('.'+index).form('remove prompt', 'courseList');
-      }
+      
       if(!e)
       {
         var record = this.get('store').createRecord('grade', {
                 mark: this.$('#terms').find('.'+index).find('.mark').val(),
                 note: this.$('#terms').find('.'+index).find('.note').val(),
                 term: this.get('termCodeModel').objectAt(index),
-                course: this.get('courseCodeModel').objectAt(this.$('#terms').find('.'+index).find('.selectedCourse').val()),
+                course: this.get('courseCodeModel').objectAt(this.get('chosenCourse')),
                 
                 });
         var self =this;
@@ -939,6 +941,7 @@ export default Ember.Component.extend({
     newGradeClicked()
     {
       this.set('newGrade', !(this.get('newGrade')));
+      this.set('chosenCourse', null);
     },
     newStudentTermClicked()
     {

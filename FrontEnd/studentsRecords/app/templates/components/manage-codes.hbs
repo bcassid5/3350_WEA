@@ -145,6 +145,7 @@
     <div class="ui tab" data-tab="planCodes">
         <div class=" ui inverted segment" style="background-color: #4F2683" id="find">
                 <div class="field">
+                    
                     <div class="ui medium header" style="color: #FFFFFF">Search Plans</div>
                     <div class="ui icon input">
                         <input type="text" placeholder="Search..." class="planSearchVal">
@@ -633,7 +634,9 @@
                                     <option value={{highSchoolChoice.id}}>{{highSchoolChoice.name}} </option>
                                 {{/each}}
                             </select>
+                            
                         </div>
+                        
                         <div class="field">
                             <br/><br/>
                             <a {{action 'addCourseOption'}}> 
@@ -683,7 +686,7 @@
                             
                             <div class="field">
                                 <br/><br/>
-                                <a {{action 'removeHSCourseOption' index}}> 
+                                <a {{action 'removeHSCourseOption' indexHS}}> 
                                     <i class="large red minus circle icon"></i> <br>
                                 </a>
                             </div>

@@ -8,6 +8,7 @@
 </div>
 
 <div class="ui active tab" data-tab="perform">
+    {{#if ASR02IsPermitted}}
     <div class = "ui grid">
         <div class="ui centered twelve wide column">
             <div class = "ui form" id = "rules">
@@ -38,8 +39,22 @@
             </div>      
         </div>
     </div>
+    {{else}}
+    <div class="ui center aligned raised segment">
+            <div class="ui icon header">
+              <i class="protect icon"></i>
+              Permission Denied
+            </div>
+            <div>
+              <p>This feature (ASR02) is not allowed for your account.</p>
+              <p>Please contact the system administrator for more information.</p>
+            </div>
+
+          </div>
+    {{/if}}
 </div>
 <div class="ui tab" data-tab="view">
+    {{#if GRS01IsPermitted}}
     <div class = "ui grid">
         <div class="ui left aligned four wide column">
         <div class="ui form">
@@ -87,6 +102,7 @@
                             </button>-->
                             {{#if ifNoneStat}}
                             {{ember-chart type="bar" data=numberData height=200 width=200 options=baroptions}}
+                            {{ember-chart type="bar" data=numberData6 height=200 width=200 options=baroptions6}}
                             {{ember-chart type="pie" data=numberData2 height=200 width=200 options=baroptions2}}
                             {{ember-chart type="pie" data=numberData3 height=200 width=200 options=baroptions3}}
                             {{/if}}
@@ -96,9 +112,10 @@
                                         <th>Student Name</th>
                                         <th>Student Number</th>
                                         <th>Term Average</th>
-                                        <th>Term Units</th>
-                                        <th>Term Units Received</th>
+                                        
                                         <th>Assessment Codes</th>
+                                        <th>Department(s)</th>
+                                        <th>Program(s)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -108,11 +125,36 @@
                                             <td class="info">{{adjudicationChoice.student.firstName}} {{adjudicationChoice.student.lastName}}</td>
                                             <td class="id">{{adjudicationChoice.student.number}}</td>
                                             <td class="avg">{{adjudicationChoice.termAVG}}</td>
-                                            <td class="termtotal">{{adjudicationChoice.termUnitTotal}}</td>
-                                            <td class="termPassed">{{adjudicationChoice.termUnitPassed}}</td>
+                                            
                                             <td class="codes">
                                                 {{#each adjudicationChoice.assessmentCode as |codeChoice|}}
                                                 {{codeChoice.code}}<br/>
+                                                {{/each}}
+                                            </td>
+                                            <td class="dpts">
+                                                {{#each departmentGroups as |group index5|}}
+                                                    {{#each group as |studentInDepartment index6|}}
+                                                        {{#if (eq adjudicationChoice.student.id studentInDepartment.id)}}
+                                                            {{#each departmentModel as |dprt index7|}}
+                                                                {{#if (eq index5 index7)}}
+                                                                    {{dprt.name}}<br>
+                                                                {{/if}}
+                                                            {{/each}}
+                                                        {{/if}}
+                                                    {{/each}}
+                                                {{/each}}
+                                            </td>
+                                            <td class="grams">
+                                                {{#each programGroups as |group index5|}}
+                                                    {{#each group as |studentInProgram index6|}}
+                                                        {{#if (eq adjudicationChoice.student.id studentInProgram.id)}}
+                                                            {{#each programModel as |prgm index7|}}
+                                                                {{#if (eq index5 index7)}}
+                                                                    {{prgm.name}}<br>
+                                                                {{/if}}
+                                                            {{/each}}
+                                                        {{/if}}
+                                                    {{/each}}
                                                 {{/each}}
                                             </td>
                                         </tr>
@@ -143,7 +185,8 @@
                             </div>
                             {{#if ifNoneStat}}
                             {{ember-chart type="bar" data=numberData4 height=200 width=200 options=baroptions4}}
-                            
+                            {{ember-chart type="bar" data=numberData7 height=200 width=200 options=baroptions7}}
+                            {{ember-chart type="pie" data=numberData9 height=200 width=200 options=baroptions9}}
                             {{/if}}
                             <br><br>
                             <div id = "departments">
@@ -162,9 +205,9 @@
                                         <th>Student Name</th>
                                         <th>Student Number</th>
                                         <th>Term Average</th>
-                                        <th>Term Units</th>
-                                        <th>Term Units Received</th>
+                                        
                                         <th>Assessment Codes</th>
+                                        <th>Program(s)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -179,11 +222,23 @@
                                             <td class="info">{{adjudicationChoice.student.firstName}} {{adjudicationChoice.student.lastName}}</td>
                                             <td class="id">{{adjudicationChoice.student.number}}</td>
                                             <td class="avg">{{adjudicationChoice.termAVG}}</td>
-                                            <td class="termtotal">{{adjudicationChoice.termUnitTotal}}</td>
-                                            <td class="termPassed">{{adjudicationChoice.termUnitPassed}}</td>
+                                            
                                             <td class="codes">
                                                 {{#each adjudicationChoice.assessmentCode as |codeChoice|}}
                                                 {{codeChoice.code}}<br/>
+                                                {{/each}}
+                                            </td>
+                                            <td class="grams">
+                                                {{#each programGroups as |group index5|}}
+                                                    {{#each group as |studentInProgram index6|}}
+                                                        {{#if (eq adjudicationChoice.student.id studentInProgram.id)}}
+                                                            {{#each programModel as |prgm index7|}}
+                                                                {{#if (eq index5 index7)}}
+                                                                    {{prgm.name}}<br/>
+                                                                {{/if}}
+                                                            {{/each}}
+                                                        {{/if}}
+                                                    {{/each}}
                                                 {{/each}}
                                             </td>
                                         </tr>
@@ -219,7 +274,8 @@
                                 </div>
                                 {{#if ifNoneStat}}
                                 {{ember-chart type="bar" data=numberData5 height=200 width=200 options=baroptions5}}
-                                
+                                {{ember-chart type="bar" data=numberData8 height=200 width=200 options=baroptions8}}
+                                {{ember-chart type="pie" data=numberData10 height=200 width=200 options=baroptions10}}
                                 {{/if}}
                                 <br><br>
                                 <div id = "programs">
@@ -235,9 +291,8 @@
                                             <th>Student Name</th>
                                             <th>Student Number</th>
                                             <th>Term Average</th>
-                                            <th>Term Units</th>
-                                            <th>Term Units Received</th>
                                             <th>Assessment Codes</th>
+                                            <th>Department(s)</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -251,12 +306,23 @@
                                                  <td class="info">{{adjudicationChoice.student.firstName}} {{adjudicationChoice.student.lastName}}</td>
                                                 <td class="id">{{adjudicationChoice.student.number}}</td>
                                                 <td class="avg">{{adjudicationChoice.termAVG}}</td>
-                                                <td class="termtotal">{{adjudicationChoice.termUnitTotal}}</td>
-                                                <td class="termPassed">{{adjudicationChoice.termUnitPassed}}</td>
                                                 <td class="codes">
                                                     {{#each adjudicationChoice.assessmentCode as |codeChoice|}}
                                                     {{codeChoice.code}}<br/>
                                                     {{/each}}
+                                                </td>
+                                                <td class="dpts">
+                                                    {{#each departmentGroups as |group index5|}}
+                                                    {{#each group as |studentInDepartment index6|}}
+                                                        {{#if (eq adjudicationChoice.student.id studentInDepartment.id)}}
+                                                            {{#each departmentModel as |dprt index7|}}
+                                                                {{#if (eq index5 index7)}}
+                                                                    {{dprt.name}}<br>
+                                                                {{/if}}
+                                                            {{/each}}
+                                                        {{/if}}
+                                                    {{/each}}
+                                                {{/each}}
                                                 </td>
                                             </tr>
                                         {{/if}}
@@ -276,6 +342,19 @@
             </div>      
         </div>
     </div>
+    {{else}}
+    <div class="ui center aligned raised segment">
+            <div class="ui icon header">
+              <i class="protect icon"></i>
+              Permission Denied
+            </div>
+            <div>
+              <p>This feature (GRS01) is not allowed for your account.</p>
+              <p>Please contact the system administrator for more information.</p>
+            </div>
+
+          </div>
+    {{/if}}
 </div>
 <div class="ui department modal">
       <div class="ui icon header">
@@ -345,4 +424,102 @@
         </div>
       </div>
 </div>
-
+{{#if showResults}}
+<div id = "departments2" style="display: none;">
+                            {{#each departmentGroups as |group index|}}
+                            
+                            
+                            {{#each departmentModel as |dprt index3|}}
+                            {{#if (eq index index3)}}
+                                <div class="ui medium header" style="color: #4F2683">{{dprt.name}}</div>
+                            {{/if}}
+                            {{/each}}
+                            
+                            <table class="ui celled table" id={{index}}>
+                                <thead>
+                                    <tr>
+                                        <th>Student Name</th>
+                                        <th>Student Number</th>
+                                        <th>Term Average</th>
+                                        <th>Term Units</th>
+                                        <th>Term Units Received</th>
+                                        <th>Assessment Codes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                {{#each group as |studentInDepartment index2|}}
+                                    
+                                
+                                {{#each adjudicationModel as |adjudicationChoice index2|}}
+                                {{#if (eq adjudicationChoice.student.id studentInDepartment.id)}}
+                                        {{#if (eq adjudicationChoice.note adjudicationTermToView)}}
+                                        <tr class={{index2}}>
+                                            <td class="info">{{adjudicationChoice.student.firstName}} {{adjudicationChoice.student.lastName}}</td>
+                                            <td class="id">{{adjudicationChoice.student.number}}</td>
+                                            <td class="avg">{{adjudicationChoice.termAVG}}</td>
+                                            <td class="termtotal">{{adjudicationChoice.termUnitTotal}}</td>
+                                            <td class="termPassed">{{adjudicationChoice.termUnitPassed}}</td>
+                                            <td class="codes">
+                                                {{#each adjudicationChoice.assessmentCode as |codeChoice|}}
+                                                {{codeChoice.code}}<br/>
+                                                {{/each}}
+                                            </td>
+                                        </tr>
+                                    {{/if}}
+                                    {{/if}}
+                                {{/each}}
+                                
+                                {{/each}}
+                                </tbody>
+                            </table>
+                            {{/each}}
+                            </div>
+                            
+<div id = "programs2" style="display: none;">
+                                {{#each programGroups as |group index|}}
+                                {{#each programModel as |prgm index3|}}
+                                {{#if (eq index index3)}}
+                                    <div class="ui medium header" style="color: #4F2683">{{prgm.name}}</div>
+                                {{/if}}
+                                {{/each}}
+                                <table class="ui celled table" id={{index}}>
+                                    <thead>
+                                        <tr>
+                                            <th>Student Name</th>
+                                            <th>Student Number</th>
+                                            <th>Term Average</th>
+                                            <th>Term Units</th>
+                                            <th>Term Units Received</th>
+                                            <th>Assessment Codes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {{#each group as |studentInDepartment index2|}}
+                                        
+                                    
+                                    {{#each adjudicationModel as |adjudicationChoice index2|}}
+                                    {{#if (eq adjudicationChoice.student.id studentInDepartment.id)}}
+                                            {{#if (eq adjudicationChoice.note adjudicationTermToView)}}
+                                            <tr class={{index2}}>
+                                                 <td class="info">{{adjudicationChoice.student.firstName}} {{adjudicationChoice.student.lastName}}</td>
+                                                <td class="id">{{adjudicationChoice.student.number}}</td>
+                                                <td class="avg">{{adjudicationChoice.termAVG}}</td>
+                                                <td class="termtotal">{{adjudicationChoice.termUnitTotal}}</td>
+                                                <td class="termPassed">{{adjudicationChoice.termUnitPassed}}</td>
+                                                <td class="codes">
+                                                    {{#each adjudicationChoice.assessmentCode as |codeChoice|}}
+                                                    {{codeChoice.code}}<br/>
+                                                    {{/each}}
+                                                </td>
+                                            </tr>
+                                        {{/if}}
+                                        {{/if}}
+                                    {{/each}}
+                                    
+                                    {{/each}}
+                                    </tbody>
+                                </table>
+                                {{/each}}
+                            </div>
+                            {{/if}}

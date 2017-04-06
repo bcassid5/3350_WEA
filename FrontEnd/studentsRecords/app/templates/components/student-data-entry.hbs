@@ -283,6 +283,7 @@
                   <table class="ui celled table">
                     <thead>
                       <tr><th>Course</th>
+                      <th>Unit</th>
                       <th>Mark</th>
                       <th>Note</th>
                       {{#if enableGradeEdit}}
@@ -296,6 +297,7 @@
                       
                         <tr class={{index2}}>
                           <td>{{gradeChoice.course.courseLetter}} {{gradeChoice.course.courseNumber}}</td>
+                          <td>{{gradeChoice.course.unit}}</td>
                           <td>{{gradeChoice.mark}}</td>
                           <td>{{gradeChoice.note}}</td>
                           
@@ -320,15 +322,23 @@
                     <i class="large green add square icon"></i>Add Grade</a>
                     {{#if newGrade}}
                       <div class = "ui form">
+                        
+                        
                         <div class = "required field">
-                          <label name="list">Select Course</label>
-                          <select  class="selectedCourse" name="courseList">
-                            <option hidden>Select</option>
-                            {{#each courseCodeModel as |courseCodeChoice index4|}}
-                              <option value={{index4}}> {{courseCodeChoice.courseLetter}} {{courseCodeChoice.courseNumber}} </option> 
-                            {{/each}}
-                          </select>
+                        <label name="list">Select Course</label>
                         </div>
+                        {{#ui-dropdown   class="fluid search selection" onChange=(action 'chooseCourse')}}
+                          <i class="dropdown icon"></i>
+                          <div class="default text">Select Course</div>
+                          <div class="menu">
+                            {{#each courseCodeModel as |courseCodeChoice index4|}}
+                              <div class="item"   data-value= {{index4}} >
+                                {{courseCodeChoice.courseLetter}} {{courseCodeChoice.courseNumber}}
+                              </div>
+                            {{/each}}
+
+                          </div>
+                        {{/ui-dropdown}}
                         <div class="required fields">
                           <div class = "four wide field">
                             <label>Mark</label> <input type="text" placeholder="Mark" class="mark" name="mark">
