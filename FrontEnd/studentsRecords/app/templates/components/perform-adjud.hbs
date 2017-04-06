@@ -2,9 +2,10 @@
     <h2>Adjudication</h2>
 </div>
 
-<div class="ui two item inverted menu" style="background-color: #4F2683; color: #ffffff">
+<div class="ui three item inverted menu" style="background-color: #4F2683; color: #ffffff">
     <div class="active item" data-tab="perform">Perform</div>
     <div class="item" data-tab="view">View</div>
+    <div class="item" data-tab="danger">Danger Zone</div>
 </div>
 
 <div class="ui active tab" data-tab="perform">
@@ -82,9 +83,7 @@
                         <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'viewAdjudication'}} >
                             View
                         </button>
-                        <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'deleteAll'}} >
-                            Delete All Adjudication Records
-                        </button>
+                        
                         {{#if showResults}}
                             {{!--<button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'exportPDF'}}>Export </button>--}}
                         {{#if isNone}}
@@ -94,7 +93,7 @@
                             <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'excelExport'}}>
                                 Export table to Excel
                             </button>
-                            <button class="ui button" style="background-color: #000000; color: #ffffff" {{action 'displayStatistics'}}>
+                            <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'displayStatistics'}}>
                                 Generate Statistics
                             </button>
                             <!--<button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'exportExcel'}}>
@@ -179,7 +178,7 @@
                                     <option value={{index}}> {{departmentChoice.name}} </option>    
                                 {{/each}}
                             </select>
-                            <button class="ui button" style="background-color: #000000; color: #ffffff" {{action 'displayStatistics2'}}>
+                            <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'displayStatistics2'}}>
                                 Generate Statistics
                             </button>
                             </div>
@@ -268,7 +267,7 @@
                                         <option value={{index}}> {{programChoice.name}} </option>    
                                     {{/each}}
                                 </select>
-                                <button class="ui button" style="background-color: #000000; color: #ffffff" {{action 'displayStatistics3'}}>
+                                <button class="ui button" style="background-color: #4F2683; color: #ffffff" {{action 'displayStatistics3'}}>
                                     Generate Statistics
                                 </button>
                                 </div>
@@ -354,6 +353,15 @@
             </div>
 
           </div>
+    {{/if}}
+</div>
+<div class="ui tab" data-tab="danger">
+    {{#if ASR02IsPermitted}}
+    <button class="ui red fluid button" {{action 'deleteAll'}} >
+    <div><i class="massive trash icon"></i></div>
+        <div class="ui center aligned header" style="color: #FFFFFF; font-size: 200%">Delete All Adjudication Records</div>
+    
+    </button>
     {{/if}}
 </div>
 <div class="ui department modal">
