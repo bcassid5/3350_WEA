@@ -1889,14 +1889,16 @@ export default Ember.Component.extend({
     },
 
         deleteAll() {
-            this.get('store').findAll('adjudication').then(function(record){
-                record.content.forEach(function(rec) {
-                    Ember.run.once(this, function() {
-                        rec.deleteRecord();
-                        rec.save();
-                    });
-                }, this);
-            }); 
+            if(confirm("Press OK to Confirm Delete") === true){
+                this.get('store').findAll('adjudication').then(function(record){
+                    record.content.forEach(function(rec) {
+                        Ember.run.once(this, function() {
+                            rec.deleteRecord();
+                            rec.save();
+                        });
+                    }, this);
+                }); 
+            }
         }
     }
 });
