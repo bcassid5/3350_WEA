@@ -610,7 +610,8 @@ export default Ember.Component.extend({
       },
       findClicked()
       {
-          var searchVal = this.$("#find").find('.searchVal').val().toLowerCase();
+          
+          var searchVal = this.$("#find5").find('.searchVal').val().toLowerCase();
           
          // console.log(this.get('courseModel').get('length'));
           for (var i=0; i<this.get('courseModel').get('length'); i++)
@@ -714,7 +715,8 @@ export default Ember.Component.extend({
           }
       },
       findCourseClicked()
-      {
+      { 
+          
           var searchVal = this.$('.courseSearchVal').val().toLowerCase();
           var searchVal2 = this.$('.courseSearchVal2').val().toLowerCase();
           
@@ -723,12 +725,13 @@ export default Ember.Component.extend({
          // console.log(this.get('courseModel').get('length'));
           for (var i=0; i<this.get('highSchoolCourseModel').get('length'); i++)
           {
+              
               if (searchVal == "")
               {
                 if (this.get('highSchoolCourseModel').objectAt(i).get('subject').get('name').toLowerCase()==searchVal2)
                 {
                     var offset = this.$("#hsCourses").find('.'+i).offset();
-                    console.log(this.get('highSchoolCourseModel').objectAt(i).get('subject').get('name').toLowerCase());
+                    
                   offset.left -=20;
                   offset.top -=20;
                   $('html, body').animate({

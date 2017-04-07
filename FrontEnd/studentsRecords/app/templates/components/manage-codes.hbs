@@ -187,7 +187,7 @@
     </div>
 
         <div class="ui tab" data-tab="courseCodes">
-            <div class=" ui inverted segment" style="background-color: #4F2683" id="find">
+            <div class=" ui inverted segment" style="background-color: #4F2683" id="find5">
                 <div class="field">
                     <div class="ui medium header" style="color: #FFFFFF">Search By Number</div>
                     <div class="ui icon input">
@@ -568,10 +568,14 @@
    </div>
 
    <div class="ui tab" data-tab="hsCourse">
-       <div class=" ui inverted segment" style="background-color: #4F2683" id="find">
+       <div class=" ui inverted segment" style="background-color: #4F2683" id="find9">
                 
                     <div class="ui medium header" style="color: #FFFFFF">Search Course</div>
-                    
+                    <label>Subject: </label>
+                    <div class="ui icon input">
+                        <input type="text" placeholder="Search..." class="courseSearchVal2">
+                        
+                    </div> 
                     <label>High School: </label>
                     <div class="ui icon input">
                         <input type="text" placeholder="Search..." class="courseSearchVal">
@@ -579,11 +583,7 @@
                     </div> 
                     
                     
-                    <label>Subject: </label>
-                    <div class="ui icon input">
-                        <input type="text" placeholder="Search..." class="courseSearchVal2">
-                        
-                    </div> 
+                    
                     
                     
                     <button class="ui icon button" {{action 'findCourseClicked'}}>

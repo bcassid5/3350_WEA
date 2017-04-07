@@ -934,14 +934,34 @@ export default Ember.Component.extend({
       }
       
     },
-    newProgClicked()
+    newProgClicked(index)
     {
       this.set('newProg', !(this.get('newProg')));
+      if((this.get('newProg'))){
+       var offset = this.$("#terms").find('.'+index).find('#scrollTo').offset();
+                    
+                  offset.left -=20;
+                  offset.top -=20;
+                  $('html, body').animate({
+                        scrollTop: offset.top,
+                        scrollLeft: offset.left
+                    });
+    }
     },
-    newGradeClicked()
+    newGradeClicked(index)
     {
       this.set('newGrade', !(this.get('newGrade')));
       this.set('chosenCourse', null);
+      if((this.get('newGrade'))){
+       var offset = this.$("#terms").find('.'+index).find('#termPrograms').offset();
+                    
+                  offset.left -=20;
+                  offset.top -=20;
+                  $('html, body').animate({
+                        scrollTop: offset.top,
+                        scrollLeft: offset.left
+                    });
+    }
     },
     newStudentTermClicked()
     {

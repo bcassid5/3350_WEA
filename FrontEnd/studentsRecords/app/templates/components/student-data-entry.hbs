@@ -318,13 +318,13 @@
                   </table>
                 <div class = "ui form" id = "termPrograms">
                   {{#if enableGradeEdit}}
-                    <a {{action 'newGradeClicked'}}> <br>
+                    <a {{action 'newGradeClicked' index}}> <br>
                     <i class="large green add square icon"></i>Add Grade</a>
                     {{#if newGrade}}
                       <div class = "ui form">
                         
                         
-                        <div class = "required field">
+                        <div class = "required field" >
                         <label name="list">Select Course</label>
                         </div>
                         {{#ui-dropdown   class="fluid search selection" onChange=(action 'chooseCourse')}}
@@ -406,8 +406,8 @@
                 </div>
                 {{#if enableGradeEdit}}
                   <br/>
-                  <a {{action 'newProgClicked'}}>
-                  <i class="large green add square icon"></i>Add Program</a>
+                  <a {{action 'newProgClicked' index}}>
+                  <i class="large green add square icon" id = "scrollTo"></i>Add Program</a>
                   
                   {{#if newProg}}
                     <div class="newProgram">
